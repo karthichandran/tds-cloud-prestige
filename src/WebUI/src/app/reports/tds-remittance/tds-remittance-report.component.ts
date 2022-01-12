@@ -63,7 +63,6 @@ export class TdsRemittanceReportComponent implements OnInit, OnDestroy {
 
     this.getProperties();   
     this.getSellers();
-    this.getReportList();
   }
 
   getProperties() {

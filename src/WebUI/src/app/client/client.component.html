@@ -184,7 +184,7 @@
                         <div class="margin-tb-5" fxLayout.sm="column" fxLayout.xs="column">
                           <label class="radio-label">I/We have already registered in TRACES</label>
                           <mat-radio-group aria-label="Select an option" formControlName="traces" style="align-self:end;">
-                            <mat-radio-button value="yes">Yes</mat-radio-button>
+                            <mat-radio-button value="yes"  (click)="UpdateOnlyTDS()">Yes</mat-radio-button>
                             <mat-radio-button value="no">No</mat-radio-button>
                           </mat-radio-group>
                           <mat-form-field appearance="outline" fxFlex *ngIf="customerform.value.traces=='yes'">
@@ -201,13 +201,16 @@
                     <div fxFlex>
                       <div fxLayout="row wrap">
                         <!--<div class="margin-tb-5" fxLayout.sm="column" fxLayout.xs="column">
-                          <label class="radio-label">Is PAN verified</label>
-                          <mat-radio-group aria-label="Select an option" formControlName="isPanValid" style="align-self:end;" required>
-                            <mat-radio-button value="yes">Yes</mat-radio-button>
-                            <mat-radio-button value="no">No</mat-radio-button>
-                          </mat-radio-group>                         
-                        </div>-->
-<mat-checkbox formControlName="isPanVerified" (change)="ShowEmailConfirmation($event)" >  Is PAN Verified</mat-checkbox>
+    <label class="radio-label">Is PAN verified</label>
+    <mat-radio-group aria-label="Select an option" formControlName="isPanValid" style="align-self:end;" required>
+      <mat-radio-button value="yes">Yes</mat-radio-button>
+      <mat-radio-button value="no">No</mat-radio-button>
+    </mat-radio-group>
+  </div>-->
+                        <mat-checkbox formControlName="isPanVerified" (change)="ShowEmailConfirmation($event)">  Is PAN Verified</mat-checkbox>
+                        <div style="margin-left:20px;">
+                          <mat-checkbox formControlName="onlyTDS" (change)="UpdateTraces($event.checked)">  Only TDS Payment</mat-checkbox>
+                        </div>
                       </div>
                     </div>
                     <div fxFlex fxLayoutAlign="end center">

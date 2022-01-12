@@ -49,7 +49,8 @@ namespace ReProServices.Application.Customers.Commands.CreateCustomer
                             AllowForm16B = customer.AllowForm16B,
                             AlternateNumber=customer.AlternateNumber,
                             ISD=customer.ISD,
-                            IsPanVerified= customer.IsPanVerified.Value
+                            IsPanVerified= customer.IsPanVerified.Value,
+                            OnlyTDS=customer.OnlyTDS
                             //Updated = DateTime.Now,
                             //UpdatedBy = userInfo.UserID.ToString()
                         };
@@ -76,7 +77,8 @@ namespace ReProServices.Application.Customers.Commands.CreateCustomer
                             AllowForm16B = customer.AllowForm16B,
                             AlternateNumber = customer.AlternateNumber,
                             ISD = customer.ISD,
-                            IsPanVerified = customer.IsPanVerified.Value
+                            IsPanVerified = customer.IsPanVerified.Value,
+                            OnlyTDS = customer.OnlyTDS
                             //Created = DateTime.Now,
                             //CreatedBy = userInfo.UserID.ToString()
                         };

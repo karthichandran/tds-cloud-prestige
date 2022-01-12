@@ -8,5 +8,6 @@
         Form16BRequested = 3,
         Form16BDownloaded = 4,
         Form16BSentToCustomer = 5,
+        ExcludeOnlyTDSpayments=6
     }
 }

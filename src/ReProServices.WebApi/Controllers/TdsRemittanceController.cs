@@ -148,53 +148,53 @@ namespace WebApi.Controllers
                 .HasColumnWidth(21)
                 .HasColumnIndex(8);
 
+            settings.Property(x => x.F16CreditedAmount)
+           .HasColumnTitle("TDS Amount")
+           .HasColumnWidth(21)
+           .HasColumnIndex(9);
+
             settings.Property(x => x.ChallanDate)
                 .HasColumnTitle("Challan Date")
                 .HasColumnFormatter("dd-MMM-yyy")
                 .HasColumnWidth(21)
-                .HasColumnIndex(9);
+                .HasColumnIndex(10);
 
             settings.Property(x => x.ChallanID)
                .HasColumnTitle("Challan Sl. No")
                .HasColumnWidth(14)
-               .HasColumnIndex(10);
+               .HasColumnIndex(11);
 
             settings.Property(x => x.ChallanAckNo)
                .HasColumnTitle("TDS Ack No")
                .HasColumnWidth(21)
-               .HasColumnIndex(11);
+               .HasColumnIndex(12);
 
             settings.Property(x => x.ChallanAmount)
               .HasColumnTitle("Challan Amount")
               .HasColumnWidth(21)
-              .HasColumnIndex(12);
+              .HasColumnIndex(13);
 
             settings.Property(x => x.F16BDateOfReq)
              .HasColumnTitle("Date Of Request")
              .HasColumnFormatter("dd-MMM-yyy")
              .HasColumnWidth(21)
-             .HasColumnIndex(13);
+             .HasColumnIndex(14);
 
             settings.Property(x => x.F16BRequestNo)
               .HasColumnTitle("Request No")
               .HasColumnWidth(21)
-              .HasColumnIndex(14);
+              .HasColumnIndex(15);
 
             settings.Property(x => x.F16UpdateDate)
             .HasColumnTitle("TDS Certificate Date")
             .HasColumnFormatter("dd-MMM-yyy")
             .HasColumnWidth(21)
-            .HasColumnIndex(15);
+            .HasColumnIndex(16);
 
             settings.Property(x => x.F16BCertificateNo)
              .HasColumnTitle("TDS Certificate No")
              .HasColumnWidth(21)
-             .HasColumnIndex(16);
-
-            settings.Property(x => x.F16CreditedAmount)
-             .HasColumnTitle("Amount")
-             .HasColumnWidth(21)
-             .HasColumnIndex(17);
+             .HasColumnIndex(17);         
 
 
             settings.Property(_ => _.RemittanceID).Ignored();

@@ -119,7 +119,8 @@ welcomeMail:boolean;
       form16b: ['yes'],    
       alternateNumber: [''],
       isd: ['+91'],
-      isPanVerified: ['']
+      isPanVerified: [''],
+      onlyTDS: ['']
     });
     // Vertical Stepper form stepper
     this.propertyForm = this._formBuilder.group({
@@ -412,7 +413,7 @@ welcomeMail:boolean;
           item.customerID = 0;
         else
           isNewEntry = false;
-        if (item.traces == "yes" || item.isTracesRegistered)
+        if (item.traces == "yes")
           item.isTracesRegistered = true;
         else
           item.isTracesRegistered = false;
@@ -967,6 +968,7 @@ welcomeMail:boolean;
 
     this.clientService.getCustomerByPan(id).subscribe((response) => {
       if (response != null) {
+		   response['pinCode'] = response['pinCode'].trim();
         this.customerform.reset();
         this.clients.push(response);
         this.showClient('', response);
@@ -1278,5 +1280,14 @@ this.welcomeMail=true;
       });
     }
 
+  }
+  UpdateTraces(isChecked) {
+    if (isChecked) {
+      this.customerform.get('traces').setValue("no");
+    }
+
+  }
+   UpdateOnlyTDS() {
+    this.customerform.get('onlyTDS').setValue(false);
   }
 }

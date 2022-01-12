@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReProServices.Domain.Enums;
+using System;
 using System.Linq;
 
 namespace ReProServices.Application.TdsRemittance.Queries.GetRemittanceList
@@ -25,6 +26,11 @@ namespace ReProServices.Application.TdsRemittance.Queries.GetRemittanceList
 
             if (filter.RemittanceStatusID.HasValue)
             {
+                if (filter.RemittanceStatusID.Value == (int)ERemittanceStatus.ExcludeOnlyTDSpayments) {
+                    remittanceList = remittanceList
+                               .Where(_ => _.OnlyTDS==false);
+                }
+                else
                 remittanceList = remittanceList
                                 .Where(_ => _.RemittanceStatusID == filter.RemittanceStatusID.Value);
             }

@@ -29,6 +29,7 @@ namespace ReProServices.Domain.Entities
         public bool? IsPanVerified { get; set; }
         public string ISD { get; set; }
         public string AlternateNumber { get; set; }
+        public bool? OnlyTDS { get; set; }
         //public DateTime? Created { get; set; }
         //public string CreatedBy { get; set; }
         //public DateTime? Updated { get; set; }
