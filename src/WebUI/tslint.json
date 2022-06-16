@@ -1,7 +1,7 @@
 {
-  "rulesDirectory": [
-    "node_modules/codelyzer"
-  ],
+  //"rulesDirectory": [
+  //  "node_modules/codelyzer"
+  //],
   "rules": {
     "arrow-return-shorthand": true,
     "callable-types": true,
@@ -72,7 +72,6 @@
     "no-trailing-whitespace": true,
     "no-unnecessary-initializer": true,
     "no-unused-expression": true,
-    "no-use-before-declare": true,
     "no-var-keyword": true,
     "object-literal-sort-keys": false,
     "one-line": [

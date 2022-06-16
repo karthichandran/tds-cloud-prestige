@@ -2,9 +2,9 @@ import { Component, OnDestroy, EventEmitter, OnInit, Input, Output, OnChanges, E
 import { DatatableComponent } from "@swimlane/ngx-datatable";
 import * as _ from 'lodash';
 import {ResizeService } from 'app/shared/services/resize.service';
-import { isDefined } from '@angular/compiler/src/util';
+//import { isDefined } from '@angular/compiler/src/util';
 import { ResizedEvent } from 'angular-resize-event';
-import { isUndefined } from 'util';
+//import { isUndefined } from 'util';
 import {  Subscription } from 'rxjs';
 @Component({
   selector: 'grid',
@@ -88,7 +88,8 @@ export class GridComponent implements OnInit,OnChanges,AfterViewInit{
   }
 
   onCheckboxChange(rowIndex, col, val) {
-    if (isDefined(col.isMultySelect)&& col.isMultySelect==false) {
+    //if (isDefined(col.isMultySelect)&& col.isMultySelect==false) {
+      if (!(col.isMultySelect===undefined)&& col.isMultySelect==false) {
       _.forEach(this.rowData, o => {
         o[col.field] = false;
       });
@@ -147,24 +148,27 @@ export class GridComponent implements OnInit,OnChanges,AfterViewInit{
 
   
   onResized(eve: ResizedEvent) {
-    if (isUndefined(eve))
-      return;   
-   
-    if (isUndefined(eve.oldWidth))
+    // if (isUndefined(eve))
+    if (eve===undefined)
       return;
 
-    if (eve.newWidth > eve.oldWidth) {
-      let diff = eve.newWidth - eve.oldWidth -84;
+    // if (isUndefined(eve.oldWidth))
+    //if (eve.oldRect.width===undefined)
+    if (eve.oldRect===undefined)
+      return;
+
+    if (eve.newRect.width > eve.oldRect.width) {
+      let diff = eve.newRect.width - eve.oldRect.width -84;
       this.containerWidth = this.initialContainerWidth + diff;     
     }
     else {
-      let diff = eve.oldWidth- eve.newWidth ;
+      let diff = eve.oldRect.width- eve.newRect.width;
       this.containerWidth = this.containerWidth - diff+64;
     }
     console.log("container width " + this.containerWidth);
         
     this.rowData = [...this.rowData];
-    if (isDefined(this.table)) {
+    if (!(this.table===undefined)) {
       this.table.recalculate();
     }
 
@@ -172,9 +176,13 @@ export class GridComponent implements OnInit,OnChanges,AfterViewInit{
 
   sortable(colm: any) {
     let columninx = _.findIndex(this.columnDefs, o => { return o.field == colm; });
-    if (isUndefined(this.columnDefs[columninx].sort)) {
+    // if (isUndefined(this.columnDefs[columninx].sort)) {
+    //   this.columnDefs[columninx]['sort'] = 'desc';
+    // }
+    if (this.columnDefs[columninx].sort===undefined) {
       this.columnDefs[columninx]['sort'] = 'desc';
     }
+
 
     if ( this.columnDefs[columninx].sort == 'desc') {
       this.rowData = _.orderBy(this.rowData, [colm], ['asc']);

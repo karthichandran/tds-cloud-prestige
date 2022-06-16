@@ -9,7 +9,6 @@ import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
 import { TdsRemitanceService } from './tds-remitance.service';
 import * as moment from 'moment';
-import { isNullOrUndefined, isUndefined } from 'util';
 import * as fileSaver from 'file-saver';
 import { ConfirmationDialogService } from '../core/confirmation-dialog/confirmation-dialog.service';
 
@@ -204,9 +203,9 @@ export class TdsRemitanceComponent implements OnInit, OnDestroy {
 
     if (model.challanID != 0)
       model.remittanceStatusID = 2;
-    if (model.f16BRequestNo != 0 && !isNullOrUndefined(model.f16BRequestNo) && model.f16BRequestNo!="")
+    if (model.f16BRequestNo != 0 && !(model.f16BRequestNo===undefined)&& !(model.f16BRequestNo===null) && model.f16BRequestNo!="")
       model.remittanceStatusID = 3;
-    if (model.f16BCertificateNo != 0 && !isNullOrUndefined(model.f16BCertificateNo) && model.f16BCertificateNo != "")
+    if (model.f16BCertificateNo != 0 && !(model.f16BCertificateNo===undefined)&& !(model.f16BCertificateNo===null)  && model.f16BCertificateNo != "")
       model.remittanceStatusID = 4;
 
     if (model.clientPaymentTransactionID == 0)
@@ -367,7 +366,7 @@ export class TdsRemitanceComponent implements OnInit, OnDestroy {
   }
 
   getFiles(blobId: string, fileType: string) {
-    if (isUndefined(blobId) || blobId == null) {
+    if ((blobId===undefined) || blobId == null) {
       if (fileType == "challan") {
         this.challanFile = {};
         this.isChallanUpload = false;
@@ -379,7 +378,7 @@ export class TdsRemitanceComponent implements OnInit, OnDestroy {
       return;
     }
     this.tdsService.getUploadedFiles(blobId).subscribe(response => {
-      if (isUndefined(response.fileName)) {
+      if ((response.fileName===undefined)) {
         if (fileType == "challan") {
           this.isChallanUpload = false;
         }

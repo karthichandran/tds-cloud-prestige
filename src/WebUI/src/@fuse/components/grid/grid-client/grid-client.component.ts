@@ -4,8 +4,8 @@ import { MatAutocompleteTrigger} from '@angular/material/autocomplete/autocomple
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import {ClientService } from '../../../../app/client/client.service';
-import { isUndefined } from 'util';
-import { isDefined } from '@angular/compiler/src/util';
+//import { isUndefined } from 'util';
+//import { isDefined } from '@angular/compiler/src/util';
 import { ResizedEvent } from 'angular-resize-event';
 import { Subscription } from 'rxjs';
 import { ResizeService } from 'app/shared/services/resize.service';
@@ -161,29 +161,58 @@ export class GridClientComponent implements OnInit, OnChanges, AfterViewInit {
     this.action.emit(model);
   }
 
+  // onResized(eve: ResizedEvent) {
+  //   // if (isUndefined(eve))
+  //   if (eve===undefined)
+  //     return;
+
+  //   // if (isUndefined(eve.oldWidth))
+  //   if (eve.oldWidth===undefined)
+  //     return;
+
+  //   if (eve.newWidth > eve.oldWidth) {
+  //     let diff = eve.newWidth - eve.oldWidth - 84;
+  //     this.containerWidth = this.initialContainerWidth + diff;
+  //   }
+  //   else {
+  //     let diff = eve.oldWidth - eve.newWidth;
+  //     this.containerWidth = this.containerWidth - diff + 64;
+  //   }
+  //   console.log("container width " + this.containerWidth);
+
+  //   this.rowData = [...this.rowData];
+  //   // if (isDefined(this.table)) {
+  //   //   this.table.recalculate();
+  //   // }
+  //   if (!(this.table===undefined)) {
+  //     this.table.recalculate();
+  //   }
+  // }
+
   onResized(eve: ResizedEvent) {
-    if (isUndefined(eve))
+    if (eve===undefined)
       return;
 
-    if (isUndefined(eve.oldWidth))
+    if (eve.oldRect===undefined)
       return;
 
-    if (eve.newWidth > eve.oldWidth) {
-      let diff = eve.newWidth - eve.oldWidth - 84;
+    if (eve.newRect.width > eve.oldRect.width) {
+      let diff = eve.newRect.width -  eve.oldRect.width - 84;
       this.containerWidth = this.initialContainerWidth + diff;
     }
     else {
-      let diff = eve.oldWidth - eve.newWidth;
+      let diff = eve.oldRect.width -eve.newRect.width;
       this.containerWidth = this.containerWidth - diff + 64;
     }
     console.log("container width " + this.containerWidth);
 
     this.rowData = [...this.rowData];
-    if (isDefined(this.table)) {
+    // if (isDefined(this.table)) {
+    //   this.table.recalculate();
+    // }
+    if (!(this.table===undefined)) {
       this.table.recalculate();
     }
-
   }
-
  
 }

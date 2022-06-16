@@ -29,6 +29,8 @@ namespace ReProServices.Domain.Entities
         public DateTime? DateOfAgreement { get; set; }
         public virtual Customer Customer { get; set; }
         public virtual Property Property { get; set; }
+
+        public decimal? StampDuty { get; set; }
         //public DateTime? Created { get; set; }
         //public string CreatedBy { get; set; }
         //public DateTime? Updated { get; set; }

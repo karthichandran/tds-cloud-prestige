@@ -10,7 +10,6 @@ import { ToastrService } from 'ngx-toastr';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { MatStepper } from '@angular/material/stepper';
 import * as fileSaver from 'file-saver';
-import { isUndefined } from 'util';
 import { Observable, of, Subject } from 'rxjs';
 import { ConfirmationDialogService } from '../core/confirmation-dialog/confirmation-dialog.service';
 import * as Xlsx from 'xlsx';
@@ -241,7 +240,7 @@ export class CustomerPaymentComponent implements OnInit {
     function sellerNames(propertyId: any) {
       let sellerNameObj: any = [];
       let sellerObj = _.find(selProp, o => { return o.propertyId == propertyId; });
-      if (!isUndefined(sellerObj)) {
+      if (!(sellerObj===undefined)) {
         let splitOnbjs = sellerObj.sellerNames.toString().split(',');
         _.forEach(splitOnbjs, o => {
           sellerNameObj.push({ 'name': o });
@@ -361,7 +360,7 @@ export class CustomerPaymentComponent implements OnInit {
         this.baseInstallment.dateOfPayment = moment(model.dateOfPayment).local().format("YYYY-MM-DD");
         this.baseInstallment.dateOfDeduction = moment(model.dateOfDeduction).local().format("YYYY-MM-DD");
         this.baseInstallment.revisedDateOfPayment = moment(model.revisedDateOfPayment).local().format("YYYY-MM-DD");
-        this.baseInstallment.receiptNo = isUndefined(model.receiptNo) ? this.clientform.get('receiptNo').value : model.receiptNo;
+        this.baseInstallment.receiptNo = (model.receiptNo===undefined) ? this.clientform.get('receiptNo').value : model.receiptNo;
         this.baseInstallment.lotNo = model.lotNo;
         this.baseInstallment.natureOfPaymentID = model.natureOfPaymentID > 1 ? model.notConsidered : model.natureOfPaymentID;
         this.baseInstallment.amountPaid = model.amountPaid;
@@ -499,7 +498,7 @@ export class CustomerPaymentComponent implements OnInit {
 
   selectedHistoryRows(eve) {
     let model = _.find(this.existingInstallments, o => { return o.installmentList[0].installmentID == eve.selected[0].installmentID });
-    if (!isUndefined(model)) {
+    if (!(model===undefined)) {
       let cloneModel = _.cloneDeep(model);
       this.fillFormControls(cloneModel, false);
       this.processCustomerGrid(cloneModel);

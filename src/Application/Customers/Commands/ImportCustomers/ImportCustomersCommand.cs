@@ -157,7 +157,8 @@ namespace ReProServices.Application.Customers.Commands.ImportCustomers
                                     DateOfAgreement = DateTime.ParseExact(row[24].ToString(),"dd/MM/yyyy", CultureInfo.InvariantCulture),
                                     OwnershipID = guid,
                                     IsArchived = false,
-                                    CustomerAlias = custList[0].Name
+                                    CustomerAlias = custList[0].Name,
+                                    StampDuty= Convert.ToDecimal(row[26].ToString())
                                     //Created = DateTime.Now,
                                     //CreatedBy = userInfo.UserID.ToString()
                                 };

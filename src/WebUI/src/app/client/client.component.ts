@@ -11,7 +11,6 @@ import { StatesService } from '../shared/services/states.service';
 import * as _ from 'lodash';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { MatStepper } from '@angular/material/stepper';
-import { isUndefined } from 'util';
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
 import {TaxService } from '../tax/tax.service';
@@ -146,7 +145,8 @@ welcomeMail:boolean;
       dateOfAgreement: [''],
       tdsCollected: ['yes', Validators.required],
       tdsCollectedBySeller: [''],
-      sellers:['']
+      sellers:[''],
+      stampDuty: ['']
     });
 
     this.customerColumnDef = [{ 'header': 'Name', 'field': 'name', 'type': 'label' },
@@ -602,7 +602,8 @@ welcomeMail:boolean;
             item.customerProperty[0].dateOfAgreement = (propertyModel.dateOfAgreement == "" || propertyModel.dateOfAgreement==null )?'' :moment(propertyModel.dateOfAgreement).local().format("YYYY-MM-DD");
             item.customerProperty[0].dateOfSubmission = moment(propertyModel.dateOfSubmission).local().format("YYYY-MM-DD");
             item.customerProperty[0].customerAlias = custAlias;
-            item.customerProperty[0].isShared = sharedCustomer;        
+            item.customerProperty[0].isShared = sharedCustomer;     
+            item.customerProperty[0].stampDuty = propertyModel.stampDuty;   
           });
         }
 
@@ -750,7 +751,7 @@ welcomeMail:boolean;
   }
 
   panUploadClick(uploadBtn: Element) {
-    if (isUndefined(this.panDoc.fileName))
+    if (this.panDoc.fileName===undefined)
       uploadBtn.dispatchEvent(new MouseEvent('click'));
     else
       this.toastr.warning("Please delete the current document then Upload");

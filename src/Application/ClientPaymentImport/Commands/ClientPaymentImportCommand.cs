@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using ReProServices.Application.Customers;
 using System;
+using System.Linq;
 using ReProServices.Domain.Enums;
 using System.Collections;
 using ReProServices.Application.ClientPayments;
@@ -31,7 +32,14 @@ namespace ReProServices.Application.ClientPaymentImport.Commands
             {
                 try
                 {
-                     _context.ClientPaymentRawImport.AddRange(request.cpr);
+                    var filtered = (from cr in request.cpr
+                                    join cp in _context.CustomerProperty on cr.UnitNo equals cp.UnitNo
+                                    join p in _context.Property on cr.PropertyCode equals p.PropertyCode
+                                    where cp.StatusTypeId != 3 && cp.PropertyId == p.PropertyID
+                                    select cr).Distinct().ToList<ClientPaymentRawImport>();
+
+                    //_context.ClientPaymentRawImport.AddRange(request.cpr);
+                    _context.ClientPaymentRawImport.AddRange(filtered);
                     await _context.SaveChangesAsync(cancellationToken);
                     return Unit.Value;
 

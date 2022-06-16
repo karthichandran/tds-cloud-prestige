@@ -88,7 +88,8 @@ namespace ReProServices.Application.AutoFill
                                         InstallmentId = cpt.InstallmentID,
                                         PropertyID = sp.PropertyID,
                                         RevisedDateOfPayment=pay.RevisedDateOfPayment.GenerateDatePart(),
-                                        DateOfDeduction=pay.DateOfDeduction.GenerateDatePart()
+                                        DateOfDeduction=pay.DateOfDeduction.GenerateDatePart(),
+                                        StampDuty = (int)cp.StampDuty.Value
                                     },
 
                                     tab4 = new Tab4()

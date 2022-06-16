@@ -11,7 +11,7 @@ import { QuickPanelModule } from 'app/layout/components/quick-panel/quick-panel.
 import { ToolbarModule } from 'app/layout/components/toolbar/toolbar.module';
 
 import { VerticalLayout1Component } from 'app/layout/vertical/layout-1/layout-1.component';
-import { AngularResizedEventModule } from 'angular-resize-event';
+import { AngularResizeEventModule } from 'angular-resize-event';
 @NgModule({
     declarations: [
         VerticalLayout1Component
@@ -27,7 +27,7 @@ import { AngularResizedEventModule } from 'angular-resize-event';
         NavbarModule,
         QuickPanelModule,
       ToolbarModule,
-      AngularResizedEventModule
+      AngularResizeEventModule
     ],
     exports     : [
         VerticalLayout1Component

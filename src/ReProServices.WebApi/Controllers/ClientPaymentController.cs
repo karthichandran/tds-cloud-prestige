@@ -271,9 +271,19 @@ namespace WebApi.Controllers
                 .HasColumnTitle("Remarks")
                 .HasColumnWidth(60)
                 .HasColumnIndex(21);
+            settings.Property(x => x.ClientPaymentTransactionID)
+                .HasColumnTitle("Transaction ID")
+                .HasColumnWidth(60)
+                .HasColumnIndex(22);
+            settings.Property(x => x.ChallanDate)
+            .HasColumnTitle("Challan Date")
+            .HasColumnFormatter("dd-MMM-yyy")
+            .HasColumnWidth(60)
+            .HasColumnIndex(23);
+
 
             settings.Property(_ => _.OwnershipID).Ignored();
-            settings.Property(_ => _.ClientPaymentTransactionID).Ignored();
+           // settings.Property(_ => _.ClientPaymentTransactionID).Ignored();
             settings.Property(_ => _.SellerID).Ignored();
             settings.Property(_ => _.InstallmentID).Ignored();
             settings.Property(_ => _.PropertyID).Ignored();

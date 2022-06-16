@@ -38,5 +38,6 @@ namespace ReProServices.Domain.Entities
 
 		public int RemittanceStatusID { get; set; }
 		public string RemittanceStatus { get; set; }
+		public DateTime? ChallanDate { get; set; }
 	}
 }

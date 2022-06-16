@@ -34,7 +34,7 @@ namespace ReProServices.Application.PasswordSettingReport.Queries
                               {
                                   LotNumber = pay.LotNo,
                                   UnitNo = cp.UnitNo.Value,
-                                  HasTracesPassword = cs.IsTracesRegistered?"Yes":"No",
+                                  HasTracesPassword = cs.OnlyTDS.Value ? "Only TDS payment" : cs.IsTracesRegistered ? "Yes" : "No",
                                   Pan = cs.PAN,
                                   DateOfBirth = cs.DateOfBirth,
                                   NameInSystem = cs.Name,

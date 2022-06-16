@@ -62,7 +62,7 @@
                         <mat-label>PAN</mat-label>
                         <input matInput formControlName="pan" (keyup)="customerform.patchValue({pan: $event.target.value.toUpperCase()})" (blur)="loadCustomerByPan($event.target.value)" required>
 
-                        <input hidden type="file" #panDocument accept=".ods,.doc,.docx,.xls,.xlsx,application/pdf,image/*" (change)="uploadPan($event)" />
+                        <input hidden type="file" #panDocument accept="image/*" (change)="uploadPan($event)" />
                         <span matSuffix class="pan-upload" (click)="panUploadClick(panDocument)">
                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" fill="rgb(3,155,229)" /></svg>
                         </span>
@@ -408,7 +408,7 @@
                       <mat-datepicker #agreementDate></mat-datepicker>
                       <!--<mat-error>agreement Date is required!</mat-error>-->
                     </mat-form-field>
-                    <div fxFlex>
+                    <div fxFlex="25">
                       <label class="radio-label">TDS collected by seller</label>
                       <mat-radio-group aria-label="Select an option" style="align-self:center;" formControlName="tdsCollected">
                         <mat-radio-button value="yes">Yes</mat-radio-button>
@@ -416,7 +416,13 @@
                       </mat-radio-group>
                     </div>
                     <div fxFlex></div>
-                    <div fxFlex></div>
+                    <div fxFlex>
+                      <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Stamp duty</mat-label>
+                        <input matInput type="number" formControlName="stampDuty">
+                        <!--<mat-error>Total Unit Cost is required!</mat-error>-->
+                      </mat-form-field>
+                    </div>
                   </div>
 
                   <!--Should be removed-->

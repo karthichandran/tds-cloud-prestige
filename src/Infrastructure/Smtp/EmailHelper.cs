@@ -58,6 +58,7 @@ namespace ReProServices.Infrastructure.Smtp
                             mailMessage.Attachments.Add(new Attachment(stream, attachment.FileName, attachment.FileType));
                         }
                     }
+                    client.UseDefaultCredentials = false;
                     client.Credentials = NetCrd;
                     client.EnableSsl = true; // Node :this should be enabled for live service
                     client.Send(mailMessage);
@@ -67,7 +68,8 @@ namespace ReProServices.Infrastructure.Smtp
             catch (Exception e)
             {
                 //throw; //todo log error message
-                return false;
+                //return false;
+                throw new ApplicationException(e.Message);
             }
         }
 
@@ -114,6 +116,7 @@ namespace ReProServices.Infrastructure.Smtp
                             mailMessage.Attachments.Add(new Attachment(stream, attachment.FileName, attachment.FileType));
                         }
                     }
+                    client.UseDefaultCredentials = false;
                     client.Credentials = NetCrd;
                     client.EnableSsl = true; // Node :this should be enabled for live service
                     client.Send(mailMessage);
@@ -123,7 +126,8 @@ namespace ReProServices.Infrastructure.Smtp
             catch (Exception e)
             {
                 //throw; //todo log error message
-                return false;
+                //return false;
+                throw new ApplicationException(e.Message);
             }
         }
 

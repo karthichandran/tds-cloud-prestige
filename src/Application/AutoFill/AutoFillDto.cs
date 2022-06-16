@@ -86,6 +86,8 @@ namespace ReProServices.Application.AutoFill
         public Guid OwnershipId { get; set; }
         public Guid InstallmentId { get; set; }
         public int PropertyID { get; set; }
+
+        public int StampDuty { get; set; }
     }
 
     public class Tab4

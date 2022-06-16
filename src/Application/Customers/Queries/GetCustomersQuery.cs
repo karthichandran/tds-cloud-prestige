@@ -52,7 +52,8 @@ namespace ReProServices.Application.Customers.Queries
                        TracesPassword = string.Join(",", x.Select(g => g.TracesPassword)),
                        CustomerAlias=x.First().CustomerAlias,
                        UnitStatus=x.First().UnitStatus,
-                       IsPanVerified= string.Join(",", x.Select(g => g.IsPanVerified))
+                       IsPanVerified= string.Join(",", x.Select(g => g.IsPanVerified)),
+                       StampDuty=x.First().StampDuty
                    }).AsQueryable()
                   .FilterCustomersBy(request.Filter).ToList();
                 }
@@ -78,7 +79,8 @@ namespace ReProServices.Application.Customers.Queries
                         TracesPassword= string.Join(",", x.Select(g => g.TracesPassword)),
                         CustomerAlias= x.First().CustomerAlias,
                         UnitStatus = x.First().UnitStatus,
-                        IsPanVerified = string.Join(",", x.Select(g => g.IsPanVerified))
+                        IsPanVerified = string.Join(",", x.Select(g => g.IsPanVerified)),
+                        StampDuty=x.First().StampDuty
                     }).AsQueryable()         
                    .FilterCustomersBy(request.Filter).ToList();
 

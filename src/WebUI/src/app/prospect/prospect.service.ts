@@ -7,7 +7,6 @@ import { IPropertyVM } from '../property/property.model';
 
 /** rxjs Imports */
 import { Observable } from 'rxjs';
-import { isDefined } from '@angular/compiler/src/util';
 
 /**
  * Accounting service.
@@ -28,7 +27,7 @@ export class ProspectService {
    * @returns {Observable<any>} Provisioning entry.
    */
   isValid(param:any) {
-    return (param != "" && param != null && isDefined(param));
+    return (param != "" && param != null && !(param===undefined));
   }
   getProspectList(premises: any, customer: any, pan: any, unitno: any): Observable<any> {
     let params = new HttpParams();

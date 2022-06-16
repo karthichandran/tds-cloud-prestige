@@ -34,7 +34,8 @@ namespace ReProServices.Application.ClientPayments.Queries.ClientPaymentReport
                                 equals new {cp.OwnershipID, cp.CustomerID}
                             join sp in _context.ViewSellerPropertyExpanded on cp.PropertyID equals sp.PropertyID
                             join rem in _context.RemittanceStatus on cpt.RemittanceStatusID equals rem.RemittanceStatusID
-                            where cpt.SellerID == sp.SellerID
+                              join rm in _context.Remittance on cpt.ClientPaymentTransactionID equals rm.ClientPaymentTransactionID
+                              where cpt.SellerID == sp.SellerID
                             select new Domain.Entities.ClientPaymentReport
                             {
                                 OwnershipID = pay.OwnershipID,
@@ -64,7 +65,8 @@ namespace ReProServices.Application.ClientPayments.Queries.ClientPaymentReport
                                 TdsRate = pay.TdsRate,
                                 RemittanceStatus = rem.RemittanceStatusText,
                                 NatureOfPaymentID = pay.NatureOfPaymentID,
-                                RemittanceStatusID = cpt.RemittanceStatusID
+                                RemittanceStatusID = cpt.RemittanceStatusID,
+                                ChallanDate = rm.ChallanDate
                             })
                             .PreFilterPaymentsBy(filter)
                             .OrderByDescending(x => x.LotNo)
@@ -97,7 +99,9 @@ namespace ReProServices.Application.ClientPayments.Queries.ClientPaymentReport
                             SellerName = x.SellerName,
                             GstRate = x.GstRate,
                             TdsRate = x.TdsRate,
-                            RemittanceStatus = x.RemittanceStatus
+                            RemittanceStatus = x.RemittanceStatus,
+                            ClientPaymentTransactionID=x.ClientPaymentTransactionID,
+                            ChallanDate = x.ChallanDate
                         })
                         .ToList();
                     return vm;

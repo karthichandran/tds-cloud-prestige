@@ -22,7 +22,7 @@ namespace ReProServices.Domain.Entities
         public DateTime? DateOfAgreement { get; set; }
         public Guid OwnershipID { get; set; }
         public string UnitStatus { get; set; }
-
+        public decimal? StampDuty { get; set; }
         public string TracesPassword { get; set; }
         public string CustomerAlias { get; set; }
 

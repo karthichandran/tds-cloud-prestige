@@ -17,7 +17,7 @@ import { navigation } from 'app/navigation/navigation';
 import { locale as navigationEnglish } from 'app/navigation/i18n/en';
 import { locale as navigationTurkish } from 'app/navigation/i18n/tr';
 
-import { SignalRService} from './shared/services/signalr.service';
+//import { SignalRService} from './shared/services/signalr.service';
 //import { AuthorizeService } from '../api-authorization/authorize.service';
 declare var gtag;
 
@@ -61,8 +61,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private _translateService: TranslateService,
     private _platform: Platform,
    // private auth: AuthorizeService,
-    private router: Router,
-    private signalrSrv:SignalRService
+    private router: Router
+    //private signalrSrv:SignalRService
   ) {
     // Get default navigation
     this.navigation = navigation;
@@ -175,8 +175,8 @@ export class AppComponent implements OnInit, OnDestroy {
         this.document.body.classList.add(this.fuseConfig.colorTheme);
       });
 
-    this.signalrSrv.startConnection();
-    this.signalrSrv.addBroadcastDataListener();
+    // this.signalrSrv.startConnection();
+    // this.signalrSrv.addBroadcastDataListener();
   }
 
   /**

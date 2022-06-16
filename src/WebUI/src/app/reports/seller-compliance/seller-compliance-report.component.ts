@@ -9,7 +9,6 @@ import * as _ from 'lodash';
 import { SellerComplianceReportService } from '../seller-compliance/seller-compliance-report.service';
 import { SellerService} from '../../seller/seller.service';
 import * as moment from 'moment';
-import { isUndefined } from 'util';
 import * as fileSaver from 'file-saver';
 
 @Component({

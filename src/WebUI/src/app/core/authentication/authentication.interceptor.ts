@@ -7,7 +7,6 @@ import { Observable } from 'rxjs';
 
 /** Environment Configuration */
 import { environment } from '../../../environments/environment';
-import { isUndefined } from 'util';
 
 /** Http request options headers. */
 const httpOptions = {
@@ -43,7 +42,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
    * @param {string} authenticationKey Authentication key.
    */
   setAuthorizationToken() {
-    if (isUndefined(httpOptions.headers[authorizationHeader]) || httpOptions.headers[authorizationHeader] == "") {
+    if ((httpOptions.headers[authorizationHeader]===undefined) || httpOptions.headers[authorizationHeader] == "") {
       let tokenObj:any = {};
       //if (sessionStorage.getItem("auth_token") != "" && sessionStorage.getItem("auth_token") != null)
       //  token = sessionStorage.getItem("auth_token");
