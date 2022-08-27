@@ -11,17 +11,24 @@ using ReProServices.Application.CustomerPropertyFiles.Commands.DeleteCustomerPro
 using ReProServices.Application.CustomerPropertyFiles.Commands.UploadCustomerProeprtyFile;
 using ReProServices.Application.CustomerPropertyFiles.Queries;
 using ReProServices.Domain;
+using ReProServices.Infrastructure.GoogleDrive;
 
 namespace WebApi.Controllers
 {
     //[Authorize]
     public class FilesController : ApiController
     {
+        private DriverService driverSrv;
+        public FilesController() {
+            driverSrv = new DriverService();
+        }
+
         [HttpPost("Guid/{guid}/{categoryId}"), DisableRequestSizeLimit]
         public async Task<IActionResult> Upload(Guid guid, int categoryId )
         {
             try
             {
+
                 var files = Request.Form.Files;
                 if (files.Any(f => f.Length == 0))
                 {
@@ -39,9 +46,14 @@ namespace WebApi.Controllers
 
                     var ms = new MemoryStream();
                     await file.OpenReadStream().CopyToAsync(ms);
-                    custPropFile.FileBlob = ms.ToArray();
+                    //custPropFile.FileBlob = ms.ToArray();
+                    custPropFile.FileBlob = new byte[1];
                     custPropFile.FileType = file.ContentType;
                     custPropFile.FileCategoryId = categoryId;
+
+                    var gdid=await driverSrv.AddFile(custPropFile.FileName, custPropFile.FileType, ms);
+                    custPropFile.GDfileID = gdid;
+
                     custPropFiles.Add(custPropFile);
 
                 }
@@ -77,15 +89,23 @@ namespace WebApi.Controllers
 
                     var ms = new MemoryStream();
                     await file.OpenReadStream().CopyToAsync(ms);
-                    custPropFile.FileBlob = ms.ToArray();
+                    //custPropFile.FileBlob = ms.ToArray();
+                    custPropFile.FileBlob = new byte[1];
                     custPropFile.FileType = file.ContentType;
                     custPropFile.FileCategoryId = categoryId;
-                    custPropFiles.Add(custPropFile);
+
+                    var gdid = await driverSrv.AddFile(custPropFile.FileName, custPropFile.FileType, ms);
+                    custPropFile.GDfileID = gdid;
+
+                    custPropFiles.Add(custPropFile);               
+                  
 
                 }
+
+
                 bool result = await Mediator.Send(new UploadCustomerPropertyFileCommand { CustomerPropertyFiles = custPropFiles });
                 return Ok(result);
-
+                // return Ok();
             }
             catch (Exception ex)
             {
@@ -112,9 +132,13 @@ namespace WebApi.Controllers
 
                 var ms = new MemoryStream();
                 await files[0].OpenReadStream().CopyToAsync(ms);
-                custPropFile.FileBlob = ms.ToArray();
+                //custPropFile.FileBlob = ms.ToArray();
+                custPropFile.FileBlob = new byte[1];
                 custPropFile.FileType = files[0].ContentType;
                 custPropFile.FileCategoryId = 5;
+
+                var gdid = await driverSrv.AddFile(custPropFile.FileName, custPropFile.FileType, ms);
+                custPropFile.GDfileID = gdid;
 
                 int result = await Mediator.Send(new UploadPanFileCommand { CustomerPropertyFile = custPropFile });
                 return Ok(result);
@@ -129,31 +153,95 @@ namespace WebApi.Controllers
         [HttpGet("fileslist/{ownershipID}")]
         public async Task<IList<CustomerPropertyFileDto>> GetById(Guid ownershipID)
         {
-            return await Mediator.Send(new GetCustomerPropertyFilesListQuery { OwnershipID = ownershipID, GetFilesToo = false }); 
+            // return await Mediator.Send(new GetCustomerPropertyFilesListQuery { OwnershipID = ownershipID, GetFilesToo = false }); 
+
+
+            //var files = await Mediator.Send(new GetCustomerPropertyFilesListQuery { OwnershipID = ownershipID, GetFilesToo = false });
+            //foreach (var file in files)
+            //{
+            //    if (file.GDfileID != null)
+            //    {
+            //        var ms = driverSrv.GetFile(file.GDfileID);
+            //        file.FileBlob = ms.ToArray();
+            //    }
+            //}
+            //return files;
+
+
+            //======== migrate files from sql to drive
+            int start = 371, end = 372;
+            do
+            {
+
+                var files = await Mediator.Send(new GetCustomerPropertyFilesListQuery { OwnershipID = ownershipID, GetFilesToo = false, start = start, end = end });
+                //if (files.Count() == 0)
+                //    break;
+                foreach (var file in files)
+                {
+                    if (file.GDfileID == null) { 
+                        var gdid = await driverSrv.AddFile(file.FileName, file.FileType, new MemoryStream(file.FileBlob));
+
+                    await Mediator.Send(new UpdateGoogelDriveFileIdCommand { blobId = file.BlobID, gdId = gdid });}
+                }
+
+                start = end;
+                end = end + 1;
+            } while (true);
+
+            return new List< CustomerPropertyFileDto>();
         }
 
         [HttpGet("blobId/{blobID}")]
         public async Task<FileResult> GetFileByBlobID(int blobID)
         {
             var binaries = await Mediator.Send(new GetCustomerPropertyFileByBlobIdQuery { FileID = blobID});
-            return File(binaries.FileBlob, binaries.FileType, binaries.FileName); 
+            //return File(binaries.FileBlob, binaries.FileType, binaries.FileName);
+            if ( binaries.GDfileID == null)
+                return File(binaries.FileBlob, binaries.FileType, binaries.FileName);
+            else
+            {
+                var ms = driverSrv.GetFile(binaries.GDfileID);
+                return File(ms.ToArray(), binaries.FileType, binaries.FileName);
+            }
         }
 
         [HttpGet("fileinfo/{blobID}")]
         public async Task<CustomerPropertyFileDto> GetFileInfoByBlobID(int blobID)
         {
-           return await Mediator.Send(new GetCustomerPropertyFileByBlobIdQuery { FileID = blobID });
+           var file=  await Mediator.Send(new GetCustomerPropertyFileByBlobIdQuery { FileID = blobID });
+            if (file == null || file.GDfileID == null)
+                return file;
+           else
+            {
+                var ms = driverSrv.GetFile(file.GDfileID);
+                file.FileBlob = ms.ToArray();
+                return file;
+            }
         }
 
         [HttpGet("fileDetails/panID/{panID}")]
         public async Task<CustomerPropertyFileDto> GetFileDetailsByPanID(string panID)
         {
-            return await Mediator.Send(new GetCustomerPropertyFileByPanIdQuery { PanID = panID });
+            var file= await Mediator.Send(new GetCustomerPropertyFileByPanIdQuery { PanID = panID });
+            if (file==null|| file.GDfileID == null)
+                return file;
+            else
+            {
+                var ms = driverSrv.GetFile(file.GDfileID);
+                file.FileBlob = ms.ToArray();
+                return file;
+            }
         }
                                    
         [HttpDelete("blobId/{blobID}")]
         public async Task<IActionResult> DeleteFileByBlobID(int blobID)
         {
+            // Delete a file from ggogel drive 
+            var binaries = await Mediator.Send(new GetCustomerPropertyFileByBlobIdQuery { FileID = blobID });
+            if (binaries != null) {
+                driverSrv.DeleteFile(binaries.GDfileID);
+            }
+
             bool result = await Mediator.Send(new DeletePropertyFileCommand { BlobID = blobID });
             return Ok(result);
         }

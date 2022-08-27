@@ -22,6 +22,9 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {CustomerBillingDialogComponent } from '../customer-billing/customer-billing-dialog/customer-billing-dialog.component';
 import { ConfirmationDialogService } from '../core/confirmation-dialog/confirmation-dialog.service';
+import { ReplaySubject, Subject } from 'rxjs';
+import { MatSelect } from '@angular/material/select';
+import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-client',
   templateUrl: './client.component.html',
@@ -91,6 +94,23 @@ welcomeMail:boolean;
   @ViewChildren(FusePerfectScrollbarDirective)
   fuseScrollbarDirectives: QueryList<FusePerfectScrollbarDirective>;
 
+
+  //Property Filter
+    public propertyFilterCtrl: FormControl = new FormControl();
+    @ViewChild('PropertyFilterSelect', { static: true }) PropertyFilterSelect: MatSelect;
+    /** Subject that emits when the component has been destroyed. */
+    protected _onDestroy = new Subject<void>();
+    public filteredProperty: ReplaySubject<any[]> = new ReplaySubject<any[]>();
+
+    //Property Filter for search
+    public propertyFilterCtrlForSearch: FormControl = new FormControl();
+    @ViewChild('PropertyFilterSelectForSearch', { static: true }) PropertyFilterSelectForSearch: MatSelect;
+    /** Subject that emits when the component has been destroyed. */
+    protected _onDestroyOnSearch = new Subject<void>();
+    public filteredPropertyForSearch: ReplaySubject<any[]> = new ReplaySubject<any[]>();
+
+
+
   constructor(private _formBuilder: FormBuilder, private propertyService: PropertyService,
     private statesService: StatesService, private clientService: ClientService, private toastr: ToastrService,
     private taxService: TaxService, private sanitizer: DomSanitizer, private dialog: MatDialog, private confirmationDialogSrv: ConfirmationDialogService) {
@@ -119,7 +139,11 @@ welcomeMail:boolean;
       alternateNumber: [''],
       isd: ['+91'],
       isPanVerified: [''],
-      onlyTDS: ['']
+      onlyTDS: [''],
+      invalidPAN: [''],
+      incorrectDOB: [''],
+      lessThan50L: [''],
+      customerOptedOut:['']
     });
     // Vertical Stepper form stepper
     this.propertyForm = this._formBuilder.group({
@@ -156,7 +180,17 @@ welcomeMail:boolean;
      
     this.getAllProperties();
     this.getAllStates();
-    this.GetTaxCodes();   
+    this.GetTaxCodes(); 
+    
+    this.propertyFilterCtrl.valueChanges.pipe(takeUntil(this._onDestroy))
+    .subscribe(() => {
+      this.filterProperty();
+    });
+
+    this.propertyFilterCtrlForSearch.valueChanges.pipe(takeUntil(this._onDestroyOnSearch))
+    .subscribe(() => {
+      this.filterPropertyForSearch();
+    });
   }
 
   clear() {
@@ -1282,13 +1316,180 @@ this.welcomeMail=true;
     }
 
   }
-  UpdateTraces(isChecked) {
-    if (isChecked) {
-      this.customerform.get('traces').setValue("no");
+
+  ShowClientPaymetnWarning(status:boolean) {
+
+    let prop=this.clients[0].customerProperty[0].customerPropertyID;
+
+    if (status &&( prop!="" && prop!=null && prop!=undefined)) {
+      this.confirmationDialogSrv.showDialog("Correct client payment dates before making payments ","OK").subscribe(response => {
+      });
     }
 
   }
+  // UpdateTraces(isChecked) {
+  //   if (isChecked) {
+  //     this.customerform.get('traces').setValue("no");
+  //   }
+  // }
+
+  UpdateFlag(eve) {
+
+    //Its for update traces
+    if (this.customerform.value.onlyTDS) {
+      this.customerform.get('traces').setValue("no");
+    }
+
+    if (eve.source.name == "onlyTDS") {
+
+      if (eve.checked) {
+
+        this.customerform.get('incorrectDOB').setValue(false);
+        this.customerform.get('lessThan50L').setValue(false);
+        this.customerform.get('customerOptedOut').setValue(false);
+
+        this.customerform.get("incorrectDOB").disable();
+        this.customerform.get("lessThan50L").disable();
+        this.customerform.get("customerOptedOut").disable();
+      } else {
+        this.customerform.get("incorrectDOB").enable();
+        this.customerform.get("lessThan50L").enable();
+        this.customerform.get("customerOptedOut").enable();
+      }
+
+    }
+    if (eve.source.name == "invalidPAN") {
+
+      if (eve.checked) {
+        this.customerform.get('incorrectDOB').setValue(false);
+        this.customerform.get('lessThan50L').setValue(false);
+        this.customerform.get('customerOptedOut').setValue(false);
+
+        this.customerform.get("incorrectDOB").disable();
+        this.customerform.get("lessThan50L").disable();
+        this.customerform.get("customerOptedOut").disable();
+      } else {
+        this.customerform.get("incorrectDOB").enable();
+        this.customerform.get("lessThan50L").enable();
+        this.customerform.get("customerOptedOut").enable();
+      }
+
+    }
+
+    if (eve.source.name == "incorrectDOB") {
+
+      if (eve.checked) {
+        this.customerform.get('onlyTDS').setValue(false);
+        this.customerform.get('invalidPAN').setValue(false);
+        this.customerform.get('lessThan50L').setValue(false);
+        this.customerform.get('customerOptedOut').setValue(false);
+
+        this.customerform.get("onlyTDS").disable();
+        this.customerform.get("invalidPAN").disable();
+        this.customerform.get("lessThan50L").disable();
+        this.customerform.get("customerOptedOut").disable();
+      } else {
+        this.customerform.get("onlyTDS").enable();
+        this.customerform.get("invalidPAN").enable();
+        this.customerform.get("lessThan50L").enable();
+        this.customerform.get("customerOptedOut").enable();
+      }
+
+    }
+   
+    if (eve.source.name == "lessThan50L") {
+
+      if (eve.checked) {
+        this.customerform.get('onlyTDS').setValue(false);
+        this.customerform.get('invalidPAN').setValue(false);
+        this.customerform.get('incorrectDOB').setValue(false);
+        this.customerform.get('customerOptedOut').setValue(false);
+
+        this.customerform.get("onlyTDS").disable();
+        this.customerform.get("invalidPAN").disable();
+        this.customerform.get("incorrectDOB").disable();
+        this.customerform.get("customerOptedOut").disable();
+      } else {
+        this.customerform.get("onlyTDS").enable();
+        this.customerform.get("invalidPAN").enable();
+        this.customerform.get("incorrectDOB").enable();
+        this.customerform.get("customerOptedOut").enable();
+      }
+
+    }
+
+    if (eve.source.name == "customerOptedOut") {
+this.ShowClientPaymetnWarning(eve.checked);
+      if (eve.checked) {
+        this.customerform.get('onlyTDS').setValue(false);
+        this.customerform.get('invalidPAN').setValue(false);
+        this.customerform.get('incorrectDOB').setValue(false);
+        this.customerform.get('lessThan50L').setValue(false);
+
+        this.customerform.get("onlyTDS").disable();
+        this.customerform.get("invalidPAN").disable();
+        this.customerform.get("incorrectDOB").disable();
+        this.customerform.get("lessThan50L").disable();
+      } else {
+        this.customerform.get("onlyTDS").enable();
+        this.customerform.get("invalidPAN").enable();
+        this.customerform.get("incorrectDOB").enable();
+        this.customerform.get("lessThan50L").enable();
+      }
+
+    }
+
+  }
+
+
    UpdateOnlyTDS() {
     this.customerform.get('onlyTDS').setValue(false);
+  }
+
+  
+
+   //property Filter functionality for active property
+   protected filterProperty() {
+    if (!this.activeProperty) {
+      return;
+    }
+    // get the search keyword
+    let search = this.propertyFilterCtrl.value;
+    if (!search) {
+      this.filteredProperty.next(this.activeProperty.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    // filter the banks
+    this.filteredProperty.next(this.filterProFun(search));
+  }
+
+  filterProFun(search) {
+    var list = this.activeProperty.filter(prop => prop.addressPremises.toLowerCase().indexOf(search) > -1);
+    return list;
+  }
+  // --- end property filter
+
+  //property Filter functionality
+  protected filterPropertyForSearch() {
+    if (!this.propertyDDl) {
+      return;
+    }
+    // get the search keyword
+    let search = this.propertyFilterCtrlForSearch.value;
+    if (!search) {
+      this.filteredPropertyForSearch.next(this.propertyDDl.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    // filter the banks
+    this.filteredPropertyForSearch.next(this.filterProFunForSearch(search));
+  }
+
+  filterProFunForSearch(search) {
+    var list = this.propertyDDl.filter(prop => prop.addressPremises.toLowerCase().indexOf(search) > -1);
+    return list;
   }
 }

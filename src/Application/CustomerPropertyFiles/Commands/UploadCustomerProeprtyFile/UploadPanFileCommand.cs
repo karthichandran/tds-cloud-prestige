@@ -33,7 +33,8 @@ namespace ReProServices.Application.CustomerPropertyFiles.Commands.UploadCustome
                         FileLength = customerPropertyFile.FileBlob.Length,
                         FileType = customerPropertyFile.FileType,
                         PanID = customerPropertyFile.PanID,
-                        FileCategoryId = customerPropertyFile.FileCategoryId
+                        FileCategoryId = customerPropertyFile.FileCategoryId,
+                        GDfileID=customerPropertyFile.GDfileID
                     };
 
                     if (fileEntity.OwnershipID.ToString() == "00000000-0000-0000-0000-000000000000")

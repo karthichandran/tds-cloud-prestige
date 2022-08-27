@@ -63,7 +63,8 @@ namespace ReProServices.Application.TdsRemittance.Queries
                             F16BRequestNo = r.F16BRequestNo,
                             RemittanceStatusID = cpt.RemittanceStatusID,
                             CustomerPAN = cp.CustomerPAN,
-                            OnlyTDS = cp.OnlyTDS ?? false
+                            OnlyTDS = cp.OnlyTDS ?? false,
+                            IncorrectDOB=cp.IncorrectDOB??false
                         }).PreFilterRemittanceBy(request.Filter)
                                     .ToList()
                                     .AsQueryable()

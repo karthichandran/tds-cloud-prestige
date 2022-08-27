@@ -10,10 +10,12 @@ import { ToastrService } from 'ngx-toastr';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { MatStepper } from '@angular/material/stepper';
 import * as fileSaver from 'file-saver';
-import { Observable, of, Subject } from 'rxjs';
+import { Observable, of, ReplaySubject, Subject } from 'rxjs';
 import { ConfirmationDialogService } from '../core/confirmation-dialog/confirmation-dialog.service';
 import * as Xlsx from 'xlsx';
 import { HttpEventType } from '@angular/common/http';
+import { MatSelect } from '@angular/material/select';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-customer-payment',
@@ -76,6 +78,13 @@ export class CustomerPaymentComponent implements OnInit {
 
   maxDate: any;
 
+   //Property Filter for search
+   public propertyFilterCtrlForSearch: FormControl = new FormControl();
+   @ViewChild('PropertyFilterSelectForSearch', { static: true }) PropertyFilterSelectForSearch: MatSelect;
+   /** Subject that emits when the component has been destroyed. */
+   protected _onDestroyOnSearch = new Subject<void>();
+   public filteredPropertyForSearch: ReplaySubject<any[]> = new ReplaySubject<any[]>();
+   
   constructor(private _formBuilder: FormBuilder, private propertyService: PropertyService,
     private toastr: ToastrService, private taxService: TaxService, private clientPaymentservice: ClientPaymentService, private confirmationDialogSrv: ConfirmationDialogService) {
   }
@@ -157,6 +166,11 @@ export class CustomerPaymentComponent implements OnInit {
     ];
 
     this.maxDate = moment().toDate();
+
+    this.propertyFilterCtrlForSearch.valueChanges.pipe(takeUntil(this._onDestroyOnSearch))
+    .subscribe(() => {
+      this.filterPropertyForSearch();
+    });
   }
 
   tabChanged(eve) {
@@ -635,5 +649,25 @@ export class CustomerPaymentComponent implements OnInit {
     //reader.readAsBinaryString(files[0]);
 
   }
+//property Filter functionality
+protected filterPropertyForSearch() {
+  if (!this.propertyDDl) {
+    return;
+  }
+  // get the search keyword
+  let search = this.propertyFilterCtrlForSearch.value;
+  if (!search) {
+    this.filteredPropertyForSearch.next(this.propertyDDl.slice());
+    return;
+  } else {
+    search = search.toLowerCase();
+  }
+  // filter the banks
+  this.filteredPropertyForSearch.next(this.filterProFunForSearch(search));
+}
 
+filterProFunForSearch(search) {
+  var list = this.propertyDDl.filter(prop => prop.addressPremises.toLowerCase().indexOf(search) > -1);
+  return list;
+}
 }

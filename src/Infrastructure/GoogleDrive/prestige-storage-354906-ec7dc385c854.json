@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "prestige-storage-354906",
+  "private_key_id": "ec7dc385c8546dffe6a5553a8573f1b8d1977451",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCvwaL9zgMgBNDf\n8CQAKqG11I3CpToMYZo2JmpHB4Q4eLwRsNyWa+RCBc+8+w2XvIK/4BS/esMbrQGD\nFWtNDKQz4mXriGr4IvPYTJwXWrwCzUAPeT/Xi1YkDCN9tX6V/jXXRxeOk6xcEFbv\nhU01a5/3NG4W/DrSnyzWTOUGqYott8GA0d7emH8KVB2/6PK8yEwS+NFVULrjk07n\n3orz2z8qc396Ti7alt9Nh8qEcgePBQopuR5xe3NI0b1PIqzplo++VtT630X3c7z7\nZH6H91HW0HiybdXqnNggozGASgd2gLxQypAnjodhnOLj2fc1Hm0hojwTqY06/JtT\nNN6ff6LNAgMBAAECggEAD2GjaZHnfRxeyVJjXC5e86JT+7ZpE59RFy8aevfh7u1G\nDEhNrc5obgzDJvdTs7VYPgGW30EXpSrpaHbt6pLSJgZIxCmuruOkMohV2sdij941\nnoUOfMchdUsoqf5Bw0+5l4sNuTkcSvxVF2YzoRq3p7NLdTCC11791g1pt8ELqj92\n8R6ySYcP+pgKtJuP+Po99Uq/5v6fPlafyntaPqn6pf6FL/srTutRT2erOdmQDHf4\nAOMcaW6F7X1xygRAOva0vcfh6JfD96kW0zWeMlSYjvZ0gZf6lNVdWIcsy2dtbUvm\n6wfhQvOVCo+/8TGQ/JcEWbmrUKPUbm77oetb/+/8MwKBgQDkk3aGehNNkKQWmi1r\nRdSErfm6pNM9H53flfcuARIja7fRcdkdYz4whRJnxuZdijgB8aSDDp4DPin5GAn9\nhc+kHiMlkO5ERhVnKxp+o5RSWEpnNyMm3iM5y1d/GEmVFK2+5h3s2mRIgLmjQF2S\no+g9HDFlnjKIEjVRb+vbIZK6IwKBgQDE19v2kQy5mlvmtsJ9ECZf7kKLcRvA/Inh\n+w+zzlTpTzqoAeFQ18umhAj8SBPZD9jch00fer9LIOOQX80V/pJVAgjlELtl7CY7\nBQyhsZomDj7bDEO8Px12hjEO4o6/nJ18cusc5IyY/RsbteWtViNVDpFOsJlRhE4P\nFiV3Tf0mTwKBgQCICEbCs4YnZExzcyBStkVLDSsRbCSXPOi89sgbZeHAmMvV5zZ6\naeTKBXg1sMbKpoa8iW4J3Tom3ekm6KqRagBwQMtUARP8J+V2980Vzw5nj0oAcW0H\nJa67J4wUBIVOJvdcJCFtI3AJQiq4wIavzcJaFBxFyMdz+bonlD8+s5VaFwKBgGKJ\niFRCwjL7QXwaCvweJIerNuak5XbTNJbKXk7tP/ZXMg6+ejNFA25E9FaOIllrpGyo\n0oOqp64NNb2lJ34WJNynGxrIKHdaIr0yxuL+jCL2yKJQ3muS0MXvYQmJgloLJY8R\n2/5nrrY7JeHWSbZew2sl0rmoj+eNqqHEvVae1NXjAoGBAMzv0Nh7tcvelWYi2Nli\nvLVFSXJs4INCLkHk3nHdv2UXwxEJAKKF0BnDF004jS62mbKxYdb1NNIxXlUYxYl6\nulh8xURKg64aYVei6v9OwsH53tLv71Fnid8z1OMcOSovLSf8GhCnhU17m1QQjlZG\n5sYx5CFv341lWq8/wHFrxOuw\n-----END PRIVATE KEY-----\n",
+  "client_email": "prestige-service-acct@prestige-storage-354906.iam.gserviceaccount.com",
+  "client_id": "113950272544984551690",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/prestige-service-acct%40prestige-storage-354906.iam.gserviceaccount.com"
+}

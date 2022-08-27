@@ -18,6 +18,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { AuthenticationGuard } from 'app/core/authentication/authentication.guard';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 const routes = [
   {
     path: 'client-payment',
@@ -47,7 +48,8 @@ const routes = [
     GridModule,
     NgxDatatableModule,
     MatDialogModule,
-    MatExpansionModule
+    MatExpansionModule,
+    NgxMatSelectSearchModule
   ],
   exports: []
 })

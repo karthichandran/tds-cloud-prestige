@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using System.Text;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ReProServices.Domain.Entities
 {
-	[NotMapped]
-	public class ClientPaymentReport
+	[Table("ViewClientPaymentReport")]
+	public class ViewClientPaymentReport
 	{
-		public int SlNo { get; set; }
 		public int LotNo { get; set; }
 		public Guid OwnershipID { get; set; }
 		public string CustomerName { get; set; }
@@ -27,7 +26,7 @@ namespace ReProServices.Domain.Entities
 		public int NatureOfPaymentID { get; set; }
 		public decimal GstRate { get; set; }
 		public decimal Gst { get; set; } = 0;
-        public decimal TdsRate { get; set; }
+		public decimal TdsRate { get; set; }
 		public decimal Tds { get; set; } = 0;
 		public decimal TdsInterest { get; set; } = 0;
 		public decimal LateFee { get; set; } = 0;
@@ -38,7 +37,8 @@ namespace ReProServices.Domain.Entities
 
 		public int RemittanceStatusID { get; set; }
 		public string RemittanceStatus { get; set; }
+		public string CustomerStatus { get; set;}
+
 		public DateTime? ChallanDate { get; set; }
-		public string CustomerStatus { get; set; }
 	}
 }

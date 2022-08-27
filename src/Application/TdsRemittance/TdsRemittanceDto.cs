@@ -49,5 +49,6 @@ namespace ReProServices.Application.TdsRemittance
         public DateTime? F16BDateOfReq { get; set; }
         public string F16BRequestNo { get; set; }
         public bool OnlyTDS { get; set; }
+        public bool IncorrectDOB { get; set; }
     }
 }

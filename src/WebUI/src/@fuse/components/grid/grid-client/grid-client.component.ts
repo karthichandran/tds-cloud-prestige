@@ -1,6 +1,6 @@
 import { Component, OnDestroy, EventEmitter, OnInit, Input, Output, OnChanges, ElementRef, Renderer2, ViewChild, ViewEncapsulation, AfterViewInit} from '@angular/core';
 import { DatatableComponent } from "@swimlane/ngx-datatable";
-import { MatAutocompleteTrigger} from '@angular/material/autocomplete/autocomplete-trigger';
+import { MatAutocompleteTrigger} from '@angular/material/autocomplete';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import {ClientService } from '../../../../app/client/client.service';

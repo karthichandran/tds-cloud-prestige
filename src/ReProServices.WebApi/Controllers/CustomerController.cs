@@ -213,10 +213,15 @@ namespace WebApi.Controllers
 
                 foreach (DataRow row in dataTable.Rows)
                 {
-                    var custinerInx = new int[] { 4, 9, 14 };
-                    foreach (var pos in custinerInx) {
+                    // var custinerInx = new int[] { 4, 9, 14 };
+                    var custinerInx = new int[] { 4, 10, 16 };
+                    var custStatusInx = new int[] {8,14,20 };
+                    for(var i = 0; i < custinerInx.Length; i++) {
+                        var pos = custinerInx[i];
+                        var cinx = custStatusInx[i];
                         var pan = row[pos].ToString().ToUpper();
-                        if (string.IsNullOrEmpty(pan))
+                        var status = row[cinx].ToString().ToLower();
+                        if (string.IsNullOrEmpty(pan) || status.Contains("invalid pan") || status.Contains("invalidpan"))
                             continue;
                         if (!regex.IsMatch(pan.Trim()))
                         {

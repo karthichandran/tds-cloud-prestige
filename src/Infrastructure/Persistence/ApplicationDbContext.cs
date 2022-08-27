@@ -82,7 +82,7 @@ namespace ReProServices.Infrastructure.Persistence
         public DbSet<ViewLotSummary> ViewLotSummary { get; set; }
 
         public DbSet<ViewPayableClientPayments> ViewPayableClientPayments { get; set; }
-
+        public DbSet<ViewClientPaymentReport> ViewClientPaymentReport { get; set; }
         public DbSet<Users> Users { get; set; }
 
         public DbSet<Roles> Roles { get; set; }

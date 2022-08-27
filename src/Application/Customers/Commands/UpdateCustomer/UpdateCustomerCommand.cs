@@ -54,7 +54,11 @@ namespace ReProServices.Application.Customers.Commands.UpdateCustomer
                                 AlternateNumber = customer.AlternateNumber,
                                 ISD = customer.ISD,
                                 IsPanVerified = customer.IsPanVerified.Value,
-                                OnlyTDS = customer.OnlyTDS
+                                OnlyTDS = customer.OnlyTDS,
+                                InvalidPAN = customer.InvalidPAN,
+                                IncorrectDOB = customer.IncorrectDOB,
+                                LessThan50L = customer.LessThan50L,
+                                CustomerOptedOut = customer.CustomerOptedOut
                                 //Updated = DateTime.Now,
                                 //UpdatedBy = userInfo.UserID.ToString()
                             };
@@ -82,7 +86,11 @@ namespace ReProServices.Application.Customers.Commands.UpdateCustomer
                                 AlternateNumber = customer.AlternateNumber,
                                 ISD = customer.ISD,
                                 IsPanVerified = customer.IsPanVerified.Value,
-                                OnlyTDS = customer.OnlyTDS
+                                OnlyTDS = customer.OnlyTDS,
+                                InvalidPAN = customer.InvalidPAN,
+                                IncorrectDOB = customer.IncorrectDOB,
+                                LessThan50L = customer.LessThan50L,
+                                CustomerOptedOut = customer.CustomerOptedOut
                                 //Created = DateTime.Now,
                                 //CreatedBy = userInfo.UserID.ToString()
                             };

@@ -17,6 +17,7 @@ import { ClientComponent } from 'app/client/client.component';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { SharedModule } from 'app/shared/shared.module';
 import { AuthenticationGuard } from 'app/core/authentication/authentication.guard';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 const routes = [
   {
     path: 'client',
@@ -45,7 +46,8 @@ const routes = [
     FuseSharedModule,
     GridModule,
     NgxDatatableModule,
-    SharedModule
+    SharedModule,
+    NgxMatSelectSearchModule
   ]
 })
 export class ClientModule {

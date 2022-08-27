@@ -21,6 +21,7 @@ using ReProServices.Application.TdsRemittance.Queries;
 using ReProServices.Application.Traces;
 using ReProServices.Application.Traces.Command;
 using ReProServices.Domain;
+using ReProServices.Infrastructure.GoogleDrive;
 using ReProServices.Infrastructure.Smtp;
 
 namespace WebApi.Controllers
@@ -29,9 +30,10 @@ namespace WebApi.Controllers
     public class TracesController : ApiController
     {
         private IConfiguration _configuration;
-       
+        private DriverService driverSrv;
         public TracesController(IConfiguration configuration) {
             _configuration = configuration;
+            driverSrv = new DriverService();
         }
 
         [HttpGet]
@@ -65,9 +67,15 @@ namespace WebApi.Controllers
 
                 var ms = new MemoryStream();
                 await file.OpenReadStream().CopyToAsync(ms);
-                custPropFile.FileBlob = ms.ToArray();
+                //custPropFile.FileBlob = ms.ToArray();
+                custPropFile.FileBlob = new byte[1];
                 custPropFile.FileType = file.ContentType;
                 custPropFile.FileCategoryId = categoryId;
+                var gdid = await driverSrv.AddFile(custPropFile.FileName, custPropFile.FileType, ms);
+                custPropFile.GDfileID = gdid;
+
+                if (string.IsNullOrEmpty(gdid))
+                    throw new DomainException("File Upload is failed.");
 
                 var result = await Mediator.Send(new UploadRemittanceFileCommand { CustomerPropertyFile = custPropFile,RemittanceID=remittanceID });
                 return Ok(result);

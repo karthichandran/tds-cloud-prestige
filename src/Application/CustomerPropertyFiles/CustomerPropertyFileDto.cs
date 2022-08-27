@@ -18,6 +18,7 @@ namespace ReProServices.Application.CustomerPropertyFiles
         public string PanID { get; set; }
 
         public int FileCategoryId { get; set; } = 4;
+        public string GDfileID { get; set; } 
         public void Mapping(Profile profile)
         {
             profile.CreateMap<CustomerPropertyFile, CustomerPropertyFileDto>();

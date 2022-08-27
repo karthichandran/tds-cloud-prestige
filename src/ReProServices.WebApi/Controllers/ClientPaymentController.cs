@@ -280,6 +280,10 @@ namespace WebApi.Controllers
             .HasColumnFormatter("dd-MMM-yyy")
             .HasColumnWidth(60)
             .HasColumnIndex(23);
+            settings.Property(x => x.CustomerStatus)
+           .HasColumnTitle("Customer status")
+           .HasColumnWidth(100)
+           .HasColumnIndex(24);
 
 
             settings.Property(_ => _.OwnershipID).Ignored();

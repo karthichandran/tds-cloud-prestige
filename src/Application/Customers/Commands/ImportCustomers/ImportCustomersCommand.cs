@@ -53,7 +53,7 @@ namespace ReProServices.Application.Customers.Commands.ImportCustomers
                     if(string.IsNullOrEmpty( row[22].ToString()))
                         throw new ApplicationException(" State should not be empty " );
 
-                    var stateObj = _context.StateList.FirstOrDefault(x => x.State.Contains(row[22].ToString()));
+                    var stateObj = _context.StateList.FirstOrDefault(x => x.State.Contains(row[25].ToString()));
                     if (stateObj == null)
                         throw new ApplicationException(" State does not exist " + stateObj);
 
@@ -73,29 +73,66 @@ namespace ReProServices.Application.Customers.Commands.ImportCustomers
                     {
                         foreach (DataRow row in request.dataTable.Rows)
                         {
-                            var existCusPan = _context.Customer.ToList();
-                            var stateObj = _context.StateList.FirstOrDefault(x => x.State.Contains(row[22].ToString()));
+                           // var existCusPan = _context.Customer.ToList();
+                            //var stateObj = _context.StateList.FirstOrDefault(x => x.State.Contains(row[22].ToString()));
+                            var stateObj = _context.StateList.FirstOrDefault(x => x.State.Contains(row[25].ToString()));
                             var porperty = _context.Property.FirstOrDefault(x => x.AddressPremises == row[1].ToString());
 
-                            var custinerInx = new int[] { 3, 8, 13 };
+                            //var custinerInx = new int[] { 3, 8, 13 };
+                            var custinerInx = new int[] { 3, 9, 15 };
+                            var statusInx = new int[] { 8, 14, 20 };
                             List<Customer> custList = new List<Customer>();
+                            int j = 0;
                             foreach (var pos in custinerInx)
                             {
                                 if (string.IsNullOrEmpty(row[pos].ToString()))
                                     continue;
 
+                                var status = row[statusInx[j]].ToString().ToLower();
+                                bool onlyTds=false, invalidpan=false,incorrectDob=false, less50L=false, custOptOut=false;
+
+                                if (status.Contains("onlytds")|| status.Contains("only tds"))
+                                    onlyTds = true;
+                                if (status.Contains("invalidpan") || status.Contains("invalid pan"))
+                                    invalidpan = true;
+                                if (status.Contains("incorrectdob") || status.Contains("incorrect dob"))
+                                    incorrectDob = true;
+                                if (status.Contains("less than 50 lakhs") || status.Contains("50"))
+                                    less50L = true;
+                                if (status.Contains("customer opted out") || status.Contains("customer"))
+                                    custOptOut = true;
+
+                                j++;
+
                                 var customer = new Customer
                                 {
+                                    //Name = row[pos].ToString(),
+                                    //PAN = row[pos + 1].ToString().ToUpper(),
+                                    //DateOfBirth = DateTime.ParseExact(row[pos + 2].ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture),
+                                    //MobileNo = row[pos + 3].ToString(),
+                                    //EmailID = row[pos + 4].ToString(),
+                                    //AdressLine1 = row[19].ToString(),
+                                    //AddressLine2 = row[20].ToString(),
+                                    //AddressPremises = row[18].ToString(),
+                                    //City = row[21].ToString(),
+                                    //PinCode = row[23].ToString().Trim(),
+                                    //StateId = stateObj.StateID,
+                                    //TracesPassword = "",
+                                    //AllowForm16B = true,
+                                    //AlternateNumber = "",
+                                    //ISD = "+91",
+                                    //IsPanVerified = false,
+                                    //IsTracesRegistered = false,
                                     Name = row[pos].ToString(),
-                                    PAN = row[pos + 1].ToString().ToUpper(),
-                                    DateOfBirth = DateTime.ParseExact(row[pos + 2].ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture),
-                                    MobileNo = row[pos + 3].ToString(),
+                                    PAN = row[pos + 1].ToString().ToUpper().Trim(),
+                                    DateOfBirth = DateTime.ParseExact(row[pos + 2].ToString().Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture),
+                                    MobileNo = row[pos + 3].ToString().Trim(),
                                     EmailID = row[pos + 4].ToString(),
-                                    AdressLine1 = row[19].ToString(),
-                                    AddressLine2 = row[20].ToString(),
-                                    AddressPremises = row[18].ToString(),
-                                    City = row[21].ToString(),
-                                    PinCode = row[23].ToString().Trim(),
+                                    AdressLine1 = row[22].ToString(),
+                                    AddressLine2 = row[23].ToString(),
+                                    AddressPremises = row[21].ToString(),
+                                    City = row[24].ToString(),
+                                    PinCode = row[26].ToString().Trim(),
                                     StateId = stateObj.StateID,
                                     TracesPassword = "",
                                     AllowForm16B = true,
@@ -103,6 +140,11 @@ namespace ReProServices.Application.Customers.Commands.ImportCustomers
                                     ISD = "+91",
                                     IsPanVerified = false,
                                     IsTracesRegistered = false,
+                                    OnlyTDS=onlyTds,
+                                    InvalidPAN=invalidpan,
+                                    IncorrectDOB=incorrectDob,
+                                    LessThan50L=less50L,
+                                    CustomerOptedOut=custOptOut
                                 };
 
                                 custList.Add(customer);
@@ -128,7 +170,7 @@ namespace ReProServices.Application.Customers.Commands.ImportCustomers
                             {
                                 var cus = custList[i];
 
-                                var existCus = existCusPan.Where(x => x.PAN == cus.PAN).FirstOrDefault();
+                                var existCus = _context.Customer.Where(x => x.PAN == cus.PAN).FirstOrDefault();
                                 int customerID = 0;
                                 if (existCus == null)
                                 {
@@ -152,13 +194,13 @@ namespace ReProServices.Application.Customers.Commands.ImportCustomers
                                     StatusTypeId = (int)EStatusType.Saved,
                                     TdsCollectedBySeller = true,
                                     TdsRateID = porperty.TDSTaxCode,
-                                    TotalUnitCost = Convert.ToDecimal(row[25].ToString()),
+                                    TotalUnitCost = Convert.ToDecimal(row[28].ToString()),
                                     UnitNo = Convert.ToInt32(row[2].ToString()),
-                                    DateOfAgreement = DateTime.ParseExact(row[24].ToString(),"dd/MM/yyyy", CultureInfo.InvariantCulture),
+                                    DateOfAgreement = DateTime.ParseExact(row[27].ToString(),"dd/MM/yyyy", CultureInfo.InvariantCulture),
                                     OwnershipID = guid,
                                     IsArchived = false,
                                     CustomerAlias = custList[0].Name,
-                                    StampDuty= Convert.ToDecimal(row[26].ToString())
+                                    StampDuty= Convert.ToDecimal(row[29].ToString())
                                     //Created = DateTime.Now,
                                     //CreatedBy = userInfo.UserID.ToString()
                                 };

@@ -28,7 +28,7 @@ namespace ReProServices.Application.CustomerPropertyFiles.Queries
             {
                 var vm = await _context.CustomerPropertyFile
                   .FromSqlRaw("Select  BlobID, OwnershipID, FileName, PanID,fileCategoryId, UploadTime = null,  " +
-                  "           FileType = null, FileLength = null, FileBlob = null" +
+                  "           FileType = null, FileLength = null, FileBlob = null,GDfileID=null" +
                   "           FROM CustomerPropertyFile" +
                   "           WHERE  PanID = {0} ", request.PanID)
                   .ProjectTo<CustomerPropertyFileDto>(_mapper.ConfigurationProvider)

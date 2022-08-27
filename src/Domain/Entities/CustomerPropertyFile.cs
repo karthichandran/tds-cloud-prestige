@@ -16,7 +16,7 @@ namespace ReProServices.Domain.Entities
         public string FileType { get; set; }
 
         public string PanID { get; set; }
-
+        public string GDfileID { get; set; }
         public int FileCategoryId { get; set; } = 4;
     }
 }

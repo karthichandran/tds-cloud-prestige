@@ -15,6 +15,8 @@ namespace ReProServices.Application.CustomerPropertyFiles.Queries
     {
         public Guid OwnershipID { get; set; }
         public bool GetFilesToo { get; set; }
+        public int start { get; set; }
+        public int end { get; set; }
         public class GetCustomerPropertyFilesListQueryHandler :
                               IRequestHandler<GetCustomerPropertyFilesListQuery, IList<CustomerPropertyFileDto>>
         {
@@ -32,23 +34,28 @@ namespace ReProServices.Application.CustomerPropertyFiles.Queries
             {
 
                 IList<CustomerPropertyFileDto> vm;
-                if (request.GetFilesToo)
-                {
-                    vm = await _context.CustomerPropertyFile
-                        .Where(x => x.OwnershipID == request.OwnershipID)
-                        .ProjectTo<CustomerPropertyFileDto>(_mapper.ConfigurationProvider)
+                //if (request.GetFilesToo)
+                //{
+                //    vm = await _context.CustomerPropertyFile
+                //        .Where(x => x.OwnershipID == request.OwnershipID)
+                //        .ProjectTo<CustomerPropertyFileDto>(_mapper.ConfigurationProvider)
+                //        .ToListAsync(cancellationToken);
+                //}
+                //else
+                //{
+                //    vm = await _context.CustomerPropertyFile
+                //      .FromSqlRaw("Select  BlobID, OwnershipID, FileName, PanID, fileCategoryId, UploadTime = null,  " +
+                //      "           FileType = null, FileLength = null, FileBlob = null,GDfileID=null" +
+                //      "           FROM CustomerPropertyFile" +
+                //      "           WHERE  OwnershipID = {0} ", request.OwnershipID)
+                //      .ProjectTo<CustomerPropertyFileDto>(_mapper.ConfigurationProvider)
+                //       .ToListAsync(cancellationToken);
+                //}
+
+                // migrate files from sql to drive 
+
+                vm = await _context.CustomerPropertyFile.Where(x => x.BlobID > request.start && x.BlobID <= request.end).ProjectTo<CustomerPropertyFileDto>(_mapper.ConfigurationProvider)
                         .ToListAsync(cancellationToken);
-                }
-                else
-                {
-                    vm = await _context.CustomerPropertyFile
-                      .FromSqlRaw("Select  BlobID, OwnershipID, FileName, PanID, fileCategoryId, UploadTime = null,  " +
-                      "           FileType = null, FileLength = null, FileBlob = null" +
-                      "           FROM CustomerPropertyFile" +
-                      "           WHERE  OwnershipID = {0} ", request.OwnershipID)
-                      .ProjectTo<CustomerPropertyFileDto>(_mapper.ConfigurationProvider)
-                       .ToListAsync(cancellationToken);
-                }
 
                 return vm;
             }
