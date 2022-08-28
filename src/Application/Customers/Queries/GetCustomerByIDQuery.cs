@@ -79,7 +79,11 @@ namespace ReProServices.Application.Customers.Queries
                                 Sellers = sellersName,
                                 CustomerProperty = new List<Domain.Entities.CustomerProperty>() { custProp },
                                 IsPanVerified = custVm.IsPanVerified == null ? false : custVm.IsPanVerified,
-                                OnlyTDS=custVm.OnlyTDS
+                                OnlyTDS=custVm.OnlyTDS,
+                                InvalidPAN=custVm.InvalidPAN,
+                                IncorrectDOB=custVm.IncorrectDOB,
+                                LessThan50L=custVm.LessThan50L,
+                                CustomerOptedOut=custVm.CustomerOptedOut
                             };
                             vmResult.Add(dto);
                         }

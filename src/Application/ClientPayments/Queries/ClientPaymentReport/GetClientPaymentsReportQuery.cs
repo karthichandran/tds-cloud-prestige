@@ -71,7 +71,10 @@ namespace ReProServices.Application.ClientPayments.Queries.ClientPaymentReport
                                  ClientPaymentTransactionID = x.ClientPaymentTransactionID,
                                  ChallanDate = x.ChallanDate,
                                  CustomerStatus=x.CustomerStatus
-                             }).ToList();
+                             })
+                        .OrderByDescending(x => x.LotNo)
+                            .ThenBy(_ => _.OwnershipID)
+                            .ThenByDescending(y => y.ClientPaymentTransactionID).ToList();
 
                     //var vm = (from pay in _context.ViewClientPayment
                     //        join cpt in _context.ClientPaymentTransaction on pay.ClientPaymentID equals cpt.ClientPaymentID

@@ -263,6 +263,8 @@ welcomeMail:boolean;
     this.customerform.get('alternateNumber').clearValidators();
     this.loadPanDocument(model.pan);
     this.removeRestriction();
+    this.ResetFlags();
+    this.loadFlagStatus(model);
 
     //Show active labels
     if (model.customerProperty!=null && model.customerProperty.length > 0) {
@@ -310,6 +312,18 @@ welcomeMail:boolean;
       client.alternateNumber = "";  
       client.isd = "+91";
       client.isPanVerified = false;
+      client.onlyTDS=false;
+
+      client.invalidPAN=false;
+      client.incorrectDOB=false;
+      client.lessThan50L=false;
+      client.customerOptedOut=false;
+      this.customerform.get("onlyTDS").enable();
+      this.customerform.get("invalidPAN").enable();
+      this.customerform.get("incorrectDOB").enable();
+      this.customerform.get("customerOptedOut").enable();
+      this.customerform.get("lessThan50L").enable();
+
       this.customerform.reset();
       this.customerform.patchValue(client);
 
@@ -1319,9 +1333,9 @@ this.welcomeMail=true;
 
   ShowClientPaymetnWarning(status:boolean) {
 
-    let prop=this.clients[0].customerProperty[0].customerPropertyID;
+    let prop= this.customerform.get("customerID").value;
 
-    if (status &&( prop!="" && prop!=null && prop!=undefined)) {
+    if (status==false &&( prop!="" && prop!=null && prop!=undefined)) {
       this.confirmationDialogSrv.showDialog("Correct client payment dates before making payments ","OK").subscribe(response => {
       });
     }
@@ -1333,6 +1347,44 @@ this.welcomeMail=true;
   //   }
   // }
 
+  loadFlagStatus(cusVal){
+
+    let eve={source:{name:""},checked:false};
+
+    if(cusVal.onlyTDS){
+      eve.source.name="onlyTDS";
+      eve.checked=true;
+      this.UpdateFlag(eve);
+    }
+    if(cusVal.invalidPAN){
+      eve.source.name="invalidPAN";
+      eve.checked=true;
+      this.UpdateFlag(eve);
+    }
+    if(cusVal.incorrectDOB){
+      eve.source.name="incorrectDOB";
+      eve.checked=true;
+      this.UpdateFlag(eve);
+    }
+    if(cusVal.lessThan50L){
+      eve.source.name="lessThan50L";
+      eve.checked=true;
+      this.UpdateFlag(eve);
+    }
+    if(cusVal.customerOptedOut){
+      eve.source.name="customerOptedOut";
+      eve.checked=true;
+      this.UpdateFlag(eve);
+    }
+  }
+
+  ResetFlags(){
+    this.customerform.get("onlyTDS").enable();
+    this.customerform.get("invalidPAN").enable();
+    this.customerform.get("incorrectDOB").enable();
+    this.customerform.get("lessThan50L").enable();
+    this.customerform.get("customerOptedOut").enable();
+  }
   UpdateFlag(eve) {
 
     //Its for update traces
@@ -1344,6 +1396,7 @@ this.welcomeMail=true;
 
       if (eve.checked) {
 
+        this.customerform.get("onlyTDS").enable();
         this.customerform.get('incorrectDOB').setValue(false);
         this.customerform.get('lessThan50L').setValue(false);
         this.customerform.get('customerOptedOut').setValue(false);
@@ -1361,6 +1414,7 @@ this.welcomeMail=true;
     if (eve.source.name == "invalidPAN") {
 
       if (eve.checked) {
+        this.customerform.get("invalidPAN").enable();
         this.customerform.get('incorrectDOB').setValue(false);
         this.customerform.get('lessThan50L').setValue(false);
         this.customerform.get('customerOptedOut').setValue(false);
@@ -1379,6 +1433,7 @@ this.welcomeMail=true;
     if (eve.source.name == "incorrectDOB") {
 
       if (eve.checked) {
+        this.customerform.get("incorrectDOB").enable();
         this.customerform.get('onlyTDS').setValue(false);
         this.customerform.get('invalidPAN').setValue(false);
         this.customerform.get('lessThan50L').setValue(false);
@@ -1400,6 +1455,7 @@ this.welcomeMail=true;
     if (eve.source.name == "lessThan50L") {
 
       if (eve.checked) {
+        this.customerform.get("lessThan50L").enable();
         this.customerform.get('onlyTDS').setValue(false);
         this.customerform.get('invalidPAN').setValue(false);
         this.customerform.get('incorrectDOB').setValue(false);
@@ -1421,6 +1477,7 @@ this.welcomeMail=true;
     if (eve.source.name == "customerOptedOut") {
 this.ShowClientPaymetnWarning(eve.checked);
       if (eve.checked) {
+        this.customerform.get("customerOptedOut").enable();
         this.customerform.get('onlyTDS').setValue(false);
         this.customerform.get('invalidPAN').setValue(false);
         this.customerform.get('incorrectDOB').setValue(false);
