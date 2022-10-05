@@ -51,13 +51,28 @@ namespace ReProServices.Application.Customers.Commands.CreateCustomer
                             ISD=customer.ISD,
                             IsPanVerified= customer.IsPanVerified.Value,
                             OnlyTDS=customer.OnlyTDS,
-                            InvalidPAN=customer.InvalidPAN,
-                            IncorrectDOB=customer.IncorrectDOB,
-                            LessThan50L=customer.LessThan50L,
-                            CustomerOptedOut=customer.CustomerOptedOut
+                            InvalidPAN = customer.InvalidPAN,
+                            IncorrectDOB = customer.IncorrectDOB,
+                            LessThan50L = customer.LessThan50L,
+                            CustomerOptedOut = customer.CustomerOptedOut,
+                            CustomerOptingOutDate = customer.CustomerOptingOutDate,
+                            CustomerOptingOutRemarks = customer.CustomerOptingOutRemarks,
+                            InvalidPanDate = customer.InvalidPanDate,
+                            InvalidPanRemarks = customer.InvalidPanRemarks
                             //Updated = DateTime.Now,
                             //UpdatedBy = userInfo.UserID.ToString()
                         };
+                        if (entityUpd.OnlyTDS != true)
+                        {
+                            entityUpd.InvalidPanDate = null;
+                            entityUpd.InvalidPanRemarks = "";
+                        }
+
+                        if (entityUpd.CustomerOptedOut != true)
+                        {
+                            entityUpd.CustomerOptingOutDate = null;
+                            entityUpd.CustomerOptingOutRemarks = "";
+                        }
                         _context.Customer.Update(entityUpd);
                         await _context.SaveChangesAsync(cancellationToken);
                     }
@@ -86,10 +101,27 @@ namespace ReProServices.Application.Customers.Commands.CreateCustomer
                             InvalidPAN = customer.InvalidPAN,
                             IncorrectDOB = customer.IncorrectDOB,
                             LessThan50L = customer.LessThan50L,
-                            CustomerOptedOut = customer.CustomerOptedOut
+                            CustomerOptedOut = customer.CustomerOptedOut,
+                            CustomerOptingOutDate = customer.CustomerOptingOutDate,
+                            CustomerOptingOutRemarks = customer.CustomerOptingOutRemarks,
+                            InvalidPanDate = customer.InvalidPanDate,
+                            InvalidPanRemarks = customer.InvalidPanRemarks
                             //Created = DateTime.Now,
                             //CreatedBy = userInfo.UserID.ToString()
                         };
+
+                        if (entity.OnlyTDS != true)
+                        {
+                            entity.InvalidPanDate = null;
+                            entity.InvalidPanRemarks = "";
+                        }
+
+                        if (entity.CustomerOptedOut != true)
+                        {
+                            entity.CustomerOptingOutDate = null;
+                            entity.CustomerOptingOutRemarks = "";
+                        }
+
                         await _context.Customer.AddAsync(entity, cancellationToken);
                         await _context.SaveChangesAsync(cancellationToken);
                         customer.CustomerID = entity.CustomerID;

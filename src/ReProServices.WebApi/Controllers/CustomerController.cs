@@ -51,10 +51,11 @@ namespace WebApi.Controllers
         [HttpGet("getExcel")]
         public async Task<FileResult> GetExcel([FromQuery] CustomerDetailsFilter customerDetailsFilter)
         {
-            var result = await Mediator.Send(new GetCustomersQuery() { Filter = customerDetailsFilter });
-            var resultSet = result.customersView;
+            //var result = await Mediator.Send(new GetCustomersQuery() { Filter = customerDetailsFilter });
+            var resultSet = await Mediator.Send(new GetCustomerReportQuery() { Filter = customerDetailsFilter });
+            //var resultSet = result.customersView;
 
-            var settings = FluentSettings.For<ViewCustomerPropertyBasic>();
+            var settings = FluentSettings.For<ViewCustomerReport>();
             settings.HasAuthor("REpro Services");
 
             settings.Property(_ => _.CustomerName)
@@ -118,6 +119,11 @@ namespace WebApi.Controllers
                .HasColumnWidth(60)
                .HasColumnIndex(11);
 
+            settings.Property(x => x.CustomerStatus)
+              .HasColumnTitle("Customer Status")
+              .HasColumnWidth(60)
+              .HasColumnIndex(12);
+
             settings.Property(_ => _.OwnershipID).Ignored();
             settings.Property(_ => _.CustomerID).Ignored();
             settings.Property(_ => _.PropertyID).Ignored();
@@ -125,6 +131,10 @@ namespace WebApi.Controllers
             settings.Property(_ => _.OwnershipID).Ignored();
             settings.Property(_ => _.PaymentMethodId).Ignored();
             settings.Property(_ => _.StatusTypeID).Ignored();
+            settings.Property(_ => _.CustomerOptingOutDate).Ignored();
+            settings.Property(_ => _.CustomerOptingOutRemarks).Ignored();
+            settings.Property(_ => _.InvalidPanDate).Ignored();
+            settings.Property(_ => _.InvalidPanRemarks).Ignored();
 
             var ms = resultSet.ToExcelBytes();
 
@@ -219,9 +229,9 @@ namespace WebApi.Controllers
                     for(var i = 0; i < custinerInx.Length; i++) {
                         var pos = custinerInx[i];
                         var cinx = custStatusInx[i];
-                        var pan = row[pos].ToString().ToUpper();
+                        var pan = row[pos].ToString().ToUpper().Trim();
                         var status = row[cinx].ToString().ToLower();
-                        if (string.IsNullOrEmpty(pan) || status.Contains("invalid pan") || status.Contains("invalidpan"))
+                        if (string.IsNullOrEmpty(pan) || status.Contains("invalid pan") || status.Contains("invalidpan") || status.Contains("50"))
                             continue;
                         if (!regex.IsMatch(pan.Trim()))
                         {
@@ -256,10 +266,10 @@ namespace WebApi.Controllers
             ms.Position = 0;
             var logoResource = new LinkedResource(ms, "image/png") { ContentId = "added-image-id" };
             var subject = "TDS compliance under section 194IA for your Unit No." + unitNo + " in project " + project;
-
+            
             var emilaModel = new EmailModel()
             {
-               // To="karthi@leansys.in",
+                //To="karthi@leansys.in",
                To = email,
                 Subject = subject,
                 //Message = @"<html><body> <p>Dear Sir/Madam, </p><p>Greetings from REpro Services!!</p> <p>We wish to inform you that we have been appointed by Prestige Group to manage your TDS compliance U/s. 194 (IA) for your subject property. We are a team of professionals who have expertise in all tax compliances. </p><br> " +
@@ -319,6 +329,15 @@ namespace WebApi.Controllers
 
                       "<br> <img height='90' width='170'  src=cid:added-image-id><p>Thanks and Regards,<br>REpro Team</p> </body></html> ";
             }
+
+            //attachment
+            List<FileAttachment> fileList = new List<FileAttachment>();
+            var faqFilePath = @Directory.GetCurrentDirectory() + "\\Resources\\FAQs - TDS Compliance - REpro Services.pdf";
+            var byteArr = System.IO.File.ReadAllBytes(faqFilePath);
+            var fileType = Path.GetExtension(faqFilePath);
+            MemoryStream msFAQ = new MemoryStream(byteArr);
+            fileList.Add(new FileAttachment() { MemoryStream = byteArr, FileName = "FAQs - TDS Compliance - REpro Services.pdf", FileType = "application/pdf" });
+            emilaModel.attachments = fileList;
 
             EmailHelper emailHelper = new EmailHelper(_configuration);
             var isSent = emailHelper.SendEmail(emilaModel, logoResource);

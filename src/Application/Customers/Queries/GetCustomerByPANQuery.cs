@@ -28,6 +28,16 @@ namespace ReProServices.Application.Customers.Queries
                     .Where(c =>  c.PAN == request.PAN.TrimEnd())
                     .ProjectTo<CustomerDto>(_mapper.ConfigurationProvider)
                     .FirstOrDefaultAsync(cancellationToken);
+
+                custDto.InvalidPAN = null;
+                custDto.IncorrectDOB = null;
+                custDto.LessThan50L = null;
+                custDto.CustomerOptedOut = null;
+                custDto.CustomerOptingOutDate = null;
+                custDto.CustomerOptingOutRemarks = null;
+                custDto.InvalidPanDate = null;
+                custDto.InvalidPanRemarks = null;
+
                 return custDto;
             }
         }

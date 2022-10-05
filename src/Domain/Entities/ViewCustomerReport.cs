@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ReProServices.Domain.Entities
 {
-    [Table("ViewCustomerPropertyBasic")]
-   public class ViewCustomerPropertyBasic
+    [Table("ViewCustomerReport")]
+    public class ViewCustomerReport
     {
         [Key]
         public int CustomerPropertyID { get; set; }
@@ -26,6 +26,12 @@ namespace ReProServices.Domain.Entities
         public decimal? StampDuty { get; set; }
         public string TracesPassword { get; set; }
         public string CustomerAlias { get; set; }
-        public string IsPanVerified { get; set; }        
+        public string IsPanVerified { get; set; }
+
+        public string CustomerStatus { get; set; }
+        public DateTime? CustomerOptingOutDate { get; set; }
+        public string CustomerOptingOutRemarks { get; set; }
+        public DateTime? InvalidPanDate { get; set; }
+        public string InvalidPanRemarks { get; set; }
     }
 }

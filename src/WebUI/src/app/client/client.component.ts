@@ -143,7 +143,11 @@ welcomeMail:boolean;
       invalidPAN: [''],
       incorrectDOB: [''],
       lessThan50L: [''],
-      customerOptedOut:['']
+      customerOptedOut:[''],
+      invalidPanDate:[''],
+      invalidPanRemarks:[''],
+      customerOptingOutDate:[''],
+      customerOptingOutRemarks:[''],
     });
     // Vertical Stepper form stepper
     this.propertyForm = this._formBuilder.group({
@@ -314,10 +318,15 @@ welcomeMail:boolean;
       client.isPanVerified = false;
       client.onlyTDS=false;
 
+      client.customerOptingOutDate="";
+      client.customerOptingOutRemarks="";
+      client.invalidPanDate="";
+      client.invalidPanRemarks="";
       client.invalidPAN=false;
       client.incorrectDOB=false;
       client.lessThan50L=false;
       client.customerOptedOut=false;
+
       this.customerform.get("onlyTDS").enable();
       this.customerform.get("invalidPAN").enable();
       this.customerform.get("incorrectDOB").enable();
@@ -474,12 +483,19 @@ welcomeMail:boolean;
        // item.dateOfBirth = moment(item.dateOfBirth).local().format();
         item.dateOfBirth = moment(item.dateOfBirth).local().format("YYYY-MM-DD");
 
-        //if (item.isPanValid == "yes")
-        //  item.isPanVerified = true;
-        //else
-        //  item.isPanVerified = false;
+        if (item.customerOptedOut == "" || item.customerOptedOut == false) {
+          item.customerOptingOutDate = "";
+          item.customerOptingOutRemarks = "";
+        }
+
+        if (item.invalidPAN == "" || item.invalidPAN == false) {
+          item.invalidPanDate = "";
+          item.invalidPanRemarks = "";
+        }
+
         return item;
       });
+
       customerVM.customers = models;
       this.clientService.saveCustomer(customerVM, isNewEntry).subscribe((res) => {
 
@@ -695,6 +711,13 @@ welcomeMail:boolean;
   }
 
   UpdateCustomerShare() {
+
+    _.forEach(this.clients, function (item) {
+      if (item.customerOptedOut){
+      item.customerProperty[0].customerShare = 0;
+    }
+    });
+
     if (this.customerData.length > 0) {
 
       _.forEach(this.customerData, (cus) => {
@@ -1065,11 +1088,15 @@ welcomeMail:boolean;
       this.customerAlias.setValue(this.clients[0].name);
     }
    
-    let isShareUpdated = _.find(this.clients, o => { return o.customerProperty[0].customerShare == "" || o.customerProperty[0].customerShare == 0});
+    //let isShareUpdated = _.find(this.clients, o => { return o.customerProperty[0].customerShare == "" || o.customerProperty[0].customerShare == 0});
+    let isShareUpdated = _.find(this.clients, o => { return parseInt( o.customerProperty[0].customerShare)>0});
     
     let data = [];
     _.forEach(this.clients, function (item) {
-      if (item.customerProperty.length > 0) {
+      item.customerOptedOut
+     
+
+      if (item.customerOptedOut!=true && item.customerProperty.length > 0) {
         let model = { name: '', share: '', customerID: 0, isPrimaryOwner:false};
         model.name = item.name;
         model.customerID = item.customerID;
@@ -1080,9 +1107,11 @@ welcomeMail:boolean;
     });
     let sortedData = _.sortBy(data, o => { return o.customerID; });
 
-    if (isShareUpdated != undefined) {
-      let totlCus = this.clients.length;
-      let sharePercent = parseFloat((100/this.clients.length ).toFixed(2));   
+    if (isShareUpdated == undefined) {
+      
+     // let totlCus = this.clients.length;
+     let totlCus = sortedData.length;
+      let sharePercent = parseFloat((100/totlCus ).toFixed(2));   
        let firstShare = sharePercent + (100 - (totlCus * sharePercent));
        for(let i=0;i<totlCus;i++){
          if(i==0)
@@ -1094,10 +1123,6 @@ welcomeMail:boolean;
 
     this.customerData = sortedData;
   }
-
-prepareSharePercentage(){
-
-}
 
   selectedstepperIndex(eve) {
     if (eve.selectedIndex == 2) {

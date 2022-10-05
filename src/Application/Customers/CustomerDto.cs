@@ -31,6 +31,11 @@ namespace ReProServices.Application.Customers
         public bool? IncorrectDOB { get; set; }
         public bool? LessThan50L { get; set; }
         public bool? CustomerOptedOut { get; set; }
+
+        public DateTime? CustomerOptingOutDate { get; set; }
+        public string CustomerOptingOutRemarks { get; set; }
+        public DateTime? InvalidPanDate { get; set; }
+        public string InvalidPanRemarks { get; set; }
         public virtual ICollection<Domain.Entities.CustomerProperty> CustomerProperty { get; set; }
 
         public void Mapping(Profile profile)

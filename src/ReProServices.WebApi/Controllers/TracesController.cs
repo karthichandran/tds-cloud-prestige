@@ -117,6 +117,16 @@ namespace WebApi.Controllers
 
             var form16b = await Mediator.Send(new GetCustomerPropertyFileByBlobIdQuery { FileID =Convert.ToInt32( remittanceModel.Form16BlobID) });
              var challan = await Mediator.Send(new GetCustomerPropertyFileByBlobIdQuery { FileID = Convert.ToInt32(remittanceModel.ChallanBlobID) });
+            if (form16b.GDfileID != null) {
+                var msObj = driverSrv.GetFile(form16b.GDfileID);
+                form16b.FileBlob = msObj.ToArray();
+            }
+            if (challan.GDfileID != null)
+            {
+                var msObj = driverSrv.GetFile(challan.GDfileID);
+                challan.FileBlob = msObj.ToArray();
+            }
+
 
             var subject = "Form 16B - " + remittanceModel.Premises + " - " + remittanceModel.UnitNo;
             var emilaModel = new EmailModel()
@@ -131,6 +141,66 @@ namespace WebApi.Controllers
             };
             List<FileAttachment> fileList = new List<FileAttachment>();
             if(form16b!=null)
+                fileList.Add(new FileAttachment() { MemoryStream = form16b.FileBlob, FileName = form16b.FileName, FileType = form16b.FileType });
+            if (challan != null)
+                fileList.Add(new FileAttachment() { MemoryStream = challan.FileBlob, FileName = challan.FileName, FileType = challan.FileType });
+            emilaModel.attachments = fileList;
+
+            EmailHelper emailHelper = new EmailHelper(_configuration);
+            emailHelper.SendEmail(emilaModel, logoResource);
+            await Mediator.Send(new UpdateEmailSentCommand() { RemittanceID = remittanceModel.RemittanceID });
+            return NoContent();
+        }
+
+        [HttpGet("sendmailOnlyTds/{clientPayTransId}")]
+        public async Task<ActionResult> SendMailForTdsOnly(int clientPayTransId)
+        {
+            var remittanceModel = await Mediator.Send(new GetRemittancesQuery() { ClientPaymentTransactionID = clientPayTransId });
+            var customerModel = await Mediator.Send(new GetCustomerByPANQuery { PAN = remittanceModel.CustomerPAN });
+
+            var filePath = @Directory.GetCurrentDirectory() + "\\Resources\\logo.png";
+            Bitmap b = new Bitmap(filePath);
+            MemoryStream ms = new MemoryStream();
+            b.Save(ms, ImageFormat.Png);
+            ms.Position = 0;
+            var logoResource = new LinkedResource(ms, "image/png") { ContentId = "added-image-id" };
+
+            //var imageResource = new LinkedResource(filePath) { ContentId = "added-image-id" };
+
+            //string imageData = "data:image/png;base64," + Convert.ToBase64String(ms.ToArray());
+
+            // var binaries2 = await Mediator.Send(new GetCustomerPropertyFileByBlobIdQuery { FileID = 350 });
+            //var binaries2 = await Mediator.Send(new GetCustomerPropertyFileByBlobIdQuery { FileID = 593 });
+            //string imageData = "data:image/png;base64," + Convert.ToBase64String(new MemoryStream(binaries2.FileBlob).ToArray()) ;
+            // var imageResource = new LinkedResource(Convert.ToBase64String(binaries2.FileBlob), "image/png") { ContentId = "added-image-id" };
+
+            var form16b = await Mediator.Send(new GetCustomerPropertyFileByBlobIdQuery { FileID = Convert.ToInt32(remittanceModel.Form16BlobID) });
+            var challan = await Mediator.Send(new GetCustomerPropertyFileByBlobIdQuery { FileID = Convert.ToInt32(remittanceModel.ChallanBlobID) });
+            if (form16b!=null && form16b.GDfileID != null)
+            {
+                var msObj = driverSrv.GetFile(form16b.GDfileID);
+                form16b.FileBlob = msObj.ToArray();
+            }
+            if (challan!=null && challan.GDfileID != null)
+            {
+                var msObj = driverSrv.GetFile(challan.GDfileID);
+                challan.FileBlob = msObj.ToArray();
+            }
+            var subject = "TDS paid challan - " + remittanceModel.Premises + " - " + remittanceModel.UnitNo;
+            var emilaModel = new EmailModel()
+            {
+                To = customerModel.EmailID,
+                 //To = "karthi@leansys.in",
+                Subject = subject,
+                Message = @"<html><body> <p>Dear Sir/Madam, </p> <p>Greetings from REpro Services!!</p>  <p>Please find attached challan for the payments made by you to Prestige in the last month. Please generate Form 16B and share it with Prestige CRM team for due credit  to your statement  of account.</p>" +
+                           "<p>For payments made in this month, you should expect challan  by end of next month.</p>  " +
+                             "<p>REpro services will not be responsible for the TDS dues if you have not submitted the Form 16B certificates for the challans shared with you .</p>  " +
+                              "<p>We are sending you the challan as you have opted not to share your Traces account credentials with REpro services, in case you want us to manage the compliance completely please let us know and share the Traces credentials with us .</p>  " +
+                          " <img height='90' width='170'  src=cid:added-image-id><p>Thanks and Regards,<br>REpro Team</p>  </body></html> ",
+                IsBodyHtml = true
+            };
+            List<FileAttachment> fileList = new List<FileAttachment>();
+            if (form16b != null)
                 fileList.Add(new FileAttachment() { MemoryStream = form16b.FileBlob, FileName = form16b.FileName, FileType = form16b.FileType });
             if (challan != null)
                 fileList.Add(new FileAttachment() { MemoryStream = challan.FileBlob, FileName = challan.FileName, FileType = challan.FileType });

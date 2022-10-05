@@ -34,6 +34,10 @@ namespace ReProServices.Domain.Entities
         public bool? IncorrectDOB { get; set; }
         public bool? LessThan50L { get; set; }
         public bool? CustomerOptedOut { get; set; }
+        public DateTime? CustomerOptingOutDate { get; set; }
+        public string CustomerOptingOutRemarks { get; set; }
+        public DateTime? InvalidPanDate { get; set; }
+        public string InvalidPanRemarks { get; set; }
         //public DateTime? Created { get; set; }
         //public string CreatedBy { get; set; }
         //public DateTime? Updated { get; set; }

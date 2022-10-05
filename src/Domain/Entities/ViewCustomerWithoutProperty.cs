@@ -12,6 +12,11 @@ namespace ReProServices.Domain.Entities
         public string CustomerName { get; set; }
         public string PAN { get; set; }
         public string IsPanVerified { get; set; }
-        
+        public string CustomerStatus { get; set; }
+        public DateTime? CustomerOptingOutDate { get; set; }
+        public string CustomerOptingOutRemarks { get; set; }
+        public DateTime? InvalidPanDate { get; set; }
+        public string InvalidPanRemarks { get; set; }
+
     }
 }

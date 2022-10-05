@@ -7,6 +7,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using NodaTime;
 using ReProServices.Application.Common.Interfaces;
+using ReProServices.Domain.Entities;
 
 namespace ReProServices.Application.ClientPayments.Queries.ClientPaymentReport
 {
@@ -162,5 +163,6 @@ namespace ReProServices.Application.ClientPayments.Queries.ClientPaymentReport
             }
 
         }
+      
     }
 }

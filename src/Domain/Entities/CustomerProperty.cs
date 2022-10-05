@@ -31,6 +31,16 @@ namespace ReProServices.Domain.Entities
         public virtual Property Property { get; set; }
 
         public decimal? StampDuty { get; set; }
+
+        //public bool? InvalidPAN { get; set; }
+        //public bool? IncorrectDOB { get; set; }
+        //public bool? LessThan50L { get; set; }
+        //public bool? CustomerOptedOut { get; set; }
+        //public DateTime? CustomerOptingOutDate { get; set; }
+        //public string CustomerOptingOutRemarks { get; set; }
+        //public DateTime? OnlyTdsDate { get; set; }
+        //public string OnlyTdsRemarks { get; set; }
+
         //public DateTime? Created { get; set; }
         //public string CreatedBy { get; set; }
         //public DateTime? Updated { get; set; }

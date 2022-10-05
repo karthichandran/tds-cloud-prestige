@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,6 +26,8 @@ namespace ReProServices.Application.TdsRemittance.Queries.GetRemittanceList
             {
                 List<int> unitNos = (from cus in _context.Customer join cp in _context.CustomerProperty on cus.CustomerID equals cp.CustomerId where cus.InvalidPAN == true select  cp.UnitNo.Value).ToList() ;
 
+               // List<Guid> ownershipIds = (from cus in _context.Customer join cp in _context.CustomerProperty on cus.CustomerID equals cp.CustomerId where cus.InvalidPAN == true   select cp.OwnershipID.Value).ToList();
+
                 var remittances = (from pay in _context.ClientPayment
                                    join cpt in _context.ClientPaymentTransaction on pay.ClientPaymentID equals cpt.ClientPaymentID
                                    join cp in _context.ViewCustomerPropertyExpanded on new { cpt.OwnershipID, cpt.CustomerID } equals new { cp.OwnershipID, cp.CustomerID }
@@ -32,6 +35,7 @@ namespace ReProServices.Application.TdsRemittance.Queries.GetRemittanceList
                                    where cpt.RemittanceStatusID == (int)ERemittanceStatus.Pending
                                          && pay.NatureOfPaymentID == (int)ENatureOfPayment.ToBeConsidered
                                          && cpt.SellerID == sp.SellerID && cp.StatusTypeID != 3 && cp.InvalidPAN != true && cp.LessThan50L != true && cp.CustomerOptedOut != true
+                                        // && !ownershipIds.Contains(cp.OwnershipID)
                                          && !unitNos.Contains(cp.UnitNo)
                                    //for presstige only
                                    select new TdsRemittanceDto

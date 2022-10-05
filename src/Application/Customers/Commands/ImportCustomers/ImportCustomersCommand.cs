@@ -141,10 +141,10 @@ namespace ReProServices.Application.Customers.Commands.ImportCustomers
                                     IsPanVerified = false,
                                     IsTracesRegistered = false,
                                     OnlyTDS=onlyTds,
-                                    InvalidPAN=invalidpan,
-                                    IncorrectDOB=incorrectDob,
-                                    LessThan50L=less50L,
-                                    CustomerOptedOut=custOptOut
+                                    InvalidPAN = invalidpan,
+                                    IncorrectDOB = incorrectDob,
+                                    LessThan50L = less50L,
+                                    CustomerOptedOut = custOptOut
                                 };
 
                                 custList.Add(customer);
@@ -174,9 +174,35 @@ namespace ReProServices.Application.Customers.Commands.ImportCustomers
                                 int customerID = 0;
                                 if (existCus == null)
                                 {
-                                    await _context.Customer.AddAsync(cus, cancellationToken);
+                                    var model = new Customer
+                                    {                                        
+                                        Name = cus.Name,
+                                        PAN = cus.PAN,
+                                        DateOfBirth = cus.DateOfBirth,
+                                        MobileNo = cus.MobileNo,
+                                        EmailID = cus.EmailID,
+                                        AdressLine1 = cus.AdressLine1,
+                                        AddressLine2 = cus.AddressLine2,
+                                        AddressPremises =cus.AddressPremises,
+                                        City = cus.City,
+                                        PinCode = cus.PinCode,
+                                        StateId = cus.StateId,
+                                        TracesPassword = "",
+                                        AllowForm16B = true,
+                                        AlternateNumber = "",
+                                        ISD = "+91",
+                                        IsPanVerified = false,
+                                        IsTracesRegistered = false,
+                                        OnlyTDS = cus.OnlyTDS,
+                                        InvalidPAN = cus.InvalidPAN,
+                                        IncorrectDOB = cus.IncorrectDOB,
+                                        LessThan50L = cus.LessThan50L,
+                                        CustomerOptedOut = cus.CustomerOptedOut,
+                                    };
+
+                                    await _context.Customer.AddAsync(model, cancellationToken);
                                     await _context.SaveChangesAsync(cancellationToken);
-                                    customerID = cus.CustomerID;
+                                    customerID = model.CustomerID;
                                 }
                                 else
                                     customerID = existCus.CustomerID;
@@ -200,7 +226,7 @@ namespace ReProServices.Application.Customers.Commands.ImportCustomers
                                     OwnershipID = guid,
                                     IsArchived = false,
                                     CustomerAlias = custList[0].Name,
-                                    StampDuty= Convert.ToDecimal(row[29].ToString())
+                                    StampDuty= Convert.ToDecimal(row[29].ToString())                                   
                                     //Created = DateTime.Now,
                                     //CreatedBy = userInfo.UserID.ToString()
                                 };

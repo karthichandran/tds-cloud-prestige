@@ -81,5 +81,7 @@ namespace ReProServices.Application.Common.Interfaces
 
         DbSet<ViewCustomerPropertyArchived> ViewCustomerPropertyArchived { get; set; }
         DbSet<BankAccountDetails> BankAccountDetails { get; set; }
+
+        DbSet<ViewCustomerReport> ViewCustomerReports { get; set; }
     }
 }

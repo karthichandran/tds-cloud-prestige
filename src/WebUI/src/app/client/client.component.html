@@ -234,30 +234,31 @@
                     </div>
                   </div>
 
-                  <div fxLayout="column" fxLayoutAlign="center end">
-
-                    <!--<div fxFlex="1 0 auto" class="margin-tb-5" fxLayout="row">
-      <label class="radio-label">I/We have already registered in TRACES</label>
-      <mat-radio-group aria-label="Select an option" formControlName="traces" style="align-self:center;">
-        <mat-radio-button value="yes">Yes</mat-radio-button>
-        <mat-radio-button value="no">No</mat-radio-button>
-      </mat-radio-group>
-      <mat-form-field appearance="outline" fxFlex *ngIf="customerform.value.traces=='yes'">
-        <mat-label>Password</mat-label>
-        <input matInput formControlName="tracesPassword">
-        <mat-error>Password is required!</mat-error>
-      </mat-form-field>
-    </div>-->
-                    <!--<button mat-fab
-            color="warn"
-            class="add-file-button"
-            (click)="addCoClient()"
-            aria-label="Add file"
-            [@animate]="{value:'*', params:{delay:'300ms',scale:'0.2'}}">
-      <mat-icon>add</mat-icon>
-    </button>-->
-
+                  <div fxLayout="row wrap">
+                  
+                    <mat-form-field appearance="outline" fxFlex="30" *ngIf="customerform.value.onlyTDS">
+                      <mat-label>Only TDS Date </mat-label>
+                      <input matInput [matDatepicker]="invalidPanDate" formControlName="invalidPanDate" placeholder="DD-MMM-YYYY">
+                      <mat-datepicker-toggle matSuffix [for]="invalidPanDate"></mat-datepicker-toggle>
+                      <mat-datepicker #invalidPanDate></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="30" *ngIf="customerform.value.onlyTDS">
+                      <mat-label>Remarks</mat-label>
+                      <textarea matInput formControlName="invalidPanRemarks"></textarea>
+                    </mat-form-field>
+                  
+                    <mat-form-field appearance="outline" fxFlex="30" *ngIf="customerform.value.customerOptedOut">
+                      <mat-label>Invalid PAN Date </mat-label>
+                      <input matInput [matDatepicker]="customerOptingOutDate" formControlName="customerOptingOutDate" placeholder="DD-MMM-YYYY">
+                      <mat-datepicker-toggle matSuffix [for]="customerOptingOutDate"></mat-datepicker-toggle>
+                      <mat-datepicker #customerOptingOutDate></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="30" *ngIf="customerform.value.customerOptedOut">
+                      <mat-label>Remarks</mat-label>
+                      <textarea matInput formControlName="customerOptingOutRemarks"></textarea>
+                    </mat-form-field>
                   </div>
+
                   <div id="academy-courses" class="sellers" *ngIf="clients.length>0" fxLayout="column" fxLayoutAlign="center">
                     <div fxLayout="row wrap" class="header" fxLayoutAlign="start">
                       <span>Customers</span>
