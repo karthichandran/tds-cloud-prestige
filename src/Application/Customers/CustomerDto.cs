@@ -36,6 +36,7 @@ namespace ReProServices.Application.Customers
         public string CustomerOptingOutRemarks { get; set; }
         public DateTime? InvalidPanDate { get; set; }
         public string InvalidPanRemarks { get; set; }
+        public string IncomeTaxPassword { get; set; }
         public virtual ICollection<Domain.Entities.CustomerProperty> CustomerProperty { get; set; }
 
         public void Mapping(Profile profile)

@@ -56,14 +56,15 @@ namespace ReProServices.Application.Prospect.Command
                             MobileNo = dto.MobileNo,
                             Name = dto.Name,
                             PAN = dto.PAN,
-                            PinCode = dto.PinCode.Trim(),
+                            PinCode = dto.PinCode,
                             StateId = dto.StateId,
                             TracesPassword = dto.TracesPassword,
                             AllowForm16B = dto.AllowForm16B,
                             AlternateNumber = dto.AlternateNumber,
                             ISD = dto.ISD,
                             Share = dto.Share,
-                            PanBlobID = dto.PanBlobId
+                            PanBlobID = dto.PanBlobId,
+                            IncomeTaxPassword=dto.IncomeTaxPassword
                         };
 
                         await _context.Prospect.AddAsync(entity, cancellationToken);

@@ -33,5 +33,6 @@ namespace ReProServices.Domain.Entities
         public string CustomerOptingOutRemarks { get; set; }
         public DateTime? InvalidPanDate { get; set; }
         public string InvalidPanRemarks { get; set; }
+        public string IncomeTaxPassword { get; set; }
     }
 }

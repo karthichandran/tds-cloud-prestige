@@ -132,7 +132,7 @@ namespace ReProServices.Application.Customers.Commands.ImportCustomers
                                     AddressLine2 = row[23].ToString(),
                                     AddressPremises = row[21].ToString(),
                                     City = row[24].ToString(),
-                                    PinCode = row[26].ToString().Trim(),
+                                    PinCode = row[26].ToString(),
                                     StateId = stateObj.StateID,
                                     TracesPassword = "",
                                     AllowForm16B = true,

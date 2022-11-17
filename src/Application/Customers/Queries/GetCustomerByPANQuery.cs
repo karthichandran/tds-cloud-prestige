@@ -29,6 +29,9 @@ namespace ReProServices.Application.Customers.Queries
                     .ProjectTo<CustomerDto>(_mapper.ConfigurationProvider)
                     .FirstOrDefaultAsync(cancellationToken);
 
+                if (custDto == null)
+                    return custDto;
+
                 custDto.InvalidPAN = null;
                 custDto.IncorrectDOB = null;
                 custDto.LessThan50L = null;

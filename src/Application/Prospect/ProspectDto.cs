@@ -31,6 +31,7 @@ namespace ReProServices.Application.Prospect
 
         public int? PanBlobId { get; set; }
         public decimal? Share { get; set; }
+        public string IncomeTaxPassword { get; set; }
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Domain.Entities.Prospect, ProspectDto>();

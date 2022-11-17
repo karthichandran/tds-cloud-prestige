@@ -147,4 +147,7 @@ export class ClientService {
   welcomeMail(email:string,project:string,unitNo:string): Observable<any> {
     return this.http.get('/customer/welcomeMail/'+email+'/'+project+'/'+unitNo);
   }
+  groupMail(id:string): Observable<any> {
+    return this.http.get(`/customer/groupMail/${id}`);
+  }
 }

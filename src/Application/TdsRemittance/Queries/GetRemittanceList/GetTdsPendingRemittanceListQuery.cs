@@ -45,6 +45,7 @@ namespace ReProServices.Application.TdsRemittance.Queries.GetRemittanceList
                                        CustomerShare = cpt.CustomerShare,
                                        SellerName = sp.SellerName,
                                        SellerShare = cpt.SellerShare,
+                                       SellerPAN=sp.SellerPAN,
                                        PropertyPremises = sp.PropertyPremises,
                                        UnitNo = cp.UnitNo,
                                        TdsCollectedBySeller = cp.TdsCollectedBySeller,

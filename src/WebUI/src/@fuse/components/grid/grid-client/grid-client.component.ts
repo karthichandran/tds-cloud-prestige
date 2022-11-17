@@ -161,6 +161,13 @@ export class GridClientComponent implements OnInit, OnChanges, AfterViewInit {
     this.action.emit(model);
   }
 
+  email(row: any) {
+    let id = row.ownershipID == "00000000-0000-0000-0000-000000000000" ? row.pan : row.ownershipID; 
+  
+    let model = { 'id': id, 'action': 'email' };
+    this.action.emit(model);
+  }
+
   // onResized(eve: ResizedEvent) {
   //   // if (isUndefined(eve))
   //   if (eve===undefined)

@@ -67,7 +67,8 @@ namespace ReProServices.Application.Customers.Queries
                        UnitStatus = x.First().UnitStatus,
                        IsPanVerified = string.Join(",", x.Select(g => g.IsPanVerified)),
                        StampDuty = x.First().StampDuty,
-                       CustomerStatus= string.Join(",", x.Select(g => g.CustomerStatus))
+                       CustomerStatus= string.Join(",", x.Select(g => g.CustomerStatus)),
+                       IncomeTaxPassword= string.Join(",", x.Select(g => g.IncomeTaxPassword)),
                    }).ToList();
 
               

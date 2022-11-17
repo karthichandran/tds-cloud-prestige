@@ -87,7 +87,8 @@ namespace ReProServices.Application.Customers.Queries
                                 CustomerOptingOutDate = custVm.CustomerOptingOutDate,
                                 CustomerOptingOutRemarks = custVm.CustomerOptingOutRemarks,
                                 InvalidPanDate = custVm.InvalidPanDate,
-                                InvalidPanRemarks = custVm.InvalidPanRemarks
+                                InvalidPanRemarks = custVm.InvalidPanRemarks,
+                                IncomeTaxPassword=custVm.IncomeTaxPassword
                             };
                             vmResult.Add(dto);
                         }

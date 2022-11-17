@@ -142,7 +142,6 @@ namespace WebApi.Controllers
 
                 int result = await Mediator.Send(new UploadPanFileCommand { CustomerPropertyFile = custPropFile });
                 return Ok(result);
-
             }
             catch (Exception ex)
             {

@@ -24,6 +24,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Net.Mail;
 using Microsoft.Extensions.Configuration;
+using ReProServices.Application.Property.Queries;
 
 namespace WebApi.Controllers
 {
@@ -123,6 +124,11 @@ namespace WebApi.Controllers
               .HasColumnTitle("Customer Status")
               .HasColumnWidth(60)
               .HasColumnIndex(12);
+
+            settings.Property(x => x.IncomeTaxPassword)
+             .HasColumnTitle("IT Password")
+             .HasColumnWidth(60)
+             .HasColumnIndex(13);
 
             settings.Property(_ => _.OwnershipID).Ignored();
             settings.Property(_ => _.CustomerID).Ignored();
@@ -332,13 +338,70 @@ namespace WebApi.Controllers
 
             //attachment
             List<FileAttachment> fileList = new List<FileAttachment>();
-            var faqFilePath = @Directory.GetCurrentDirectory() + "\\Resources\\FAQs - TDS Compliance - REpro Services.pdf";
+            var faqFilePath = @Directory.GetCurrentDirectory() + "\\Resources\\FAQs.pdf";
             var byteArr = System.IO.File.ReadAllBytes(faqFilePath);
             var fileType = Path.GetExtension(faqFilePath);
             MemoryStream msFAQ = new MemoryStream(byteArr);
             fileList.Add(new FileAttachment() { MemoryStream = byteArr, FileName = "FAQs - TDS Compliance - REpro Services.pdf", FileType = "application/pdf" });
             emilaModel.attachments = fileList;
 
+            EmailHelper emailHelper = new EmailHelper(_configuration);
+            var isSent = emailHelper.SendEmail(emilaModel, logoResource);
+            return isSent;
+        }
+
+        [HttpGet("groupMail/{id}")]
+        public async Task<bool> SendGroupMail(Guid id)
+        {
+
+            var dto = await Mediator.Send(new GetCustomerByIDQuery { OwnershipId = id });
+            var projectId = dto.customers.First().CustomerProperty.First().PropertyId;
+            var unitNo= dto.customers.First().CustomerProperty.First().UnitNo;
+            var projObj = await Mediator.Send(new GetPropertyByIdQuery { PropertyID = projectId });
+            var project = projObj.propertyDto.AddressPremises;
+            var filePath = @Directory.GetCurrentDirectory() + "\\Resources\\logo.png";
+
+            Bitmap b = new Bitmap(filePath);
+            MemoryStream ms = new MemoryStream();
+            b.Save(ms, ImageFormat.Png);
+            ms.Position = 0;
+            var logoResource = new LinkedResource(ms, "image/png") { ContentId = "added-image-id" };
+            var subject = "Urgent !! Income tax new portal 2.0 - Impact on TDS payments U/s. 194IA on your behalf –"+ project+" & "+ unitNo;
+
+            var template = "";
+            var toList = "";
+            foreach (var cus in dto.customers) {
+                if(!string.IsNullOrEmpty(cus.EmailID))
+                toList += cus.EmailID+",";
+                template += "<tr><td class='cell'>" + cus.Name + "</td><td class='cell'>" + cus.PAN + "</td><td class='cell'>" + cus.IncomeTaxPassword + "</td></tr>";
+            }
+            var table = "<table style='width:100%; border-collapse: collapse;'><tr><td class='cell-header'>Name of the Owner </td><td class='cell-header'> PAN</td><td class='cell-header'>Income Tax Login Password </td></tr>" + template+"</table>";
+            
+            if (!string.IsNullOrEmpty(toList))
+                toList = toList.Substring(0, toList.Length - 1);
+
+                var emilaModel = new EmailModel()
+            {
+                    //To="karthi@leansys.in",
+                     To = toList,
+                    Subject = subject,               
+                IsBodyHtml = true
+            };
+
+           
+                emilaModel.Message = @"<html><style> .cell-header{text-align: center;width: 33%;height: 35px;display: inline-block;background: #fff;border: solid 2px black;overflow: hidden;font-weight: bold;font-size: larger;} .cell{width: 33%;height: 35px;display: inline-block;background: #fff;border: solid 2px black;overflow: hidden;} </style> <body> <p>Dear Sir/Madam, </p><p>Greetings from REpro Services!!</p> <p>We wish to inform you that, the Income tax department has mandated all banks to migrate to their new portal and this has a bearing on the TDS payments which we were doing U/s. 194IA on your behalf. </p><br> " +
+
+              " <p>The key change impacting us is that now the Form 26QB can be filled only after logging into the Income tax portal account of every buyer. To continue managing your TDS compliance by Repro services, we need your Income tax Login password of all owners. </p><br>" +
+
+            " <p>Hence, request you to fill the information below and respond to this email at the earliest to ensure seamless compliance within the stipulated timelines. </p><br>" +table+
+
+              " <p>If the TDS compliance for your unit is already completed in all respects, please ignore this email. </p><br>" +
+
+                      " <p>Feel free to get in touch with us for any further information/clarification if required.</p><br>" +
+
+                      "<br> <img height='90' width='170'  src=cid:added-image-id><p>Thanks and Regards,<br>REpro Team</p> </body></html> ";
+            
+          
             EmailHelper emailHelper = new EmailHelper(_configuration);
             var isSent = emailHelper.SendEmail(emilaModel, logoResource);
             return isSent;

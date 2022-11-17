@@ -110,24 +110,21 @@
 
                     <mat-form-field appearance="outline" fxFlex>
                       <mat-label>City/District </mat-label>
-                      <input matInput formControlName="city" required>
-                      <mat-error>City/District is required!</mat-error>
+                      <input matInput formControlName="city" >
                     </mat-form-field>
 
                     <mat-form-field class="selection-fix" appearance="outline" fxFlex>
                       <mat-label>State</mat-label>
-                      <mat-select formControlName="stateId" required (selectionChange)="selectedState($event)">
+                      <mat-select formControlName="stateId"  (selectionChange)="selectedState($event)">
                         <mat-option *ngFor="let option of states" [value]="option.stateID">
                           {{option.state}}
                         </mat-option>
                       </mat-select>
-                      <mat-error>State is required!</mat-error>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline" fxFlex>
                       <mat-label>PIN Code</mat-label>
-                      <input matInput type="text" formControlName="pinCode" required>
-                      <mat-error>PIN Code is required!</mat-error>
+                      <input matInput type="text" formControlName="pinCode" >
                     </mat-form-field>
 
                   </div>
@@ -176,6 +173,10 @@
                       <mat-label>Email</mat-label>
                       <input type="email" matInput formControlName="emailID" required>
                       <mat-error>Email is required!</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex>
+                      <mat-label>Income Tax Login Password</mat-label>
+                      <input type="text" matInput formControlName="incomeTaxPassword"  maxlength="50">                      
                     </mat-form-field>
                   </div>
                   <div fxFlex="1 0 auto" fxLayout="row wrap" fxLayout.sm="column" fxLayout.xs="column">

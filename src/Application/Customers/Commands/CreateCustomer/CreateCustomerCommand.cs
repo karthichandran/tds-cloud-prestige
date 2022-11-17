@@ -43,7 +43,7 @@ namespace ReProServices.Application.Customers.Commands.CreateCustomer
                             MobileNo = customer.MobileNo,
                             Name = customer.Name,
                             PAN = customer.PAN,
-                            PinCode = customer.PinCode.Trim(),
+                            PinCode = customer.PinCode,
                             StateId = customer.StateId,
                             TracesPassword = customer.TracesPassword,
                             AllowForm16B = customer.AllowForm16B,
@@ -58,7 +58,8 @@ namespace ReProServices.Application.Customers.Commands.CreateCustomer
                             CustomerOptingOutDate = customer.CustomerOptingOutDate,
                             CustomerOptingOutRemarks = customer.CustomerOptingOutRemarks,
                             InvalidPanDate = customer.InvalidPanDate,
-                            InvalidPanRemarks = customer.InvalidPanRemarks
+                            InvalidPanRemarks = customer.InvalidPanRemarks,
+                            IncomeTaxPassword=customer.IncomeTaxPassword
                             //Updated = DateTime.Now,
                             //UpdatedBy = userInfo.UserID.ToString()
                         };
@@ -90,7 +91,7 @@ namespace ReProServices.Application.Customers.Commands.CreateCustomer
                             MobileNo = customer.MobileNo,
                             Name = customer.Name,
                             PAN = customer.PAN,
-                            PinCode = customer.PinCode.Trim(),
+                            PinCode = customer.PinCode,
                             StateId = customer.StateId,
                             TracesPassword = customer.TracesPassword,
                             AllowForm16B = customer.AllowForm16B,
@@ -105,7 +106,8 @@ namespace ReProServices.Application.Customers.Commands.CreateCustomer
                             CustomerOptingOutDate = customer.CustomerOptingOutDate,
                             CustomerOptingOutRemarks = customer.CustomerOptingOutRemarks,
                             InvalidPanDate = customer.InvalidPanDate,
-                            InvalidPanRemarks = customer.InvalidPanRemarks
+                            InvalidPanRemarks = customer.InvalidPanRemarks,
+                            IncomeTaxPassword = customer.IncomeTaxPassword
                             //Created = DateTime.Now,
                             //CreatedBy = userInfo.UserID.ToString()
                         };

@@ -47,6 +47,13 @@ namespace WebApi.Controllers
             return await Mediator.Send(new GetRemittancesQuery() { ClientPaymentTransactionID = clientPayTransId });
         }
 
+        //End point to get seller pan
+        [HttpGet("getSellerPan/{clientPayTransId}")]
+        public async Task<string> GetSellerPanByTransactionID(int clientPayTransId)
+        {
+            return await Mediator.Send(new GetSellerPanByTransactionIdQuery() { TransactionID = clientPayTransId });
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create(CreateRemittaneCommand command)
         {

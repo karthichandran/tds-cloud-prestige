@@ -59,12 +59,13 @@ namespace ReProServices.Application.Prospect.Command
                             MobileNo = prospectDto.MobileNo,
                             Name = prospectDto.Name,
                             PAN = prospectDto.PAN,
-                            PinCode = prospectDto.PinCode.Trim(),
+                            PinCode = prospectDto.PinCode,
                             StateId = prospectDto.StateId,
                             TracesPassword = prospectDto.TracesPassword,
                             AllowForm16B = prospectDto.AllowForm16B,
                             AlternateNumber = prospectDto.AlternateNumber,
                             ISD = prospectDto.ISD,
+                            IncomeTaxPassword=prospectDto.IncomeTaxPassword
                             //Created = DateTime.Now,
                             //CreatedBy = userInfo.UserID.ToString()
                         };

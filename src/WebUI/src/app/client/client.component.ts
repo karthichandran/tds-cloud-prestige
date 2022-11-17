@@ -41,7 +41,7 @@ export class ClientComponent implements OnInit, OnDestroy {
   states: any[] = [];
   form16Options: any[] = [{ 'id': 1, 'description': 'Yes' }, { 'id': 0, 'description': 'No' }];
   paymentMethods: any[] = [{ 'paymentMethodID': 1, 'paymentMethod': 'Lumpsum' }, { 'paymentMethodID': 2, 'paymentMethod': 'Installment' }];
-  statusDDl: any[] = [{ 'id': '', 'description': '' }, { 'id': 1, 'description': 'Saved' }, { 'id': 2, 'description': 'Submitted' }, { 'id': 3, 'description': 'Cancelled' }, { 'id': 4, 'description': 'Assigned' }, { 'id': 5, 'description': 'Blocked' }, { 'id': 6, 'description': 'Released' }, { 'id': 7, 'description': 'Archive' }];
+  statusDDl: any[] = [{ 'id': '', 'description': '' }, { 'id': 1, 'description': 'Saved' }, { 'id': 2, 'description': 'Submitted' }, { 'id': 3, 'description': 'Cancelled' }, { 'id': 4, 'description': 'Assigned' }, { 'id': 5, 'description': 'Blocked' }, { 'id': 6, 'description': 'Released' }, { 'id': 7, 'description': 'Archive' },{ 'id': 8, 'description': 'No IT Password' }];
   gstCode: any[] = [{ 'id': 1, 'description': '15%' }];
   tdsCode: any[] = [{ 'id': 1, 'description': '15%' }];
   rowData: any[] = [];
@@ -124,9 +124,9 @@ welcomeMail:boolean;
       addressPremises: [''],
       adressLine1: [''],
       addressLine2: [''],
-      city: ['', Validators.required],
-      stateId: ['', Validators.required],
-      pinCode: ['',Validators.compose([ Validators.required,this.pinCodeValidator(),  Validators.maxLength(10)])],
+      city: [''],
+      stateId: [''],
+      pinCode: ['',Validators.compose([ this.pinCodeValidator(),  Validators.maxLength(10)])],
       pan: ['',Validators.compose( [Validators.required, this.panValidator(),Validators.maxLength(10)])],
       emailID: ['', Validators.email],
       mobileNo: ['', Validators.compose([Validators.required,,Validators.maxLength(15)])],
@@ -148,6 +148,7 @@ welcomeMail:boolean;
       invalidPanRemarks:[''],
       customerOptingOutDate:[''],
       customerOptingOutRemarks:[''],
+      incomeTaxPassword:['']
     });
     // Vertical Stepper form stepper
     this.propertyForm = this._formBuilder.group({
@@ -317,6 +318,7 @@ welcomeMail:boolean;
       client.isd = "+91";
       client.isPanVerified = false;
       client.onlyTDS=false;
+      client.incomeTaxPassword="";
 
       client.customerOptingOutDate="";
       client.customerOptingOutRemarks="";
@@ -389,6 +391,7 @@ welcomeMail:boolean;
     this.customerform.get("addressPremises").clearValidators();
     this.customerform.get("adressLine1").clearValidators();
     this.customerform.get("addressLine2").clearValidators();
+    this.customerform.get("pinCode").clearValidators();
     this.customerform.get("isTracesRegistered").clearValidators();
     this.customerform.get("tracesPassword").clearValidators();
     this.customerform.get("traces").clearValidators();
@@ -396,6 +399,7 @@ welcomeMail:boolean;
     this.customerform.get("isd").clearValidators();
     this.customerform.get("customerID").clearValidators();
     this.customerform.get("isPanVerified").clearValidators();
+    this.customerform.get("incomeTaxPassword").clearValidators();
   }
   saveCustomer(): void {
    // this.removeRestriction();
@@ -988,10 +992,14 @@ welcomeMail:boolean;
       this.loadCustomerAndPropertyById(eve.id);
       var ele = document.getElementsByClassName('mat-tab-label') as HTMLCollectionOf<HTMLElement>;
       ele[0].click();
+    } else if (eve.action == 'email') {
+      this.clientService.groupMail(eve.id).subscribe((res) => {
+
+      });
     } else {
       let row = eve.row;
-      let model: any = {};    
-     
+      let model: any = {};
+
       model.ownershipID = row.ownershipID;
       model.statusTypeID = row.statusTypeID;
       model.remarks = row.remarks
@@ -1005,8 +1013,8 @@ welcomeMail:boolean;
           this.toastr.success("Customer details saved successfully");
           this.search();
         }
-      });   
-      
+      });
+
     }
   }
 

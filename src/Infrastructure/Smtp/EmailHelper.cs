@@ -5,6 +5,9 @@ using System.IO;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
+//using MailKit.Net.Smtp;
+//using MimeKit;
+
 
 namespace ReProServices.Infrastructure.Smtp
 {
@@ -33,6 +36,7 @@ namespace ReProServices.Infrastructure.Smtp
             try
             {
                 // using (SmtpClient client = new SmtpClient(_host,8889))
+                // using (var clients = new MailKit.Net.Smtp.SmtpClient())
                 using (SmtpClient client = new SmtpClient(_host, _port))
                 {
                     NetworkCredential NetCrd = new NetworkCredential(_from, _password);
@@ -77,7 +81,8 @@ namespace ReProServices.Infrastructure.Smtp
         {
             try
             {
-               //  using (SmtpClient client = new SmtpClient(_host,8889))
+                //  using (SmtpClient client = new SmtpClient(_host, _port))
+                // using (var client = new MailKit.Net.Smtp.SmtpClient())
                 using (SmtpClient client = new SmtpClient(_host, _port))
                 {
                     NetworkCredential NetCrd = new NetworkCredential(_from, _password);
@@ -92,7 +97,7 @@ namespace ReProServices.Infrastructure.Smtp
                     mailMessage.From = new MailAddress(_from, _alias);
                     mailMessage.BodyEncoding = Encoding.UTF8;
                     mailMessage.To.Add(emailModel.To);
-                  
+
                     if (!string.IsNullOrEmpty(emailModel.CC))
                     {
                         var cclist = emailModel.CC.Split(',');
@@ -119,8 +124,34 @@ namespace ReProServices.Infrastructure.Smtp
                     client.UseDefaultCredentials = false;
                     client.Credentials = NetCrd;
                     client.EnableSsl = true; // Node :this should be enabled for live service
+                  
                     client.Send(mailMessage);
                     return true;
+
+                    //var clients = new MailKit.Net.Smtp.SmtpClient();
+                    //var message = new MimeMessage();
+                    //message.From.Add(new MailboxAddress("noreply", "tdscompliance@reproservices.in"));
+                    //message.To.Add(new MailboxAddress("REpro", "karthi@leansys.in"));
+                    //message.Subject = "Test Email";
+                    //message.Body = new TextPart("html")
+                    //{
+                    //    Text = "Test email sent successfully."
+                    //};
+
+                    //try
+                    //{
+                    //    clients.SslProtocols = System.Security.Authentication.SslProtocols.Tls12;
+                    //    clients.Connect("smtp.zeptomail.in", 587, false);
+                    //    clients.Authenticate("emailapikey", "PHtE6r0EROrp3zV89RcGtvDrRcXxPIMp+ekyJAkS5okWD/QDGU1XrNh9wz+/rB8uU/ZAEv6amtk9sLicsOiGcW25NjkeX2qyqK3sx/VYSPOZsbq6x00euFwTfk3bUY7qdt5o1C3Xud7aNA==");
+                    //   // clients.Authenticate(NetCrd);
+                    //    clients.Send(message);
+                    //    clients.Disconnect(true);
+                    //}
+                    //catch (Exception e)
+                    //{
+                    //    Console.Write(e.Message);
+                    //}
+                    //return true;
                 }
             }
             catch (Exception e)

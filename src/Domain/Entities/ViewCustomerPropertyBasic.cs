@@ -26,6 +26,7 @@ namespace ReProServices.Domain.Entities
         public decimal? StampDuty { get; set; }
         public string TracesPassword { get; set; }
         public string CustomerAlias { get; set; }
-        public string IsPanVerified { get; set; }        
+        public string IsPanVerified { get; set; }     
+        public string IncomeTaxPassword { get; set; }
     }
 }

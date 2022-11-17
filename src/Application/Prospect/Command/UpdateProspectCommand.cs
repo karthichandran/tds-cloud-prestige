@@ -41,12 +41,13 @@ namespace ReProServices.Application.Prospect.Commands
                 entity.MobileNo = dto.MobileNo;
                 entity.Name = dto.Name;
                 entity.PAN = dto.PAN;
-                entity.PinCode = dto.PinCode.Trim();
+                entity.PinCode = dto.PinCode;
                 entity.StateId = dto.StateId;
                 entity.TracesPassword = dto.TracesPassword;
                 entity.AllowForm16B = dto.AllowForm16B;
                 entity.AlternateNumber = dto.AlternateNumber;
                 entity.ISD = dto.ISD;
+                entity.IncomeTaxPassword = dto.IncomeTaxPassword;
 
                 _context.Prospect.Update(entity);
                 
