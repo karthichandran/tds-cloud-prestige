@@ -366,7 +366,7 @@ namespace WebApi.Controllers
             b.Save(ms, ImageFormat.Png);
             ms.Position = 0;
             var logoResource = new LinkedResource(ms, "image/png") { ContentId = "added-image-id" };
-            var subject = "Urgent !! Income tax new portal 2.0 - Impact on TDS payments U/s. 194IA on your behalf –"+ project+" & "+ unitNo;
+            var subject = "Urgent !! Income tax new portal 2.0 - Impact on TDS payments U/s. 194IA on your behalf –"+ project+" - "+ unitNo;
 
             var template = "";
             var toList = "";
@@ -384,6 +384,7 @@ namespace WebApi.Controllers
             {
                     //To="karthi@leansys.in",
                      To = toList,
+                    From = "support@reproservices.in",
                     Subject = subject,               
                 IsBodyHtml = true
             };
@@ -394,6 +395,12 @@ namespace WebApi.Controllers
               " <p>The key change impacting us is that now the Form 26QB can be filled only after logging into the Income tax portal account of every buyer. To continue managing your TDS compliance by Repro services, we need your Income tax Login password of all owners. </p><br>" +
 
             " <p>Hence, request you to fill the information below and respond to this email at the earliest to ensure seamless compliance within the stipulated timelines. </p><br>" +table+
+
+        " <p>If your PAN is not yet registered in the Income tax portal or if you do not remember your Income tax Login password, we request you to use the below relevant link to know the process. Using the same, request you to either create or reset the password and share it with us for due compliance. </p><br>" +
+
+        " <p>Link for how to register PAN in Income tax portal – <a href='https://www.incometax.gov.in/iec/foportal/help/how-to-register-e-filing'> https://www.incometax.gov.in/iec/foportal/help/how-to-register-e-filing </a> </p><br>" +
+
+        " <p>Link for how to Reset Income tax Login password –<a href='https://www.incometax.gov.in/iec/foportal/help/how-to-reset-e-filing-password'> https://www.incometax.gov.in/iec/foportal/help/how-to-reset-e-filing-password</a> </p><br>" +
 
               " <p>If the TDS compliance for your unit is already completed in all respects, please ignore this email. </p><br>" +
 

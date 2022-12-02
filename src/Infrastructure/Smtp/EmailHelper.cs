@@ -81,6 +81,10 @@ namespace ReProServices.Infrastructure.Smtp
         {
             try
             {
+                if (!string.IsNullOrEmpty(emailModel.From))
+                {
+                    _from = emailModel.From;
+                }
                 //  using (SmtpClient client = new SmtpClient(_host, _port))
                 // using (var client = new MailKit.Net.Smtp.SmtpClient())
                 using (SmtpClient client = new SmtpClient(_host, _port))

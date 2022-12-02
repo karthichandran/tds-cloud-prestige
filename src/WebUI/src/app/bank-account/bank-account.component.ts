@@ -31,6 +31,8 @@ export class BankAccountComponent implements OnInit, OnDestroy {
       accountId: [''],
       userName: ['', Validators.required],
       userPassword: ['', Validators.required],
+      bankName:[''],
+      laneNo:[''],
       letterA: [''],
       letterB: [''],
       letterC: [''],
@@ -51,6 +53,8 @@ export class BankAccountComponent implements OnInit, OnDestroy {
 
     this.columnDef = [
       { 'header': 'User Name', 'field': 'userName', 'type': 'label' },
+      { 'header': 'Bank Name', 'field': 'bankName', 'type': 'label' },
+      { 'header': 'Lane No', 'field': 'laneNo', 'type': 'label' },
       //{ 'header': 'Password', 'field': 'userPassword', 'type': 'label' },
       { 'header': '', 'field': '', 'type': 'button', 'activity': ['edit'], 'maxWidth': 80 }
     ];

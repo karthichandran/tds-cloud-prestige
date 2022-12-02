@@ -37,19 +37,20 @@ export class SellerComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Reactive Form
     this.form = this._formBuilder.group({
-      sellerID:[''],
+      sellerID: [''],
       sellerName: ['', Validators.required],
       addressPremises: [''],
-      adressLine1: [''],
+      adressLine1: ['', Validators.required],
       addressLine2: [''],
-      city: ['', Validators.required],
-      stateID: ['', Validators.required],
+      city: [''],
+      stateID: [''],
       pinCode: ['', Validators.required],
-      residency: ['resident', Validators.required],     
-      pan: ['', [Validators.required,this.panValidator()]],
-      emailID: [''],
-      mobileNo: ['']
-     
+      residency: ['resident', Validators.required],
+      pan: ['', [Validators.required, this.panValidator()]],
+      emailID: ['', Validators.required],
+      mobileNo: ['', Validators.required],
+      postOffice: [''],
+      area: []
     });
     
     this.columnDef = [

@@ -54,10 +54,10 @@ export class PropertyComponent implements OnInit, OnDestroy {
       propertyID: [''],
       propertyType: [2, Validators.required],
       addressPremises: [''],
-      addressLine1: [''],
+      addressLine1: ['', Validators.required],
       addressLine2: [''],
-      city: ['', Validators.required],
-      stateID: ['', Validators.required],
+      city: [''],
+      stateID: [''],
       pinCode: ['', Validators.required],
       gstTaxCode: ['', Validators.required],
       tdsTaxCode: ['', Validators.required],
@@ -66,7 +66,9 @@ export class PropertyComponent implements OnInit, OnDestroy {
       share: [''],
       propertyCode: [''],
       propertyShortName: [''],
-      isActive:['true']
+      isActive:['true'],
+      postOffice: [''],
+      area: []
     });
 
     this.columnDef = [

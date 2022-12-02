@@ -65,7 +65,7 @@ namespace ReProServices.Application.Prospect.Command
                             AllowForm16B = prospectDto.AllowForm16B,
                             AlternateNumber = prospectDto.AlternateNumber,
                             ISD = prospectDto.ISD,
-                            IncomeTaxPassword=prospectDto.IncomeTaxPassword
+                            IncomeTaxPassword = prospectDto.IncomeTaxPassword
                             //Created = DateTime.Now,
                             //CreatedBy = userInfo.UserID.ToString()
                         };
@@ -73,6 +73,29 @@ namespace ReProServices.Application.Prospect.Command
                         await _context.SaveChangesAsync(cancellationToken);
                         existingCust = entity;
                     }
+                    else {
+                        existingCust.AdressLine1 = prospectDto.AdressLine1;
+                        existingCust.AddressLine2 = prospectDto.AddressLine2;
+                        existingCust.AddressPremises = prospectDto.AddressPremises;
+                        existingCust.City = prospectDto.City;
+                        existingCust.DateOfBirth = prospectDto.DateOfBirth.Date;
+                        existingCust.EmailID = prospectDto.EmailID;
+                        existingCust.IsTracesRegistered = prospectDto.IsTracesRegistered;
+                        existingCust.MobileNo = prospectDto.MobileNo;
+                        existingCust.Name = prospectDto.Name;
+                        existingCust.PAN = prospectDto.PAN;
+                        existingCust.PinCode = prospectDto.PinCode;
+                        existingCust.StateId = prospectDto.StateId;
+                        existingCust.TracesPassword = prospectDto.TracesPassword;
+                        existingCust.AllowForm16B = prospectDto.AllowForm16B;
+                        existingCust.AlternateNumber = prospectDto.AlternateNumber;
+                        existingCust.ISD = prospectDto.ISD;
+                        existingCust.IncomeTaxPassword = prospectDto.IncomeTaxPassword;
+
+                         _context.Customer.Update(existingCust);
+                        await _context.SaveChangesAsync(cancellationToken);
+                    }
+
                     Domain.Entities.CustomerProperty cpEntity = new Domain.Entities.CustomerProperty
                     {
                         CustomerId = existingCust.CustomerID,

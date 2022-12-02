@@ -567,7 +567,7 @@ welcomeMail:boolean;
       if(unitNo=="")
       return;
       this.clientService.welcomeMail(email,project,unitNo).subscribe((res) => {
-
+        this.toastr.success("Sent mail successfully");
       });
      }
   }
@@ -994,7 +994,7 @@ welcomeMail:boolean;
       ele[0].click();
     } else if (eve.action == 'email') {
       this.clientService.groupMail(eve.id).subscribe((res) => {
-
+        this.toastr.success("Sent mail successfully");
       });
     } else {
       let row = eve.row;

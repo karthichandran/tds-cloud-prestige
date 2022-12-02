@@ -12,6 +12,8 @@ namespace ReProServices.Application.BankAccount
         public int AccountId { get; set; }
         public string UserName { get; set; }
         public string UserPassword { get; set; }
+        public string BankName { get; set; }
+        public int? LaneNo { get; set; }
 
         public string LetterA { get; set; }
         public string LetterB { get; set; }

@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "reprodrive",
+  "private_key_id": "955e1618673961df31f1b3a92f7eb185c7855b6f",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCu8nsqRllmpUX+\ns58Zfl+0U/kS6QumH2JlH2XtZuW/VNuAp5wGE9c/Ysc/+pLsvwV3GXtSoJBBat8+\n9JWIuf9emeWYEaL8q2BftzgvDRckN0BkjIgqhJ3JXppzgcbblec0fVlwFXsG4S4i\n1SrQUIgCNyOYKim06qm5L+p8xuroMqDIFovvmn7oKsWwgj0UKkr8r2JxIgBGJyLP\nNzLyw9U5+6tro4TQhZUiUkDgucESFAl5ooc+r2kC+L29pNSFt+GRjs9TY5yjNO7F\nhlnVe2L9LHVyWnqMERfWD1bwpQedl9DYMGu2e6yIrZaeaUedn3Ga+XvK+GsqUx7e\nLD1PX757AgMBAAECgf906VMiRMYODxPmvSK3I1e2uBZxGjEhOABnoQZ13KVN+tnd\n1iSdZGGVotJOv/YD/OccnBnvguRCgnMnfYGZDJhELXli6cSqS6a21vbJHFtu3xG2\nptUU8yyZvRFszonmrdQRHh9POmn2KEIRtDpNWkB8feNfxhDIO00IYGIW2DYV9PTi\nHG7GGsfXUBiAYNSTEKrtvMvM6TgnKTfHq/zfWDvhhONIT+LnhYBl2kjtyxArNwTm\nm3SrwavKuuEu3uM3xvDKB6baydGuFmQhyK3AiZ2zJsUl9ak2ujPONhNzn+1qbZow\nixFKSpkpRPDYWZYJzLO6DBkupP8h4D5pDk8sCS0CgYEA4SkJsiFB0zyiDql0YHYv\nftnKUyrA+he9NSEJzVS0y7WTi7NhfFp5JtQOZpZquG2xf+31+RFN3fBPYUQ5JTBh\ntU3nj/Ge4U267lAzChDDHFjZyoqzoBd0TYoizXmaF4kDUSR7Qcri5FV9pW9FKFq3\n+Qa3nJwiPZPK3vs24MbWfp0CgYEAxujIpZrSn4tC34zcsX1VcFqttiTVZcaD6iVY\nJ7oSQ7xM04EQrOWqy3BFHXFLdlQwFnc+jKiN9mK/gs0yt25U84no0o4KcpH72DM4\n+Zf6KB9p8iosPP8x9qqZ5rS5aISrtIeBCRdwd73hOrCx1JHpPOGUAGPe2XR2rNoL\nKd3TWfcCgYBkCdWy/S+/6Mqf9Q4t5ZTIqX9JYE+JTo7UUi+GuUHy2GQLx9FibNgz\nNjiHwAD+nE4m5tVIqjWMjD7YmnVBXrOq2EgwHkxXEjAhviRPLo9hwuBRKzsPwBv+\nb4dy/7pFBq0gmjLhUoForcs7e6qgeV4QGLnvrTdRYJ7cX4VMbUvTyQKBgQDAVEvW\n3So1fImP8PtgX4kil3uKOHli7J2W5L8lwqRwfH1osU53b6dDCO67dlX6N5M71ddU\nWJLUH02AY3tbpEJeLgZCuXdeqstylKzNomcPLrjZoG+gFz2vfexMCImSh14jtDZP\nnStxjNdgUYPRv7hf1tqtueO8LgGmRzsuI0B+pwKBgQDEllbLBbrD7rjUp4wCF+LK\nK7e9lL24r6F3ys/xHY8a7IkDD0fxBc4Pzl3b8ttiWFOcLUKl0VRrKutw7cKJnvK1\nlrDb3ecaBq9R55u2P+tYcgKUd1fc0BSpm/pOd91qhIG9CRQQLeh8kqjrNFV7Qj8Y\nbXg5qYNv3EKtACK74Xo5pQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "reproserviceacct@reprodrive.iam.gserviceaccount.com",
+  "client_id": "101373806221167772343",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/reproserviceacct%40reprodrive.iam.gserviceaccount.com"
+}

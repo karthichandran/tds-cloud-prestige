@@ -83,5 +83,7 @@ namespace ReProServices.Application.Common.Interfaces
         DbSet<BankAccountDetails> BankAccountDetails { get; set; }
 
         DbSet<ViewCustomerReport> ViewCustomerReports { get; set; }
+
+        DbSet<Domain.Entities.Message> Message { get; set; }
     }
 }

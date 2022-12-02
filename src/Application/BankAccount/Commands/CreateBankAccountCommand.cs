@@ -28,6 +28,8 @@ namespace ReProServices.Application.BankAccount.Commands
                 {
                     UserName = obj.UserName,
                     UserPassword = obj.UserPassword,
+                    BankName=obj.BankName,
+                    LaneNo=obj.LaneNo,
                     LetterA = obj.LetterA,
                     LetterB = obj.LetterB,
                     LetterC = obj.LetterC,
