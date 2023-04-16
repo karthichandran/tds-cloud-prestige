@@ -207,6 +207,9 @@ namespace ReProServices.Application.Customers.Commands.ImportCustomers
                                 else
                                     customerID = existCus.CustomerID;
 
+
+                                var val1 = row[28].ToString();
+                                var val2 = row[29].ToString();
                                 Domain.Entities.CustomerProperty entity = new Domain.Entities.CustomerProperty
                                 {
                                     CustomerId = customerID,
@@ -220,13 +223,13 @@ namespace ReProServices.Application.Customers.Commands.ImportCustomers
                                     StatusTypeId = (int)EStatusType.Saved,
                                     TdsCollectedBySeller = true,
                                     TdsRateID = porperty.TDSTaxCode,
-                                    TotalUnitCost = Convert.ToDecimal(row[28].ToString()),
+                                    TotalUnitCost = Convert.ToDecimal(row[28].ToString().Trim()),
                                     UnitNo = Convert.ToInt32(row[2].ToString()),
                                     DateOfAgreement = DateTime.ParseExact(row[27].ToString(),"dd/MM/yyyy", CultureInfo.InvariantCulture),
                                     OwnershipID = guid,
                                     IsArchived = false,
                                     CustomerAlias = custList[0].Name,
-                                    StampDuty= Convert.ToDecimal(row[29].ToString())                                   
+                                    StampDuty= Convert.ToDecimal(row[29].ToString().Trim())                                   
                                     //Created = DateTime.Now,
                                     //CreatedBy = userInfo.UserID.ToString()
                                 };

@@ -61,11 +61,13 @@
                           <mat-error>Name of the builder is required!</mat-error>
                         </mat-form-field>
                       </div>
-                      <div fxLayout="column" fxFlex>                       
-                        <!-- <mat-form-field appearance="outline" fxFlex="33" class="pr-4">
+                      <div fxLayout="column" fxFlex>
+                        <!--<label class="label font-weight-200">Name of the Premises/Building/Village</label>-->
+                        <mat-form-field appearance="outline" fxFlex="33" class="pr-4">
                           <mat-label>Name of the Premises/Building/Village</mat-label>
-                          <input type="text" matInput formControlName="addressPremises" >                         
-                        </mat-form-field> -->
+                          <input type="text" matInput formControlName="addressPremises" >
+                          <!--<mat-error>Name of the premises is required!</mat-error>-->
+                        </mat-form-field>
                       </div>
                     </div>
 
@@ -74,8 +76,8 @@
                         <!--<label class="label font-weight-200">Flat/Door/Block No</label>-->
                         <mat-form-field appearance="outline" fxFlex="33" class="pr-4">
                           <mat-label>Flat/Door/Block No</mat-label>
-                          <input type="text" matInput formControlName="adressLine1"  required>
-                          <mat-error>Flat/Door/Block No is required!</mat-error>
+                          <input type="text" matInput formControlName="adressLine1" required>
+                          <mat-error>Flat No. is required!</mat-error>
                         </mat-form-field>
                       </div>
                       <div fxLayout="column" fxFlex>
@@ -88,19 +90,7 @@
                     </div>
 
                     <div fxLayout="row wrap" fxLayoutAlign="start center">
-                     
                       <mat-form-field appearance="outline" fxFlex class="pr-4">
-                        <mat-label>Post Office</mat-label>
-                        <input type="text" matInput formControlName="postOffice" >
-                      </mat-form-field>
-                     
-                      <mat-form-field appearance="outline" fxFlex class="pr-4">
-                        <mat-label>Area/locality</mat-label>
-                        <input type="text" matInput formControlName="area" >
-                      </mat-form-field>
-                    </div>
-                    <div fxLayout="row wrap" fxLayoutAlign="start center">
-                      <!-- <mat-form-field appearance="outline" fxFlex class="pr-4">
                         <mat-label>City/District</mat-label>
                         <input type="text" matInput formControlName="city" required>
                         <mat-error>City/District is required!</mat-error>
@@ -113,18 +103,13 @@
                           </mat-option>
                         </mat-select>
                         <mat-error>State is required!</mat-error>
-                      </mat-form-field> -->
+                      </mat-form-field>
                       <mat-form-field appearance="outline" fxFlex class="pr-4">
                         <mat-label>Pin Code</mat-label>
                         <input type="text" matInput formControlName="pinCode" required>
                         <mat-error>PinCode is required!</mat-error>
                       </mat-form-field>
-                     
-                      <mat-form-field appearance="outline" fxFlex class="pr-4">
-                        <mat-label>PAN</mat-label>
-                        <input type="text" matInput formControlName="pan" (keyup)="form.patchValue({pan: $event.target.value.toUpperCase()})" required>
-                        <mat-error>PAN is required!</mat-error>
-                      </mat-form-field>
+
                     </div>
                     <div fxLayout="row wrap" fxLayoutAlign="start center">
 
@@ -136,6 +121,11 @@
                         </mat-radio-group>
                         <mat-error *ngIf="!isRadioButtonTouched">status is required!</mat-error>
                       </div>
+                      <mat-form-field appearance="outline" fxFlex class="pr-4">
+                        <mat-label>PAN</mat-label>
+                        <input type="text" matInput formControlName="pan" (keyup)="form.patchValue({pan: $event.target.value.toUpperCase()})" required>
+                        <mat-error>PAN is required!</mat-error>
+                      </mat-form-field>
                     </div>
                     <div fxLayout="row wrap" fxLayoutAlign="start center">
 

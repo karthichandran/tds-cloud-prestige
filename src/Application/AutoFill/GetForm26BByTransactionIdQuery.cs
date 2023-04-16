@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using ReProServices.Domain.Extensions;
+using System.Collections.Generic;
 
 namespace ReProServices.Application.AutoFill
 {
@@ -30,6 +31,7 @@ namespace ReProServices.Application.AutoFill
                                 join cpt in _context.ClientPaymentTransaction on new { pay.InstallmentID, pay.ClientPaymentID } equals new { cpt.InstallmentID, cpt.ClientPaymentID }
                                 join cp in _context.ViewCustomerPropertyExpanded on new { cpt.OwnershipID, cpt.CustomerID } equals new { cp.OwnershipID, cp.CustomerID }
                                 join sp in _context.ViewSellerPropertyExpanded on cp.PropertyID equals sp.PropertyID
+                                join cus in _context.Customer on cp.CustomerID equals cus.CustomerID
                                 where cpt.ClientPaymentTransactionID == request.ClientPaymentTransactionID
                                 select new AutoFillDto
                                 {
@@ -89,7 +91,9 @@ namespace ReProServices.Application.AutoFill
                                         PropertyID = sp.PropertyID,
                                         RevisedDateOfPayment=pay.RevisedDateOfPayment.GenerateDatePart(),
                                         DateOfDeduction=pay.DateOfDeduction.GenerateDatePart(),
-                                        StampDuty = (int)cp.StampDuty.Value
+                                        StampDuty = (int)cp.StampDuty.Value,
+                                        CustomerId= cpt.CustomerID
+                                       // TotalAmountPaid = GetTotalPaidSahreAmount(cpt.CustomerID,cpt.OwnershipID)
                                     },
 
                                     tab4 = new Tab4()
@@ -97,11 +101,53 @@ namespace ReProServices.Application.AutoFill
                                         //DateOfTaxDeduction = pay.DateOfDeduction.GenerateDatePart(),
                                        // DateOfPayment = pay.RevisedDateOfPayment.GenerateDatePart(),
                                         ModeOfPayment = "modeBankSelection"
+                                    },
+                                    eportal=new Eportal {
+                                        LogInPan=cus.PAN,
+                                        IncomeTaxPwd=cus.IncomeTaxPassword,
+                                        SellerPan=sp.SellerPAN,
+                                        SellerFlat = sp.SellerAddressLine1,
+                                        SellerRoad =sp.SellerAddressLine2,
+                                        SellerPinCode=sp.SellerPinCode,
+                                        SellerMobile=sp.SellerMobileNo,
+                                        SellerEmail=sp.SellerEmailID,
+                                        IsLand= sp.PropertyType == 1,
+                                        PropFlat=sp.PropertyAddressLine1,
+                                        PropRoad=sp.PropertyAddressLine2,
+                                        PropPinCode=sp.PropertyPinCode,
+                                        paymentType= cp.PaymentMethodID,
+                                        DateOfAgreement = cp.DateOfAgreement.Value.GenerateDatePart(),                                       
+                                        TotalAmount = (int)cp.TotalUnitCost.Value,
+                                        StampDuty = (int)cp.StampDuty.Value,
+                                        RevisedDateOfPayment = pay.RevisedDateOfPayment.GenerateDatePart(),
+                                        TotalAmountPaid = (int)cpt.GrossShareAmount,
+                                        Tds = (int)Math.Ceiling(cpt.Tds),
+                                        Interest = cpt.TdsInterest,
+                                        Fee = cpt.LateFee   ,
+                                        AmountPaid = (int)cpt.GrossShareAmount
+
                                     }
                                 })
                                .FirstOrDefaultAsync(cancellationToken);
+
+                vm.tab3.TotalAmountPaid = GetTotalPaidSahreAmount(vm.tab3.CustomerId, vm.tab3.OwnershipId);
+                vm.eportal.TotalAmountPaid = vm.tab3.TotalAmountPaid;
+                vm.eportal.IsCoOwners = HasCoOwners(vm.tab3.OwnershipId);
+
                 return vm;
             }
+
+            private decimal GetTotalPaidSahreAmount(int customerid, Guid ownershipId) {
+
+                var total = _context.ClientPaymentTransaction.Where(x => x.CustomerID == customerid && x.OwnershipID == ownershipId && x.RemittanceStatusID>1).Select(x => x.GrossShareAmount).Sum();
+                return total;            
+            }
+
+            private bool HasCoOwners(Guid ownershipId) {
+                var coOwners = _context.CustomerProperty.Where(x => x.OwnershipID == ownershipId).Count();
+                return coOwners > 1;
+            }
+            
 
         }
     }

@@ -32,6 +32,7 @@ import { LotCreationModule } from 'app/lot-creation/lot-creation.module';
 import { CustomerPaymentModule } from 'app/customer-payment/customer-payment.module';
 import { TdsRemitanceModule } from 'app/tds-remitance/tds-remitance.module';
 import { BankAccountModule } from 'app/bank-account/bank-account.module';
+import {TaxLoginModule} from 'app/customer-tax-password/customer-tax-password.module';
 
 import { CoreModule } from 'app/core/core.module';
 import { ToastrModule} from 'ngx-toastr';
@@ -116,7 +117,8 @@ const appRoutes: Routes = [
     TdsReceiptModule,
     ReportsModule,
     ProspectModule,
-    BankAccountModule
+    BankAccountModule,
+    TaxLoginModule
   ],
   providers: [
    // { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true },

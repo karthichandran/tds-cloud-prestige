@@ -362,6 +362,15 @@ namespace WebApi.Controllers
                             dataTable.Rows.Remove(row); //removing the headings
                         }
                     }
+                    else if (filetype == "ExcelBinaryReader") {
+                        using (IExcelDataReader reader =
+                            ExcelReaderFactory.CreateBinaryReader(ms, new ExcelReaderConfiguration()))
+                        {
+                            dataTable = reader.AsDataSet().Tables[0];
+                            DataRow row = dataTable.Rows[0];
+                            dataTable.Rows.Remove(row); //removing the headings
+                        }
+                    }
 
                     Console.WriteLine("Records Count = " + dataTable.Rows.Count);
                     char dl = '-';
@@ -432,6 +441,7 @@ namespace WebApi.Controllers
             {
                 var arr = referenceCode.Split('-');
                 int unitNo;
+
                 if (arr.Count() <= 2)
                     unitNo = Convert.ToInt32(Regex.Match(arr[1], @"\d+").Value);
                 else

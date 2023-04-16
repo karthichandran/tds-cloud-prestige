@@ -71,7 +71,11 @@ export const locale = {
         },
         'ACCOUNTS': {
           'TITLE': 'Bank Accounts'
+        },
+        'TAXLOGIN':{
+          'TITLE': 'Customer IT Passowrd'
         }
+
       }
    
     

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormGroupDirective } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators, FormGroupDirective } from '@angular/forms';
 import { MatTabChangeEvent} from '@angular/material/tabs';
 import { fuseAnimations } from '@fuse/animations';
 import * as Xlsx from 'xlsx';
@@ -21,7 +21,7 @@ import { TaxService } from '../tax/tax.service';
 export class PropertyComponent implements OnInit, OnDestroy {
   @ViewChild(GridComponent) gridComp: GridComponent;
 
-  form: FormGroup;
+  form: UntypedFormGroup;
   sellers: any[] = [];
   sellersRawData = [];
   states: any[] = [];
@@ -44,7 +44,7 @@ export class PropertyComponent implements OnInit, OnDestroy {
   showPercGrid: boolean;
 
   sellerProperty: any[] = [];
-  constructor(private _formBuilder: FormBuilder, private propertyService: PropertyService, private statesService: StatesService, private sellerService: SellerService, private toastr: ToastrService, private taxService: TaxService) {
+  constructor(private _formBuilder: UntypedFormBuilder, private propertyService: PropertyService, private statesService: StatesService, private sellerService: SellerService, private toastr: ToastrService, private taxService: TaxService) {
 
   }
 
@@ -56,8 +56,8 @@ export class PropertyComponent implements OnInit, OnDestroy {
       addressPremises: [''],
       addressLine1: ['', Validators.required],
       addressLine2: [''],
-      city: [''],
-      stateID: [''],
+      city: ['', Validators.required],
+      stateID: ['', Validators.required],
       pinCode: ['', Validators.required],
       gstTaxCode: ['', Validators.required],
       tdsTaxCode: ['', Validators.required],
@@ -66,9 +66,7 @@ export class PropertyComponent implements OnInit, OnDestroy {
       share: [''],
       propertyCode: [''],
       propertyShortName: [''],
-      isActive:['true'],
-      postOffice: [''],
-      area: []
+      isActive:['true']
     });
 
     this.columnDef = [

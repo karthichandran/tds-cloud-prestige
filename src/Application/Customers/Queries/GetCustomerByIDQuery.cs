@@ -70,7 +70,7 @@ namespace ReProServices.Application.Customers.Queries
                                 IsTracesRegistered = custVm.IsTracesRegistered,
                                 MobileNo = custVm.MobileNo,
                                 Name = custVm.Name,
-                                PinCode = custVm.PinCode.Trim(),
+                                PinCode = custVm.PinCode,
                                 PAN = custVm.PAN,
                                 StateId = custVm.StateId,
                                 TracesPassword = custVm.TracesPassword,

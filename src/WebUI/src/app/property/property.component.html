@@ -69,10 +69,10 @@
                         <mat-error>Type of property is required!</mat-error>
                       </mat-form-field>
 
-                      <!-- <mat-form-field appearance="outline" fxFlex>
+                      <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Name of the premises/Building/village</mat-label>
                         <input matInput formControlName="addressPremises">
-                      </mat-form-field> -->
+                      </mat-form-field>
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Property Code</mat-label>
                         <input matInput formControlName="propertyCode" type="number">
@@ -86,7 +86,7 @@
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Flat/Door/Block No</mat-label>
                         <input matInput formControlName="addressLine1" required>
-                        <mat-error>Flat/Door/Block No is required!</mat-error>
+                        <mat-error>Flat No. is required!</mat-error>
                       </mat-form-field>
 
                       <mat-form-field appearance="outline" fxFlex>
@@ -99,7 +99,7 @@
 
                     <div fxFlex="1 0 auto" fxLayout="row wrap">
 
-                      <!-- <mat-form-field appearance="outline" fxFlex>
+                      <mat-form-field appearance="outline" fxFlex>
                         <mat-label>City/District </mat-label>
                         <input matInput formControlName="city" required>
                         <mat-error>City/District is required!</mat-error>
@@ -113,16 +113,8 @@
                           </mat-option>
                         </mat-select>
                         <mat-error>State is required!</mat-error>
-                      </mat-form-field> -->
-                      <mat-form-field appearance="outline" fxFlex class="pr-4">
-                        <mat-label>Post Office</mat-label>
-                        <input type="text" matInput formControlName="postOffice" >
                       </mat-form-field>
-                     
-                      <mat-form-field appearance="outline" fxFlex class="pr-4">
-                        <mat-label>Area/locality</mat-label>
-                        <input type="text" matInput formControlName="area" >
-                      </mat-form-field>
+
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>PIN Code</mat-label>
                         <input matInput formControlName="pinCode" type="text" required>

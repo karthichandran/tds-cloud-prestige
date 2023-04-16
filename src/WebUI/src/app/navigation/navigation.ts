@@ -117,8 +117,15 @@ export const navigation: FuseNavigation[] = [
         type: 'item',
         icon: 'local_offer',
         url: '/pre-sales'
+      },
+      {
+        id: 'tax_login',
+        title: 'Customer IT Password',
+        translate: 'NAV.TAXLOGIN.TITLE',
+        type: 'item',
+        icon: 'notes',
+        url: '/taxlogin'
       }
-
     ]
   },
   {
