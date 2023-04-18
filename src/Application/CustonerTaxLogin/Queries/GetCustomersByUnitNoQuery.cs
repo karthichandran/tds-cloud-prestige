@@ -33,7 +33,7 @@ namespace ReProServices.Application.CustonerTaxLogin.Queries
                     var custDto = await (from cus in _context.Customer
                                    join cp in _context.CustomerProperty on cus.CustomerID equals cp.CustomerId
                                    where cp.PropertyId== request.PropertyId &&  cp.UnitNo == request.UnitNo 
-                                   select new CustomerDto { CustomerID = cus.CustomerID,Name=cus.Name,PAN=cus.PAN,IncomeTaxPassword=cus.IncomeTaxPassword }).ToListAsync<CustomerDto>();
+                                   select new CustomerDto { CustomerID = cus.CustomerID,Name=cus.Name,PAN=cus.PAN.Substring(0,2)+"XXXXXX"+  cus.PAN.Substring(cus.PAN.Length-2), IncomeTaxPassword=cus.IncomeTaxPassword }).ToListAsync<CustomerDto>();
 
 
                     var cusModel= new CustomerTaxLoginDetails

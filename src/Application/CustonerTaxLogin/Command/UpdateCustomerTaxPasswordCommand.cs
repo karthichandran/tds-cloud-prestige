@@ -41,7 +41,8 @@ namespace ReProServices.Application.CustonerTaxLogin.Command
 
                         if (cp.IsOptOut.Value)
                         {
-                            entity.InvalidPanDate = cp.AsOfDate;
+                            //entity.InvalidPanDate = cp.AsOfDate;
+                            entity.CustomerOptingOutDate = cp.AsOfDate;
                             entity.CustomerOptedOut = true;
                         }
                         else

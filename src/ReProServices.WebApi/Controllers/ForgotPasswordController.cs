@@ -49,7 +49,7 @@ namespace WebApi.Controllers
             var emilaModel = new EmailModel()
             {
                 To = dto.Email,
-               //To = "karthi@leansys.in",
+              // To = "karthi@leansys.in",
                 Subject = subject,
                 Message = @"<html><body> <p>Dear Sir/Madam, </p> <p>Greetings from REpro Services!!</p>  <p>Please use the following credential to login.</p>" +
                 "<p> Login Name : "+result.LoginName+"</p>"+

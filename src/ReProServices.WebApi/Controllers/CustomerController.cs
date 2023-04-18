@@ -278,63 +278,74 @@ namespace WebApi.Controllers
                 //To="karthi@leansys.in",
                To = email,
                 Subject = subject,
-                //Message = @"<html><body> <p>Dear Sir/Madam, </p><p>Greetings from REpro Services!!</p> <p>We wish to inform you that we have been appointed by Prestige Group to manage your TDS compliance U/s. 194 (IA) for your subject property. We are a team of professionals who have expertise in all tax compliances. </p><br> " +
-                //        " <p>We request you to let us know if you <b> DO NOT WANT </b> us to manage this TDS compliance on your behalf. </p><br>" +
-                //         "<p>If we do not receive any communication in response to this e-Mail, we will proceed with managing your TDS compliance for your unit in the subject project. We will do this compliance for each of your payments to Prestige till you take possession of this property. </p><br>" +
-                //         " <p>If you are already registered in Traces as Tax payer, request you to share your traces Password to update our records for downloading Form 16B.</p><br>" +
-                //         "<br> <img height='90' width='170'  src=cid:added-image-id><p>Thanks and Regards,<br>REpro Team</p> </body></html> ",
-               // Message = @"<html><body> <p>Dear Sir/Madam, </p><p>Greetings from REpro Services!!</p> <p>We wish to inform you that we have been appointed by Prestige Group to manage your TDS compliance U/s. 194 (IA) for your subject property. We are a team of professionals who have expertise in all tax compliances. </p><br> " +
-
-               //  " <p>As a buyer you are supposed to deduct 1% as TDS in all your payments to the seller and remit that as TDS under section 194IA. After TDS payment you need to raise a request for download of Form 16B certificate in traces and share the downloaded certificate to seller. This process has to be done for each payment you will make to the seller on or before the end of the subsequent month. </p><br>" +
-
-               //" <p>Since many Prestige customers found this process to be tedious and cumbersome, Prestige has appointed us to assist in TDS compliance for all its customers. As we will be managing your TDS compliance we request you to pay the installment amount to Prestige without TDS deduction, we will collect your TDS amount, remit with your PAN and share the Form 16B certificate to Prestige on your behalf. </p><br>" +
-
-               //  " <p>We request you to let us know if you <b> DO NOT WANT </b> us to manage this TDS compliance on your behalf. Please note that since <b>Prestige has engaged us directly to assist its customers there will no fee payable to us by you. </b> </p><br>" +
-
-               //          "<p>If we do not receive any communication in response to this e-Mail, we will proceed with managing your TDS compliance for your unit in the subject project. We will do this compliance for each of your payments to Prestige till you take possession of this property. </p><br>" +
-
-               //          " <p>If you are already registered in Traces as Tax payer, request you to share your traces Password to update our records for downloading Form 16B.If you do not wish to share the Traces password with us, please let us know we will share the TDS paid challan, you can generate the Form 16B certificate on your own and share it with Prestige.</p><br>" +
-
-               //          "<br> <img height='90' width='170'  src=cid:added-image-id><p>Thanks and Regards,<br>REpro Team</p> </body></html> ",
+       
                 IsBodyHtml = true
             };
 
-            if (project.Trim() == "Prestige Beverly Hills")
-            {
-                emilaModel.Message = @"<html><body> <p>Dear Sir/Madam, </p><p>Greetings from REpro Services!!</p> <p>We wish to inform you that we have been appointed by Prestige Group to manage your TDS compliance U/s. 194 (IA) for your subject property. We are a team of professionals who have expertise in all tax compliances. </p><br> " +
+            emilaModel.Message = @"<html><body> <p>Dear Sir/Madam, </p><p>Greetings from REpro Services!!</p> <p>We wish to inform you that we have been appointed by Prestige Group to manage your TDS compliance U/s. 194 (IA) for your subject property. We are a team of professionals who have expertise in all tax compliances. </p><br> " +
 
-               " <p>As a buyer you are supposed to deduct 1% as TDS in all your payments to the seller and remit that as TDS under section 194IA. After TDS payment you need to raise a request for download of Form 16B certificate in traces and share the downloaded certificate to seller. This process has to be done for each payment you will make to the seller on or before the end of the subsequent month. </p><br>" +
+              " <p>As a buyer you are supposed to deduct 1% as TDS in all your payments to the seller and remit that as TDS under section 194IA if your property value is more than Rs. 50 lakhs</p><br>" +
 
-             " <p>Since many Prestige customers found this process to be tedious and cumbersome, Prestige has appointed us to assist in TDS compliance for all its customers. As we will be managing your TDS compliance we request you to pay the installment amount to Prestige without TDS deduction, we will collect your TDS amount, remit with your PAN and share the Form 16B certificate to Prestige on your behalf. </p><br>" +
+            " <p>In this regard, if you opt for our service, following is the process we follow – </p><br>" +
 
-               " <p>We wish you avail our service, however if you  <b> DO NOT WANT </b> us to manage this TDS compliance on your behalf please let us know by reverting to this email. Please note that since <b>Prestige has engaged us directly to assist its customers there will no fee payable to us by you. </b> </p><br>" +
+              " <p>&#x2022; You will have to pay the full value of instalment to Prestige without deducting TDS </p><br>" +
+               " <p>&#x2022; We will collect your transaction details from Prestige for due compliance on a monthly basis </p><br>" +
+               " <p>&#x2022; We will need your <b> INCOME TAX LOGIN PASSWORD OF ALL OWNERS </b> from you to manage this compliance on your behalf. Kindly share the same using the following link <a href='https://prestigetdsit.reproservices.in'>https://prestigetdsit.reproservices.in</a> </p><br>" +
+ " <p>&#x2022; TDS amount will be paid by Prestige to us </p><br>" +
+ " <p>&#x2022; We will remit the TDS amount with your PAN on your behalf </p><br>" +
+ " <p>&#x2022; We will share the Form 16B to Prestige on your behalf. </p><br>" +
 
-                       "<p>Kindly note, if we do not receive any communication in response to this e-Mail within 7 working days we would be assuming that you would like to use our services and we will proceed with managing your TDS compliance for your unit in the subject project. We will do this compliance for each of your payments to Prestige till you take possession of this property. </p><br>" +
+                      "<p>Please note that since <b>Prestige has engaged us directly to assist its customers there will no fee payable by you. </b></p><br>" +
 
-                       " <p>If you are already registered in Traces as Tax payer, request you to share your traces Password to update our records for downloading Form 16B. If you do not wish to share the Traces password with us, please let us know we will share the TDS paid challan, you can generate the Form 16B certificate on your own and share it with Prestige. If you have not registered we will register on your behalf and do the needful.</p><br>" +
-                      
-                       " <p>We would prefer email as our choice of communication, you may write to tdscompliance@reproservices.in, but If you still have any queries and you would like to get it clarified, you can reach out to Prestige Accounts: Mr. Naveen Kumar B (Mobile number: 9121221120).</p><br>" +
+                      " <p>Kindly note, if we do not receive your response,<b> WE WILL NOT BE ABLE TO </b> do the TDS compliance for your payments to Prestige within the stipulated timelines.</p><br>" +
 
-                       "<br> <img height='90' width='170'  src=cid:added-image-id><p>Thanks and Regards,<br>REpro Team</p> </body></html> ";
-            }
-            else
-            {
-                emilaModel.Message = @"<html><body> <p>Dear Sir/Madam, </p><p>Greetings from REpro Services!!</p> <p>We wish to inform you that we have been appointed by Prestige Group to manage your TDS compliance U/s. 194 (IA) for your subject property. We are a team of professionals who have expertise in all tax compliances. </p><br> " +
-
-              " <p>As a buyer you are supposed to deduct 1% as TDS in all your payments to the seller and remit that as TDS under section 194IA. After TDS payment you need to raise a request for download of Form 16B certificate in traces and share the downloaded certificate to seller. This process has to be done for each payment you will make to the seller on or before the end of the subsequent month. </p><br>" +
-
-            " <p>Since many Prestige customers found this process to be tedious and cumbersome, Prestige has appointed us to assist in TDS compliance for all its customers. As we will be managing your TDS compliance we request you to pay the installment amount to Prestige without TDS deduction, we will collect your TDS amount, remit with your PAN and share the Form 16B certificate to Prestige on your behalf. </p><br>" +
-
-              " <p>We wish you avail our service, however if you  <b> DO NOT WANT </b> us to manage this TDS compliance on your behalf please let us know by reverting to this email. Please note that since <b>Prestige has engaged us directly to assist its customers there will no fee payable to us by you. </b> </p><br>" +
-
-                      "<p>Kindly note, if we do not receive any communication in response to this e-Mail within 7 working days we would be assuming that you would like to use our services and we will proceed with managing your TDS compliance for your unit in the subject project. We will do this compliance for each of your payments to Prestige till you take possession of this property. </p><br>" +
-
-                      " <p>If you are already registered in Traces as Tax payer, request you to share your traces Password to update our records for downloading Form 16B. If you do not wish to share the Traces password with us, please let us know we will share the TDS paid challan, you can generate the Form 16B certificate on your own and share it with Prestige. If you have not registered we will register on your behalf and do the needful.</p><br>" +
-
-                      " <p>For any clarifications you may write to tdscompliance@reproservices.in or contact Prestige CRM team to know about our service.</p><br>" +
+                      " <p><b>Non-compliance / late compliance will lead to huge Interest and Late fees payable. </b></p><br>" +
+                      " <p>For any clarifications you may write to <a>tdscompliance@reproservices.in</a> or contact Prestige CRM team.</p><br>" +
 
                       "<br> <img height='90' width='170'  src=cid:added-image-id><p>Thanks and Regards,<br>REpro Team</p> </body></html> ";
-            }
+
+            //          if (project.Trim() == "Prestige Beverly Hills")
+            //          {
+            //              emilaModel.Message = @"<html><body> <p>Dear Sir/Madam, </p><p>Greetings from REpro Services!!</p> <p>We wish to inform you that we have been appointed by Prestige Group to manage your TDS compliance U/s. 194 (IA) for your subject property. We are a team of professionals who have expertise in all tax compliances. </p><br> " +
+
+            //             " <p>As a buyer you are supposed to deduct 1% as TDS in all your payments to the seller and remit that as TDS under section 194IA if your property value is more than Rs. 50 lakhs</p><br>" +
+
+            //           " <p>In this regard, if you opt for our service, following is the process we follow – </p><br>" +
+
+            //             " <p>&#x2022; You will have to pay the full value of instalment to Prestige without deducting TDS </p><br>" +
+            //              " <p>&#x2022; We will collect your transaction details from Prestige for due compliance on a monthly basis </p><br>" +
+            //              " <p>&#x2022; We will need your <b> INCOME TAX LOGIN PASSWORD OF ALL OWNERS </b> from you to manage this compliance on your behalf. Kindly share the same using the following link <a>http://prestigetdsit.reproservices.in</a> </p><br>" +
+            //" <p>&#x2022; TDS amount will be paid by Prestige to us </p><br>" +
+            //" <p>&#x2022; TWe will remit the TDS amount with your PAN on your behalf </p><br>" +
+            //" <p>&#x2022; We will share the Form 16B to Prestige on your behalf. </p><br>" +
+
+            //                     "<p>Please note that since <b>Prestige has engaged us directly to assist its customers there will no fee payable by you. </b></p><br>" +
+
+            //                     " <p>Kindly note, if we do not receive your response,<b> WE WILL NOT BE ABLE TO </b> do the TDS compliance for your payments to Prestige within the stipulated timelines.</p><br>" +
+
+            //                     " <p><b>Non-compliance / late compliance will lead to huge Interest and Late fees payable. </b></p><br>" +
+            //                     " <p>For any clarifications you may write to <a>tdscompliance@reproservices.in</a> or contact Prestige CRM team.</p><br>" +
+
+            //                     "<br> <img height='90' width='170'  src=cid:added-image-id><p>Thanks and Regards,<br>REpro Team</p> </body></html> ";
+            //          }
+            //          else
+            //          {
+            //              emilaModel.Message = @"<html><body> <p>Dear Sir/Madam, </p><p>Greetings from REpro Services!!</p> <p>We wish to inform you that we have been appointed by Prestige Group to manage your TDS compliance U/s. 194 (IA) for your subject property. We are a team of professionals who have expertise in all tax compliances. </p><br> " +
+
+            //            " <p>As a buyer you are supposed to deduct 1% as TDS in all your payments to the seller and remit that as TDS under section 194IA if your property value is more than Rs. 50 lakhs</p><br>" +
+
+            //          " <p>In this regard, if you opt for our service, following is the process we follow –</p><br>" +
+
+            //            " <p>We wish you avail our service, however if you  <b> DO NOT WANT </b> us to manage this TDS compliance on your behalf please let us know by reverting to this email. Please note that since <b>Prestige has engaged us directly to assist its customers there will no fee payable to us by you. </b> </p><br>" +
+
+            //                    "<p>Kindly note, if we do not receive any communication in response to this e-Mail within 7 working days we would be assuming that you would like to use our services and we will proceed with managing your TDS compliance for your unit in the subject project. We will do this compliance for each of your payments to Prestige till you take possession of this property. </p><br>" +
+
+            //                    " <p>If you are already registered in Traces as Tax payer, request you to share your traces Password to update our records for downloading Form 16B. If you do not wish to share the Traces password with us, please let us know we will share the TDS paid challan, you can generate the Form 16B certificate on your own and share it with Prestige. If you have not registered we will register on your behalf and do the needful.</p><br>" +
+
+            //                    " <p>For any clarifications you may write to tdscompliance@reproservices.in or contact Prestige CRM team to know about our service.</p><br>" +
+
+            //                    "<br> <img height='90' width='170'  src=cid:added-image-id><p>Thanks and Regards,<br>REpro Team</p> </body></html> ";
+            //          }
 
             //attachment
             List<FileAttachment> fileList = new List<FileAttachment>();
