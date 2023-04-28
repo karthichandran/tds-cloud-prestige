@@ -31,9 +31,10 @@ namespace ReProServices.Application.CustonerTaxLogin.Queries
                 {
                     //var model = _context.CustomerProperty.Where(x => x.PropertyId == request.propertyId).Select(x => new UnitNumberDto { UnitNo=x.UnitNo.ToString() }).Distinct().ToList<UnitNumberDto>();
 
+
                     var model = (from cp in _context.CustomerProperty
                                  join cus in _context.Customer on cp.CustomerId equals cus.CustomerID
-                                 where string.IsNullOrEmpty(cus.IncomeTaxPassword) && cp.PropertyId == request.propertyId && !cp.IsArchived.Value
+                                 where (string.IsNullOrEmpty(cus.IncomeTaxPassword) && (cus.CustomerOptedOut==null ||cus.CustomerOptedOut.Value == false)) && cp.PropertyId == request.propertyId && cp.IsArchived.Value==false 
                                  select new UnitNumberDto { UnitNo = cp.UnitNo.ToString() }).Distinct().ToList();
                               
 

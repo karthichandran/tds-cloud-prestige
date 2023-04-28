@@ -33,7 +33,7 @@ namespace ReProServices.Application.CustonerTaxLogin.Queries
                     var custDto = await (from cus in _context.Customer
                                    join cp in _context.CustomerProperty on cus.CustomerID equals cp.CustomerId
                                    where cp.PropertyId== request.PropertyId &&  cp.UnitNo == request.UnitNo 
-                                   select new CustomerDto { CustomerID = cus.CustomerID,Name=cus.Name,PAN=cus.PAN.Substring(0,2)+"XXXXXX"+  cus.PAN.Substring(cus.PAN.Length-2), IncomeTaxPassword=cus.IncomeTaxPassword }).ToListAsync<CustomerDto>();
+                                   select new CustomerDto { CustomerID = cus.CustomerID,Name= getMaskedName(cus.Name),PAN=cus.PAN.Substring(0,2)+"XXXXXX"+  cus.PAN.Substring(cus.PAN.Length-2), IncomeTaxPassword=cus.IncomeTaxPassword }).ToListAsync<CustomerDto>();
 
 
                     var cusModel= new CustomerTaxLoginDetails
@@ -52,6 +52,14 @@ namespace ReProServices.Application.CustonerTaxLogin.Queries
                 }
 
 
+            }
+
+            private static string getMaskedName(string name) {
+
+                if (name.Length == 4)
+                    return name.Substring(0, 1) + new String('X', name.Length - 2) + name.Substring(name.Length - 1);
+
+                return name.Substring(0, 2) + new String('X', name.Length - 4) + name.Substring(name.Length - 2);
             }
         }
     }
