@@ -262,15 +262,19 @@ export class TdsRemitanceComponent implements OnInit, OnDestroy {
 
   saveDebitAvice(model:any){
     let isNew: boolean;
-    if (model.debitAdviceID == 0)
+    if (model.debitAdviceID == 0 || model.debitAdviceID==null || model.debitAdviceID==undefined)
       isNew = true;
 
-      var da={
-        debitAdviceID:model.debitAdviceID,
-        cinNo: model.cinNo,
-        paymentDate:model.paymentDate,
-        blobId: model.debitAdviceBlobId
-      };
+    if (model.clientPaymentTransactionID == 0)
+      model.clientPaymentTransactionID = this.transactionID;
+    var da = {
+      debitAdviceID:( model.debitAdviceID==null ||  model.debitAdviceID==undefined)?0: model.debitAdviceID,
+      cinNo: model.cinNo,
+      paymentDate: model.paymentDate,
+      blobId: this.debitAdviceFile.blobID,
+      clientPaymentTransactionID: model.clientPaymentTransactionID
+    };
+
       this.tdsService.saveDebitAdvice(da, isNew).subscribe(response => {
         this.toastr.success("Debit Advice changes are saved successfully");
         this.getRemitance(this.transactionID.toString());
@@ -364,7 +368,7 @@ export class TdsRemitanceComponent implements OnInit, OnDestroy {
       this.isDebitAdviceUpload=false;
     }
     else{
-      this.getFiles(model.debitAdviceBlobId,'debitAdvice')
+      this.getFiles(model.debitAdviceBlobId,'debitAdvice');
     }
 
     if (model.remittanceID == 0) {
@@ -424,10 +428,11 @@ export class TdsRemitanceComponent implements OnInit, OnDestroy {
       if(fileType=='debitAdvice'){
         
         this.tdsService.uploadDebitAdviceFile(formData).subscribe((event) => {
-          if (event.type == HttpEventType.Sent) {
-            this.toastr.success("File Uploaded successfully");          
-          } 
-          this.remitanceModel.debitAdviceBlobId= event.value;     
+          if (event.body != undefined) {
+            this.toastr.success("File Uploaded successfully");
+            this.remitanceModel.debitAdviceBlobId = event.body;
+            this.getFiles(this.remitanceModel.debitAdviceBlobId, 'debitAdvice');
+          }
         }, null, () => {
             this.getRemitance(this.transactionID.toString());
         });
@@ -466,7 +471,7 @@ export class TdsRemitanceComponent implements OnInit, OnDestroy {
 
     this.tdsService.getUploadedFiles(blobId).subscribe(response => {
       // if (isUndefined(response.fileName)) {
-        if (response.fileName===undefined) {
+        if ( response==null  || response.fileName===undefined ) {
         if (fileType == "challan") {
           this.isChallanUpload = false;
         }
@@ -576,15 +581,21 @@ export class TdsRemitanceComponent implements OnInit, OnDestroy {
 
     this.confirmationDialogSrv.showDialog("Are you sure to delete this Debit Advice?").subscribe(response => {
       if (response == "ok") {
-        if (this.remitanceModel.debitAdviceBlobId != undefined) {
-          this.tdsService.deleteDebitAdvice(this.remitanceModel.clientPaymentTransactionID).subscribe(response => {
-            this.tdsService.deleteFile(this.remitanceModel.debitAdviceBlobId).subscribe(response => { });
-            this.resetAfterDelete();
+        if (this.remitanceModel.debitAdviceID != undefined) {
+
+          this.tdsService.deleteDebitAdvice(this.transactionID.toString()).subscribe(response => {
+            if (this.debitAdviceFile.blobID != null && this.debitAdviceFile.blobID != 0 && this.debitAdviceFile.blobID != undefined) {
+              this.tdsService.deleteFile(this.remitanceModel.debitAdviceBlobId).subscribe(response => {
+                this.resetAfterDelete();
+              });
+            }
+            else {
+              this.resetAfterDelete();
+            }
+            
           });
         }
-        else {
-          this.resetAfterDelete();
-        }
+       
       }
     });
 
@@ -594,6 +605,6 @@ export class TdsRemitanceComponent implements OnInit, OnDestroy {
     this.toastr.success("Record is deleted successfully");
     this.debitAdviceForm.reset();
     this.isDebitAdviceUpload=false;
-    this.getRemitance(this.remitanceModel.clientPaymentTransactionID);
+    this.getRemitance(this.transactionID.toString());
   }
 }
