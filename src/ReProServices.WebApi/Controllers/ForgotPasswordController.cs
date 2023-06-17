@@ -64,5 +64,16 @@ namespace WebApi.Controllers
 
         }
 
+        [DisableRequestTimeout]
+        [HttpGet("timeout")]
+        public async Task<ActionResult> timeouttest()
+        {
+            await Task.Delay(240000);
+
+
+            return NoContent();
+
+        }
+
     }
 }

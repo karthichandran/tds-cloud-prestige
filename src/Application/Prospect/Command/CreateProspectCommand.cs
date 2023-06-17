@@ -38,7 +38,7 @@ namespace ReProServices.Application.Prospect.Command
                         MobileNo = dto.MobileNo,
                         Name = dto.Name,
                         PAN = dto.PAN,
-                        PinCode = dto.PinCode,
+                        PinCode = dto.PinCode.Trim(),
                         StateId = dto.StateId,
                         TracesPassword = dto.TracesPassword,
                         AllowForm16B = dto.AllowForm16B,

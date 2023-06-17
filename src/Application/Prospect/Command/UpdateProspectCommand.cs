@@ -30,23 +30,22 @@ namespace ReProServices.Application.Prospect.Commands
                 {
                     throw new ApplicationException("User is not found");
                 }
-                entity.AdressLine1 = dto.AdressLine1;
-                entity.AddressLine2 = dto.AddressLine2;
-                entity.AddressPremises = dto.AddressPremises;
-                entity.City = dto.City;
+                //entity.AdressLine1 = dto.AdressLine1;
+                //entity.AddressLine2 = dto.AddressLine2;
+                //entity.AddressPremises = dto.AddressPremises;
+                //entity.City = dto.City;
                 entity.DateOfBirth = dto.DateOfBirth;
                 entity.EmailID = dto.EmailID;
                 entity.IsTracesRegistered = dto.IsTracesRegistered;
-                entity.DateOfBirth = dto.DateOfBirth;
-                entity.MobileNo = dto.MobileNo;
+               // entity.MobileNo = dto.MobileNo;
                 entity.Name = dto.Name;
                 entity.PAN = dto.PAN;
-                entity.PinCode = dto.PinCode;
-                entity.StateId = dto.StateId;
+                //entity.PinCode = dto.PinCode;
+                //entity.StateId = dto.StateId;
                 entity.TracesPassword = dto.TracesPassword;
-                entity.AllowForm16B = dto.AllowForm16B;
-                entity.AlternateNumber = dto.AlternateNumber;
-                entity.ISD = dto.ISD;
+               // entity.AllowForm16B = dto.AllowForm16B;
+                //entity.AlternateNumber = dto.AlternateNumber;
+                //entity.ISD = dto.ISD;
                 entity.IncomeTaxPassword = dto.IncomeTaxPassword;
 
                 _context.Prospect.Update(entity);

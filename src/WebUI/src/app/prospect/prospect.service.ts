@@ -7,6 +7,7 @@ import { IPropertyVM } from '../property/property.model';
 
 /** rxjs Imports */
 import { Observable } from 'rxjs';
+//import { isDefined } from '@angular/compiler/src/util';
 
 /**
  * Accounting service.
