@@ -4,7 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import * as moment from 'moment';
 /** rxjs Imports */
 import { Observable } from 'rxjs';
-
+import { timeout } from 'rxjs/operators';
 /**
  * Accounting service.
  */
@@ -96,7 +96,7 @@ export class ClientPaymentService {
       params = params.set("NatureOfPaymentID", searchBynatureOfPaymentID);
     }
     
-    return this.http.get('/clientPayment/paymentList/getExcel', { params: params, responseType: 'blob' });
+    return this.http.get('/clientPayment/paymentList/getExcel', { params: params, responseType: 'blob' }).pipe(timeout(300000));
   }
   updateStatusAndremarks(model: any): Observable<any>{
     return this.http.put(`/customerProperty/status`, { 'custPropStatusObj': model });

@@ -46,25 +46,25 @@ namespace ReProServices.Application.Prospect.Command
                         Domain.Entities.Prospect entity = new Domain.Entities.Prospect
                         {
                             ProspectPropertyID = prospectPropertyEntity.ProspectPropertyID,
-                            AddressPremises = dto.AddressPremises,
-                            AdressLine1 = dto.AdressLine1,
-                            AddressLine2 = dto.AddressLine2,
-                            City = dto.City,
+                            //AddressPremises = dto.AddressPremises,
+                            //AdressLine1 = dto.AdressLine1,
+                            //AddressLine2 = dto.AddressLine2,
+                            //City = dto.City,
                             DateOfBirth = dto.DateOfBirth.Date,
                             EmailID = dto.EmailID,
                             IsTracesRegistered = dto.IsTracesRegistered,
-                            MobileNo = dto.MobileNo,
+                           // MobileNo = dto.MobileNo,
                             Name = dto.Name,
                             PAN = dto.PAN,
-                            PinCode = dto.PinCode,
-                            StateId = dto.StateId,
+                            //PinCode = dto.PinCode,
+                            //StateId = dto.StateId,
                             TracesPassword = dto.TracesPassword,
-                            AllowForm16B = dto.AllowForm16B,
-                            AlternateNumber = dto.AlternateNumber,
-                            ISD = dto.ISD,
+                            //AllowForm16B = dto.AllowForm16B,
+                            //AlternateNumber = dto.AlternateNumber,
+                            //ISD = dto.ISD,
                             Share = dto.Share,
-                            PanBlobID = dto.PanBlobId,
-                            IncomeTaxPassword=dto.IncomeTaxPassword
+                           // PanBlobID = dto.PanBlobId,
+                            IncomeTaxPassword   =dto.IncomeTaxPassword
                         };
 
                         await _context.Prospect.AddAsync(entity, cancellationToken);

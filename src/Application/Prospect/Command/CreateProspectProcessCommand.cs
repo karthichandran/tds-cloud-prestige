@@ -49,50 +49,50 @@ namespace ReProServices.Application.Prospect.Command
                     {
                         Customer entity = new Customer
                         {
-                            AdressLine1 = prospectDto.AdressLine1,
-                            AddressLine2 = prospectDto.AddressLine2,
-                            AddressPremises = prospectDto.AddressPremises,
-                            City = prospectDto.City,
+                            //AdressLine1 = prospectDto.AdressLine1,
+                            //AddressLine2 = prospectDto.AddressLine2,
+                            //AddressPremises = prospectDto.AddressPremises,
+                            //City = prospectDto.City,
                             DateOfBirth = prospectDto.DateOfBirth.Date,
                             EmailID = prospectDto.EmailID,
                             IsTracesRegistered = prospectDto.IsTracesRegistered,
-                            MobileNo = prospectDto.MobileNo,
+                           // MobileNo = prospectDto.MobileNo,
                             Name = prospectDto.Name,
                             PAN = prospectDto.PAN,
-                            PinCode = prospectDto.PinCode,
-                            StateId = prospectDto.StateId,
+                           // PinCode = prospectDto.PinCode,
+                           // StateId = prospectDto.StateId,
                             TracesPassword = prospectDto.TracesPassword,
-                            AllowForm16B = prospectDto.AllowForm16B,
-                            AlternateNumber = prospectDto.AlternateNumber,
-                            ISD = prospectDto.ISD,
-                            IncomeTaxPassword = prospectDto.IncomeTaxPassword
-                            //Created = DateTime.Now,
-                            //CreatedBy = userInfo.UserID.ToString()
+                           // AllowForm16B = prospectDto.AllowForm16B,
+                            //AlternateNumber = prospectDto.AlternateNumber,
+                           // ISD = prospectDto.ISD,
+                            IncomeTaxPassword=prospectDto.IncomeTaxPassword
+                           
                         };
                         await _context.Customer.AddAsync(entity, cancellationToken);
                         await _context.SaveChangesAsync(cancellationToken);
                         existingCust = entity;
                     }
-                    else {
-                        existingCust.AdressLine1 = prospectDto.AdressLine1;
-                        existingCust.AddressLine2 = prospectDto.AddressLine2;
-                        existingCust.AddressPremises = prospectDto.AddressPremises;
-                        existingCust.City = prospectDto.City;
+                    else
+                    {
+                        //existingCust.AdressLine1 = prospectDto.AdressLine1;
+                        //existingCust.AddressLine2 = prospectDto.AddressLine2;
+                        //existingCust.AddressPremises = prospectDto.AddressPremises;
+                        //existingCust.City = prospectDto.City;
                         existingCust.DateOfBirth = prospectDto.DateOfBirth.Date;
                         existingCust.EmailID = prospectDto.EmailID;
                         existingCust.IsTracesRegistered = prospectDto.IsTracesRegistered;
-                        existingCust.MobileNo = prospectDto.MobileNo;
+                        //existingCust.MobileNo = prospectDto.MobileNo;
                         existingCust.Name = prospectDto.Name;
                         existingCust.PAN = prospectDto.PAN;
-                        existingCust.PinCode = prospectDto.PinCode;
-                        existingCust.StateId = prospectDto.StateId;
+                        //existingCust.PinCode = prospectDto.PinCode;
+                       // existingCust.StateId = prospectDto.StateId;
                         existingCust.TracesPassword = prospectDto.TracesPassword;
-                        existingCust.AllowForm16B = prospectDto.AllowForm16B;
-                        existingCust.AlternateNumber = prospectDto.AlternateNumber;
-                        existingCust.ISD = prospectDto.ISD;
+                        //existingCust.AllowForm16B = prospectDto.AllowForm16B;
+                       // existingCust.AlternateNumber = prospectDto.AlternateNumber;
+                       // existingCust.ISD = prospectDto.ISD;
                         existingCust.IncomeTaxPassword = prospectDto.IncomeTaxPassword;
 
-                         _context.Customer.Update(existingCust);
+                        _context.Customer.Update(existingCust);
                         await _context.SaveChangesAsync(cancellationToken);
                     }
 

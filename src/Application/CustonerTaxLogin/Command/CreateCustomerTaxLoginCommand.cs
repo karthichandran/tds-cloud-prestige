@@ -52,13 +52,29 @@ namespace ReProServices.Application.CustonerTaxLogin.Command
                     {
                         foreach (var cus in request.customers.customers)
                         {
-                            var entity = custVM.First(x => x.CustomerId == cus.CustomerID);
-                            entity.IsOptOut = isOptOut;
-                            entity.TaxPassword = cus.IncomeTaxPassword;
-                            entity.IsProcessed = false;
-                            entity.AsOfDate = request.customers.AsOfDate;
-                            _context.CustomerTaxLogin.Update(entity);
-                            await _context.SaveChangesAsync(cancellationToken);
+                            var entity = custVM.FirstOrDefault(x => x.CustomerId == cus.CustomerID);
+                            if (entity != null)
+                            {
+                                entity.IsOptOut = isOptOut;
+                                entity.TaxPassword = cus.IncomeTaxPassword;
+                                entity.IsProcessed = false;
+                                entity.AsOfDate = request.customers.AsOfDate;
+                                _context.CustomerTaxLogin.Update(entity);
+                                await _context.SaveChangesAsync(cancellationToken);
+                            }
+                            else {
+                                var newEntity = new CustomerTaxLogin
+                                {
+                                    CustomerId = cus.CustomerID,
+                                    UnitNo = unitNo,
+                                    TaxPassword = cus.IncomeTaxPassword,
+                                    IsOptOut = isOptOut,
+                                    IsProcessed = false,
+                                    AsOfDate = request.customers.AsOfDate
+                                };
+                                await _context.CustomerTaxLogin.AddAsync(newEntity, cancellationToken);
+                                await _context.SaveChangesAsync(cancellationToken);
+                            }
                         }
                     }
                     return true;
