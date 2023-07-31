@@ -40,5 +40,6 @@ namespace ReProServices.Domain.Entities
 		public string RemittanceStatus { get; set; }
 		public DateTime? ChallanDate { get; set; }
 		public string CustomerStatus { get; set; }
-	}
+        public string Cinno { get; set; }
+    }
 }

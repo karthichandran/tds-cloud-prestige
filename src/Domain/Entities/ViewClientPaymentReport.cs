@@ -40,5 +40,7 @@ namespace ReProServices.Domain.Entities
 		public string CustomerStatus { get; set;}
 
 		public DateTime? ChallanDate { get; set; }
-	}
+
+        public string Cinno { get; set; }
+    }
 }
