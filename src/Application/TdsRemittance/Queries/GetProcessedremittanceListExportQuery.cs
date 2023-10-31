@@ -1,49 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using ReProServices.Application.Common.Interfaces;
+using ReProServices.Application.TdsRemittance.Queries.GetRemittanceList;
 using ReProServices.Domain.Enums;
 
-namespace ReProServices.Application.TdsRemittance.Queries.GetRemittanceList
+namespace ReProServices.Application.TdsRemittance.Queries
 {
-    public class GetTdsPendingRemittanceListQuery : IRequest<IList<TdsRemittanceDto>>
+   public class GetProcessedremittanceListExportQuery : IRequest<IList<TdsRemittanceDto>>
     {
         public TdsRemittanceFilter Filter { get; set; }
-        public class GetTdsPendingRemittanceListQueryHandler : IRequestHandler<GetTdsPendingRemittanceListQuery, IList<TdsRemittanceDto>>
+        public class GetProcessedRemittanceListExportQueryHandler :
+                              IRequestHandler<GetProcessedremittanceListExportQuery, IList<TdsRemittanceDto>>
         {
+
             private readonly IApplicationDbContext _context;
 
-            public GetTdsPendingRemittanceListQueryHandler(IApplicationDbContext context)
+            public GetProcessedRemittanceListExportQueryHandler(IApplicationDbContext context)
             {
                 _context = context;
             }
 
-            public async Task<IList<TdsRemittanceDto>> Handle(GetTdsPendingRemittanceListQuery request, CancellationToken cancellationToken)
+            public async Task<IList<TdsRemittanceDto>> Handle(GetProcessedremittanceListExportQuery request, CancellationToken cancellationToken)
             {
-                List<int> unitNos = (from cus in _context.Customer join cp in _context.CustomerProperty on cus.CustomerID equals cp.CustomerId where cus.InvalidPAN == true select  cp.UnitNo.Value).ToList() ;
-
-               // List<Guid> ownershipIds = (from cus in _context.Customer join cp in _context.CustomerProperty on cus.CustomerID equals cp.CustomerId where cus.InvalidPAN == true   select cp.OwnershipID.Value).ToList();
 
                 var remittances = (from pay in _context.ClientPayment
                                    join cpt in _context.ClientPaymentTransaction on pay.ClientPaymentID equals cpt.ClientPaymentID
                                    join cp in _context.ViewCustomerPropertyExpanded on new { cpt.OwnershipID, cpt.CustomerID } equals new { cp.OwnershipID, cp.CustomerID }
                                    join sp in _context.ViewSellerPropertyExpanded on cp.PropertyID equals sp.PropertyID
-                                   join da in _context.DebitAdvices on cpt.ClientPaymentTransactionID equals da.ClientPaymentTransactionID into xObj
-                                   from dam in xObj.DefaultIfEmpty()
+                                   join r in _context.Remittance on cpt.ClientPaymentTransactionID equals r.ClientPaymentTransactionID
+                                   join remSt in _context.RemittanceStatus on cpt.RemittanceStatusID equals remSt.RemittanceStatusID
                                    join ctr in _context.ClientTransactionRemark on cpt.ClientPaymentTransactionID equals ctr.ClientPaymentTransactionId into clObj
                                    from ctrOut in clObj.DefaultIfEmpty()
-                                   join rm in _context.RemittanceRemark on ctrOut.RemittanceRemarkId equals rm.RemarkId into rmObj
+                                   join rm in _context.RemittanceRemark on ctrOut.TracesRemarkId equals rm.RemarkId into rmObj
                                    from rmOut in rmObj.DefaultIfEmpty()
-                                   where cpt.RemittanceStatusID == (int)ERemittanceStatus.Pending
-                                         && pay.NatureOfPaymentID == (int)ENatureOfPayment.ToBeConsidered
-                                         && cpt.SellerID == sp.SellerID && cp.StatusTypeID != 3 && cp.InvalidPAN != true && cp.LessThan50L != true && cp.CustomerOptedOut != true
-                                        // && !ownershipIds.Contains(cp.OwnershipID)
-                                         && !unitNos.Contains(cp.UnitNo) && (ctrOut.TracesRemarkId==0 || ctrOut.TracesRemarkId == null)
-                                   //for presstige only
+                                   where  cpt.SellerID == sp.SellerID
                                    select new TdsRemittanceDto
                                    {
                                        ClientPaymentTransactionID = cpt.ClientPaymentTransactionID,
@@ -51,37 +45,36 @@ namespace ReProServices.Application.TdsRemittance.Queries.GetRemittanceList
                                        CustomerShare = cpt.CustomerShare,
                                        SellerName = sp.SellerName,
                                        SellerShare = cpt.SellerShare,
-                                       SellerPAN=sp.SellerPAN,
                                        PropertyPremises = sp.PropertyPremises,
                                        UnitNo = cp.UnitNo,
                                        TdsCollectedBySeller = cp.TdsCollectedBySeller,
                                        OwnershipID = cp.OwnershipID,
                                        InstallmentID = pay.InstallmentID,
-                                       StatusTypeID = cp.StatusTypeID,
                                        GstAmount = cpt.Gst,
-                                       TdsInterest = cpt.TdsInterest,
-                                       AmountPaid = pay.AmountPaid,
-                                       GrossAmount = pay.GrossAmount,
                                        RevisedDateOfPayment = pay.RevisedDateOfPayment,
                                        DateOfDeduction = pay.DateOfDeduction,
                                        ReceiptNo = pay.ReceiptNo,
-                                       LateFee = cpt.LateFee,
                                        ClientPaymentID = pay.ClientPaymentID,
                                        LotNo = pay.LotNo,
                                        GrossShareAmount = cpt.GrossShareAmount,
-                                       TdsAmount = cpt.Tds,
                                        AmountShare = cpt.ShareAmount,
+                                       RemittanceStatus = remSt.RemittanceStatusText,
+                                       ChallanAckNo = r.ChallanAckNo,
+                                       ChallanDate = r.ChallanDate,
+                                       ChallanAmount = cpt.TdsInterest + cpt.Tds + cpt.LateFee,
+                                       F16BDateOfReq = r.F16BDateOfReq,
+                                       F16BRequestNo = r.F16BRequestNo,
                                        RemittanceStatusID = cpt.RemittanceStatusID,
-                                       IsDebitAdvice = dam != null ? true : false,
+                                       CustomerPAN = cp.CustomerPAN,
+                                       OnlyTDS = cp.OnlyTDS ?? false,
+                                       IncorrectDOB = cp.IncorrectDOB ?? false,
                                        RemarkId = rmOut.RemarkId,
                                        RemarkDesc = rmOut.Description
-                                   }).Distinct()
-
-                    .PreFilterRemittanceBy(request.Filter)
-                    .ToList()
-                    .AsQueryable()
-                    .PostFilterRemittanceBy(request.Filter)
-                    .ToList();
+                                   }).PreFilterRemittanceBy(request.Filter)
+                                    .ToList()
+                                    .AsQueryable()
+                                    .PostFilterRemittanceBy(request.Filter)
+                                    .ToList();
                 return remittances;
             }
 

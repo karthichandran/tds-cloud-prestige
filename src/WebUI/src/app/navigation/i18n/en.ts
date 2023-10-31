@@ -74,8 +74,13 @@ export const locale = {
         },
         'TAXLOGIN':{
           'TITLE': 'Customer IT Passowrd'
+        },
+        'REMARK': {
+          'TITLE': 'Remark'
+        },
+        'DETAILSSUMMARYREPORT': {
+          'TITLE': 'Details Summary Report'
         }
-
       }
    
     

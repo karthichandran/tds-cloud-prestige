@@ -21,6 +21,7 @@ import { AuthenticationGuard } from 'app/core/authentication/authentication.guar
 import { StatementOfAccountComponent } from './statement-of-account/statement-of-account.component';
 import { PasswordSettingReportComponent } from './password-setting-report/password-setting-report.component';
 import { TaxPaymentReportComponent } from './tax-payment-report/tax-payment-report.component';
+import {DetailsSummaryComponent} from './details-summary/details-summary.component';
 const routes = [
   {
     path: 'status-report',
@@ -57,6 +58,12 @@ const routes = [
     component: TaxPaymentReportComponent,
     canActivate: [AuthenticationGuard]
   }
+  ,
+  {
+    path: 'details-summary-report',
+    component: DetailsSummaryComponent,
+    canActivate: [AuthenticationGuard]
+  }
 
 ];
 
@@ -68,7 +75,8 @@ const routes = [
     LotSummaryReportComponent,
     StatementOfAccountComponent,
     PasswordSettingReportComponent,
-    TaxPaymentReportComponent
+    TaxPaymentReportComponent,
+    DetailsSummaryComponent
   ],
   imports: [
     RouterModule.forChild(routes),

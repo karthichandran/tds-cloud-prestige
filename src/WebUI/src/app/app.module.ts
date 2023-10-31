@@ -49,6 +49,7 @@ import { TdsReceiptModule } from './tds-receipt/tds-receipt.module';
 import { ReportsModule } from 'app/reports/reports.module';
 import { UserPermissionsModule } from 'app/user-permissions/user-permissions.module';
 import {ProspectModule } from 'app/prospect/prospect.module';
+import {RemarksModule} from 'app/remarks/remarks.module';
 import { from } from 'rxjs';
 const appRoutes: Routes = [
   {
@@ -118,7 +119,8 @@ const appRoutes: Routes = [
     ReportsModule,
     ProspectModule,
     BankAccountModule,
-    TaxLoginModule
+    TaxLoginModule,
+    RemarksModule
   ],
   providers: [
    // { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true },

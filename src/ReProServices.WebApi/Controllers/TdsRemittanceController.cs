@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReProServices.Application.ClientPayments.Commands;
@@ -38,6 +39,12 @@ namespace WebApi.Controllers
         public async Task<IList<TdsRemittanceDto>> GetProcessed([FromQuery]TdsRemittanceFilter tdsRemittanceFilter)
         {
             return await Mediator.Send(new GetProcessedRemittanceListQuery() { Filter = tdsRemittanceFilter });
+        }
+        //End point used for traces grid in desktop app
+        [HttpGet("processedList/export")]
+        public async Task<IList<TdsRemittanceDto>> GetProcessedExportList([FromQuery] TdsRemittanceFilter tdsRemittanceFilter)
+        {
+            return await Mediator.Send(new GetProcessedremittanceListExportQuery() { Filter = tdsRemittanceFilter });
         }
 
         //End point to fill and download traces doc
@@ -225,6 +232,10 @@ namespace WebApi.Controllers
             return File(ms, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "TdsRemittanceReport.xls");
 
         }
-
+        [HttpPut("remittanceStatus/{clientPaymentTransactionID}/{statusId}")]
+        public async Task<Unit> Update(int clientPaymentTransactionID, int statusId)
+        {
+            return await Mediator.Send(new UpdateRemittanceStatusCommand { ClientPaymentTransactionID = clientPaymentTransactionID, StatusID = statusId });
+        }
     }
 }

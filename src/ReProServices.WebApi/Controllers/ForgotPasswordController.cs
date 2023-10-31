@@ -63,8 +63,7 @@ namespace WebApi.Controllers
             return NoContent();
 
         }
-
-        [DisableRequestTimeout]
+      
         [HttpGet("timeout")]
         public async Task<ActionResult> timeouttest()
         {

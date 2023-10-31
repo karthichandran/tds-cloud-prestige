@@ -21,7 +21,6 @@ export class ApiPrefixInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     
    request = request.clone({ url: environment.serverUrl + "/api" + request.url});
-   request.headers.set("timeout","3000");
     return next.handle(request).pipe(timeout(300000));
   }
 

@@ -77,15 +77,15 @@ export const navigation: FuseNavigation[] = [
         type: 'item',
         icon: 'account_balance',
         url: '/bank-accounts'
-      }
-      //{
-      //  id: 'tdsReceipt',
-      //  title: 'Tds Receipt',
-      //  translate: 'NAV.TDSRECEIPT.TITLE',
-      //  type: 'item',
-      //  icon: 'receipt',
-      //  url: '/lot'
-      //},     
+      },
+      {
+        id: 'remark',
+        title: 'Remark',
+        translate: 'NAV.REMARK.TITLE',
+        type: 'item',
+        icon: 'receipt',
+        url: '/remark'
+       }   
     ]
   },
   {
@@ -217,6 +217,13 @@ export const navigation: FuseNavigation[] = [
         type: 'item',
         icon: 'payment',
         url: '/tax-payment-report'
+      },{
+        id: 'details_summary_report',
+        title: 'Details Summary Report',
+        translate: 'NAV.DETAILSSUMMARYREPORT.TITLE',
+        type: 'item',
+        icon: 'details',
+        url: '/details-summary-report'
       }
 
     ]

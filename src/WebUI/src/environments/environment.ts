@@ -5,10 +5,10 @@
 export const environment = {
   production: false,
   
-  //baseApiUrl: 'http://localhost:44301',  // For connecting to server running elsewhere update the base API URL
-  //serverUrl: 'https://localhost:44301',
-   baseApiUrl: 'https://prestigetdsapi.reproservices.in',
-  serverUrl: 'https://prestigetdsapi.reproservices.in',
+  baseApiUrl: 'http://localhost:44301',  // For connecting to server running elsewhere update the base API URL
+  serverUrl: 'https://localhost:44301',
+   // baseApiUrl: 'https://prestigetdsapi.reproservices.in',
+  // serverUrl: 'https://prestigetdsapi.reproservices.in',
   //baseApiUrl: 'http://megharaju-001-site1.atempurl.com',
   //serverUrl:  'http://megharaju-001-site1.atempurl.com',
   oauth: {

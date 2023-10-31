@@ -79,8 +79,8 @@ export class ProspectComponent implements OnInit, OnDestroy {
     this.customerColumnDef = [
       { 'header': 'Name', 'field': 'name', 'type': 'label' },
       { 'header': 'PAN', 'field': 'pan', 'type': 'label' },
-      { 'header': 'Share', 'field': 'share', 'type': 'label' },
-      // { 'header': 'Phone No', 'field': 'mobileNo', 'type': 'label' },
+       { 'header': 'IT Password', 'field': 'incomeTaxPassword', 'type': 'label' },
+      { 'header': 'Share', 'field': 'share', 'type': 'label' },   
       { 'header': 'Email', 'field': 'emailID', 'type': 'label' }
       
     ];
