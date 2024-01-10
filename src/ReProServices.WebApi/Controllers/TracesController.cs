@@ -22,6 +22,7 @@ using ReProServices.Application.Traces;
 using ReProServices.Application.Traces.Command;
 using ReProServices.Domain;
 using ReProServices.Infrastructure.GoogleDrive;
+using ReProServices.Infrastructure.MegaDrive;
 using ReProServices.Infrastructure.Smtp;
 
 namespace WebApi.Controllers
@@ -31,9 +32,11 @@ namespace WebApi.Controllers
     {
         private IConfiguration _configuration;
         private DriverService driverSrv;
+        private MegaDriveService _megaSvc;
         public TracesController(IConfiguration configuration) {
             _configuration = configuration;
             driverSrv = new DriverService();
+            _megaSvc = new MegaDriveService();
         }
 
         [HttpGet]
@@ -71,11 +74,19 @@ namespace WebApi.Controllers
                 custPropFile.FileBlob = new byte[1];
                 custPropFile.FileType = file.ContentType;
                 custPropFile.FileCategoryId = categoryId;
-                var gdid = await driverSrv.AddFile(custPropFile.FileName, custPropFile.FileType, ms);
-                custPropFile.GDfileID = gdid;
 
-                if (string.IsNullOrEmpty(gdid))
+                //Mega
+
+               var status= await  _megaSvc.UploadFile(ms, custPropFile.FileName);
+                if(!status)
                     throw new DomainException("File Upload is failed.");
+                // End Mega
+
+                //var gdid = await driverSrv.AddFile(custPropFile.FileName, custPropFile.FileType, ms);
+                //custPropFile.GDfileID = gdid;
+
+                //if (string.IsNullOrEmpty(gdid))
+                //    throw new DomainException("File Upload is failed.");
 
                 var result = await Mediator.Send(new UploadRemittanceFileCommand { CustomerPropertyFile = custPropFile,RemittanceID=remittanceID });
                 return Ok(result);
@@ -117,16 +128,25 @@ namespace WebApi.Controllers
 
             var form16b = await Mediator.Send(new GetCustomerPropertyFileByBlobIdQuery { FileID =Convert.ToInt32( remittanceModel.Form16BlobID) });
              var challan = await Mediator.Send(new GetCustomerPropertyFileByBlobIdQuery { FileID = Convert.ToInt32(remittanceModel.ChallanBlobID) });
-            if (form16b.GDfileID != null) {
+            if (form16b.GDfileID != null)
+            {
                 var msObj = driverSrv.GetFile(form16b.GDfileID);
                 form16b.FileBlob = msObj.ToArray();
             }
+            else {
+                var msObj = await _megaSvc.DownloadFile(form16b.FileName);
+                form16b.FileBlob = msObj.ToArray();
+            }
+
             if (challan.GDfileID != null)
             {
                 var msObj = driverSrv.GetFile(challan.GDfileID);
                 challan.FileBlob = msObj.ToArray();
             }
-
+            else {
+                var msObj = await _megaSvc.DownloadFile(challan.FileName);
+                challan.FileBlob = msObj.ToArray();
+            }
 
             var subject = "Form 16B - " + remittanceModel.Premises + " - " + remittanceModel.UnitNo;
             var emilaModel = new EmailModel()
@@ -174,16 +194,27 @@ namespace WebApi.Controllers
             //string imageData = "data:image/png;base64," + Convert.ToBase64String(new MemoryStream(binaries2.FileBlob).ToArray()) ;
             // var imageResource = new LinkedResource(Convert.ToBase64String(binaries2.FileBlob), "image/png") { ContentId = "added-image-id" };
 
-            var form16b = await Mediator.Send(new GetCustomerPropertyFileByBlobIdQuery { FileID = Convert.ToInt32(remittanceModel.Form16BlobID) });
+           // var form16b = await Mediator.Send(new GetCustomerPropertyFileByBlobIdQuery { FileID = Convert.ToInt32(remittanceModel.Form16BlobID) });
             var challan = await Mediator.Send(new GetCustomerPropertyFileByBlobIdQuery { FileID = Convert.ToInt32(remittanceModel.ChallanBlobID) });
-            if (form16b!=null && form16b.GDfileID != null)
-            {
-                var msObj = driverSrv.GetFile(form16b.GDfileID);
-                form16b.FileBlob = msObj.ToArray();
-            }
+            //if (form16b!=null && form16b.GDfileID != null)
+            //{
+            //    var msObj = driverSrv.GetFile(form16b.GDfileID);
+            //    form16b.FileBlob = msObj.ToArray();
+            //}
+            //else
+            //{
+            //    var msObj = await _megaSvc.DownloadFile(form16b.FileName);
+            //    form16b.FileBlob = msObj.ToArray();
+            //}
+
             if (challan!=null && challan.GDfileID != null)
             {
                 var msObj = driverSrv.GetFile(challan.GDfileID);
+                challan.FileBlob = msObj.ToArray();
+            }
+            else
+            {
+                var msObj = await _megaSvc.DownloadFile(challan.FileName);
                 challan.FileBlob = msObj.ToArray();
             }
             var subject = "TDS paid challan - " + remittanceModel.Premises + " - " + remittanceModel.UnitNo;
@@ -200,8 +231,8 @@ namespace WebApi.Controllers
                 IsBodyHtml = true
             };
             List<FileAttachment> fileList = new List<FileAttachment>();
-            if (form16b != null)
-                fileList.Add(new FileAttachment() { MemoryStream = form16b.FileBlob, FileName = form16b.FileName, FileType = form16b.FileType });
+            //if (form16b != null)
+            //    fileList.Add(new FileAttachment() { MemoryStream = form16b.FileBlob, FileName = form16b.FileName, FileType = form16b.FileType });
             if (challan != null)
                 fileList.Add(new FileAttachment() { MemoryStream = challan.FileBlob, FileName = challan.FileName, FileType = challan.FileType });
             emilaModel.attachments = fileList;

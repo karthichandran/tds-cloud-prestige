@@ -32,12 +32,18 @@ namespace ReProServices.Infrastructure.GoogleDrive
                 HttpClientInitializer = credential
             });
 
+            var aboutRequest = service.About.Get();
+            aboutRequest.Fields = "storageQuota";
+            var about = aboutRequest.Execute();
+
+            long usedBytes = about.StorageQuota.Usage.Value;
+            long totalBytes = about.StorageQuota.Limit.Value;
+
             var fileMetadata = new Google.Apis.Drive.v3.Data.File()
             {
                 Name= fileName,
-                //Parents = new List<string>() { "1Uaaf1WvU0TxXfFhZe59rvSMmDQBjzr0Y" }//folder id
-                Parents = new List<string>() { "1XZLYSjo8ptx0XhO7-_CK1IYCnfJ9aQ67" }//folder id  prestige_docs
-                //Parents = new List<string>() { "1cDI1e-NSEbJSCEzIl2Ale0RFQ3WBMKRX" }//folder id  repro_docs
+                Parents = new List<string>() { "1ZsKhFk41VLHBRsNY8mY1pvDx-KjkS0Sn" }//folder id prestige doc 1
+                //Parents = new List<string>() { "1XZLYSjo8ptx0XhO7-_CK1IYCnfJ9aQ67" }//folder id  prestige_docs
             };
             string uploadedFileId;
             // Create a new file, with metadata and stream.

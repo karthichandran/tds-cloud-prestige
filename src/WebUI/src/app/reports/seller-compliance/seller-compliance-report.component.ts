@@ -51,7 +51,6 @@ export class SellerComplianceReportComponent implements OnInit, OnDestroy {
     ];
 
     this.getProperties();
-    this.getReportList();
     this.getSellers();
     this.getLotNo();
   }

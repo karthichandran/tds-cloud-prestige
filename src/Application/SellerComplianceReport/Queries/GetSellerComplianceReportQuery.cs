@@ -27,7 +27,7 @@ namespace ReProServices.Application.SellerComplianceReport.Queries
                           join rt in _context.Remittance on cpt.ClientPaymentTransactionID equals rt.ClientPaymentTransactionID
                           join pay in _context.ClientPayment on cpt.ClientPaymentID equals pay.ClientPaymentID
                           join sl in _context.ViewSellerPropertyBasic on cp.PropertyID equals sl.PropertyID
-                          join f in _context.ViewCustomerPropertyFile on rt.Form16BlobID equals f.BlobID
+                          join f in _context.ViewCustomerPropertyFile on rt.Form16BlobID equals f.BlobID 
                           select new SellerComplianceDto {
                               SellerID=sl.SellerID,
                               SellerName=sl.SellerName,

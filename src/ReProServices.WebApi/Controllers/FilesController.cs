@@ -12,6 +12,7 @@ using ReProServices.Application.CustomerPropertyFiles.Commands.UploadCustomerPro
 using ReProServices.Application.CustomerPropertyFiles.Queries;
 using ReProServices.Domain;
 using ReProServices.Infrastructure.GoogleDrive;
+using ReProServices.Infrastructure.MegaDrive;
 
 namespace WebApi.Controllers
 {
@@ -19,8 +20,10 @@ namespace WebApi.Controllers
     public class FilesController : ApiController
     {
         private DriverService driverSrv;
+        private MegaDriveService megaSrv;
         public FilesController() {
             driverSrv = new DriverService();
+            megaSrv = new MegaDriveService();
         }
 
         [HttpPost("Guid/{guid}/{categoryId}"), DisableRequestSizeLimit]
@@ -51,10 +54,12 @@ namespace WebApi.Controllers
                     custPropFile.FileType = file.ContentType;
                     custPropFile.FileCategoryId = categoryId;
 
-                    var gdid=await driverSrv.AddFile(custPropFile.FileName, custPropFile.FileType, ms);
-                    custPropFile.GDfileID = gdid;
+                    //var gdid=await driverSrv.AddFile(custPropFile.FileName, custPropFile.FileType, ms);
+                    //custPropFile.GDfileID = gdid;
 
-                    custPropFiles.Add(custPropFile);
+                    var status = await megaSrv.UploadFile(ms, custPropFile.FileName);
+                    if (status)
+                        custPropFiles.Add(custPropFile);
 
                 }
                 bool result = await Mediator.Send(new UploadCustomerPropertyFileCommand { CustomerPropertyFiles = custPropFiles });
@@ -94,11 +99,11 @@ namespace WebApi.Controllers
                     custPropFile.FileType = file.ContentType;
                     custPropFile.FileCategoryId = categoryId;
 
-                    var gdid = await driverSrv.AddFile(custPropFile.FileName, custPropFile.FileType, ms);
-                    custPropFile.GDfileID = gdid;
-
-                    custPropFiles.Add(custPropFile);               
-                  
+                    //var gdid = await driverSrv.AddFile(custPropFile.FileName, custPropFile.FileType, ms);
+                    //custPropFile.GDfileID = gdid;
+                    var status = await megaSrv.UploadFile(ms, custPropFile.FileName);
+                    if (status)
+                    custPropFiles.Add(custPropFile);                   
 
                 }
 
@@ -137,8 +142,11 @@ namespace WebApi.Controllers
                 custPropFile.FileType = files[0].ContentType;
                 custPropFile.FileCategoryId = 5;
 
-                var gdid = await driverSrv.AddFile(custPropFile.FileName, custPropFile.FileType, ms);
-                custPropFile.GDfileID = gdid;
+                //var gdid = await driverSrv.AddFile(custPropFile.FileName, custPropFile.FileType, ms);
+                //custPropFile.GDfileID = gdid;
+               var status= await megaSrv.UploadFile(ms, custPropFile.FileName);
+                if(!status)
+                    throw new DomainException("The files is empty or  corrupt");
 
                 int result = await Mediator.Send(new UploadPanFileCommand { CustomerPropertyFile = custPropFile });
                 return Ok(result);
@@ -196,8 +204,17 @@ namespace WebApi.Controllers
         {
             var binaries = await Mediator.Send(new GetCustomerPropertyFileByBlobIdQuery { FileID = blobID});
             //return File(binaries.FileBlob, binaries.FileType, binaries.FileName);
-            if ( binaries.GDfileID == null)
-                return File(binaries.FileBlob, binaries.FileType, binaries.FileName);
+            if (binaries == null)
+                return null;
+
+            if (binaries.GDfileID == null)
+            {
+                if (binaries.FileBlob.Length > 10)
+                    return File(binaries.FileBlob, binaries.FileType, binaries.FileName);
+
+                var ms = await megaSrv.DownloadFile(binaries.FileName);
+                return File(ms.ToArray(), binaries.FileType, binaries.FileName);
+            }           
             else
             {
                 var ms = driverSrv.GetFile(binaries.GDfileID);
@@ -209,9 +226,19 @@ namespace WebApi.Controllers
         public async Task<CustomerPropertyFileDto> GetFileInfoByBlobID(int blobID)
         {
            var file=  await Mediator.Send(new GetCustomerPropertyFileByBlobIdQuery { FileID = blobID });
-            if (file == null || file.GDfileID == null)
+            if (file == null)
+                return null;
+
+            if (file.GDfileID == null)
+            {
+                if (file.FileBlob.Length > 10)
+                    return file;
+
+                var ms = await megaSrv.DownloadFile(file.FileName);
+                file.FileBlob = ms.ToArray();
                 return file;
-           else
+            }
+            else
             {
                 var ms = driverSrv.GetFile(file.GDfileID);
                 file.FileBlob = ms.ToArray();
@@ -223,8 +250,17 @@ namespace WebApi.Controllers
         public async Task<CustomerPropertyFileDto> GetFileDetailsByPanID(string panID)
         {
             var file= await Mediator.Send(new GetCustomerPropertyFileByPanIdQuery { PanID = panID });
-            if (file==null|| file.GDfileID == null)
+            if (file == null)
+                return null;
+
+            if (file.GDfileID == null) {
+                if (file.FileBlob.Length > 10)
+                    return file;
+
+                var ms =await megaSrv.DownloadFile(file.FileName);
+                file.FileBlob = ms.ToArray();
                 return file;
+            }               
             else
             {
                 var ms = driverSrv.GetFile(file.GDfileID);
@@ -240,6 +276,9 @@ namespace WebApi.Controllers
             var binaries = await Mediator.Send(new GetCustomerPropertyFileByBlobIdQuery { FileID = blobID });
             if (binaries != null && binaries.GDfileID!=null) {
                 driverSrv.DeleteFile(binaries.GDfileID);
+            }
+            else if (binaries != null ){
+               await megaSrv.DeleteFile(binaries.FileName);
             }
 
             bool result = await Mediator.Send(new DeletePropertyFileCommand { BlobID = blobID });

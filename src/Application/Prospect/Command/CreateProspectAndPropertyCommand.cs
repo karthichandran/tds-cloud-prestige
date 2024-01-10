@@ -27,9 +27,15 @@ namespace ReProServices.Application.Prospect.Command
                 try
                 {
                     var prospectPropertyDto = request.prospectVm.ProspectPropertyDto;
-                    var existingPros = _context.ProspectProperty.Where(x => x.PropertyID == prospectPropertyDto.PropertyID && x.UnitNo == prospectPropertyDto.UnitNo).FirstOrDefault();
+                    var existingPros = _context.ProspectProperty.Where(x => x.PropertyID == prospectPropertyDto.PropertyID && x.UnitNo == prospectPropertyDto.UnitNo ).FirstOrDefault();
+                    bool isExist = existingPros != null;
+                    if (existingPros != null && existingPros.OwnershipID != null) {
+                        var cusProp = _context.CustomerProperty.Where(x => x.OwnershipID == existingPros.OwnershipID && x.StatusTypeId > 2).ToList();
+                        if (cusProp.Any())
+                            isExist = false;
+                    }
 
-                    if (existingPros != null)
+                    if (isExist)
                         throw new ApplicationException("Property detail is already exist");
 
                     var prospectPropertyEntity = new ProspectProperty

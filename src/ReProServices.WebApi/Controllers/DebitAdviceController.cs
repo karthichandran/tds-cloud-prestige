@@ -5,6 +5,7 @@ using ReProServices.Application.DebitAdvices.Commands;
 using ReProServices.Application.DebitAdvices.Queries;
 using ReProServices.Domain;
 using ReProServices.Infrastructure.GoogleDrive;
+using ReProServices.Infrastructure.MegaDrive;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,9 +18,11 @@ namespace WebApi.Controllers
     public class DebitAdviceController : ApiController
     {
         private DriverService driverSrv;
+        private MegaDriveService megaSrv;
         public DebitAdviceController()
         {
             driverSrv = new DriverService();
+            megaSrv = new MegaDriveService();
         }
 
         [HttpPost]
@@ -73,11 +76,14 @@ namespace WebApi.Controllers
                 custPropFile.FileType = file.ContentType;
                 custPropFile.FileCategoryId = 8; //it denotes debit advice
 
-                var gdid = await driverSrv.AddFile(custPropFile.FileName, custPropFile.FileType, ms);
-                custPropFile.GDfileID = gdid;
+                //var gdid = await driverSrv.AddFile(custPropFile.FileName, custPropFile.FileType, ms);
+                //custPropFile.GDfileID = gdid;
 
-                if (string.IsNullOrEmpty(gdid))
-                    throw new DomainException("File Upload is failed.");
+                //if (string.IsNullOrEmpty(gdid))
+                //    throw new DomainException("File Upload is failed.");
+                var status = await megaSrv.UploadFile(ms, custPropFile.FileName);
+                if (!status)
+                    throw new DomainException("The files is empty or  corrupt");
 
 
                 var result = await Mediator.Send(new DebitAdviceUploadFileCommand { CustomerPropertyFile= custPropFile });
