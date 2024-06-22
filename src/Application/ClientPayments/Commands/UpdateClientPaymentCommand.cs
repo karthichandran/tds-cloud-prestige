@@ -48,6 +48,7 @@ namespace ReProServices.Application.ClientPayments.Commands
                 entity.GstRate = GetTaxRate(payObj.GstTaxCode, payObj.RevisedDateOfPayment.Value);
                 entity.Updated = DateTime.Now;
                 entity.UpdatedBy = userInfo.UserID.ToString();
+                entity.CustomerNo = payObj.CustomerNo;
                 _ = _context.ClientPayment.Update(entity);
                 await _context.SaveChangesAsync(cancellationToken);
                     

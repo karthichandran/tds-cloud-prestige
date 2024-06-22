@@ -56,5 +56,6 @@ namespace ReProServices.Application.ClientPayments
         public DateTime DateOfBirth { get; set; }
 
         public int RemittanceStatusID { get; set; }
+        public string CustomerNo { get; set; }
     }
 }

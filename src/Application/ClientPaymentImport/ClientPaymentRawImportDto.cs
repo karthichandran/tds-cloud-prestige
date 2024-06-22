@@ -27,6 +27,8 @@ namespace ReProServices.Domain.Entities
 		public string NatureOfPayment { get; set; }
 		[Index(9)]
 		public string NotToBeConsideredReason { get; set; }
+        [Index(10)]
+		public string CustomerNo { get; set; }
 
 		public void Mapping(Profile profile)
 		{

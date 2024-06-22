@@ -70,7 +70,8 @@ namespace ReProServices.Application.TdsRemittance.Queries
                             OnlyTDS = cp.OnlyTDS ?? false,
                             IncorrectDOB=cp.IncorrectDOB??false,
                             RemarkId = rmOut.RemarkId,
-                            RemarkDesc = rmOut.Description
+                            RemarkDesc = rmOut.Description,
+                            TracesPassword = cp.TracesPassword
                         }).PreFilterRemittanceBy(request.Filter)
                                     .ToList()
                                     .AsQueryable()

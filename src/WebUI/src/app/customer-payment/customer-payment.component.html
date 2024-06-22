@@ -299,7 +299,7 @@
 
                   <div fxFlex="1 0 auto" fxLayout="row wrap" class="padding-top-10">
 
-                    <mat-form-field appearance="outline" fxFlex class="padding-left-right-3">
+                    <mat-form-field appearance="outline" fxFlex="25" class="padding-left-right-3">
                       <mat-label>Date of Payment</mat-label>
                       <input matInput [matDatepicker]="dateOfPayment" [max]="maxDate" formControlName="dateOfPayment" (dateChange)="assignRevisedDate($event)" required>
                       <mat-datepicker-toggle matSuffix [for]="dateOfPayment"></mat-datepicker-toggle>
@@ -308,7 +308,7 @@
                       <mat-error *ngIf="clientform.controls['dateOfPayment'].errors?.required">Date of Payment is required!</mat-error>
                     </mat-form-field>
                 
-                    <mat-form-field appearance="outline" fxFlex class="padding-left-right-3">
+                    <mat-form-field appearance="outline" fxFlex="25" class="padding-left-right-3">
                       <mat-label>Revised  Date of Payment</mat-label>
                       <input matInput [matDatepicker]="revisedDateOfPayment" [max]="maxDate" formControlName="revisedDateOfPayment" (dateChange)="onPaymentDateChanged($event)" required>
                       <mat-datepicker-toggle matSuffix [for]="revisedDateOfPayment"></mat-datepicker-toggle>
@@ -316,7 +316,7 @@
                       <mat-error *ngIf="clientform.controls['revisedDateOfPayment'].errors?.matDatepickerMax">Date cannot be a future day</mat-error>
                       <mat-error *ngIf="clientform.controls['revisedDateOfPayment'].errors?.required">Revised Date of Payment is required!</mat-error>
                     </mat-form-field>
-                    <mat-form-field appearance="outline" fxFlex class="padding-left-right-3">
+                    <mat-form-field appearance="outline" fxFlex="25" class="padding-left-right-3">
                       <mat-label>Date of deduction</mat-label>
                       <input matInput [matDatepicker]="dateOfDeduction" [max]="maxDate" formControlName="dateOfDeduction" required>
                       <mat-datepicker-toggle matSuffix [for]="dateOfDeduction"></mat-datepicker-toggle>
@@ -324,12 +324,18 @@
                       <mat-error *ngIf="clientform.controls['dateOfDeduction'].errors?.matDatepickerMax">Date cannot be a future day</mat-error>
                       <mat-error *ngIf="clientform.controls['dateOfDeduction'].errors?.required">Date of deduction is required!</mat-error>
                     </mat-form-field>
-                    <mat-form-field appearance="outline" fxFlex class="padding-left-right-3">
+                    <div fxFlex="25">
+                    <mat-form-field appearance="outline" fxFlex="50" class="padding-left-right-3">
                       <mat-label>Receipt No</mat-label>
                       <input matInput formControlName="receiptNo" required>
                       <mat-error>Receipt No is required!</mat-error>
                     </mat-form-field>
-
+                    <mat-form-field appearance="outline" fxFlex="50" class="padding-left-right-3">
+                      <mat-label>Customer ID</mat-label>
+                      <input matInput formControlName="customerNo" required>
+                      <mat-error>Customer ID is required!</mat-error>
+                    </mat-form-field>
+                  </div>
                   </div>
                   <div fxFlex="1 0 auto" fxLayout="row wrap" class="padding-top-5">
                     <mat-form-field appearance="outline" fxFlex class="padding-left-right-3">

@@ -86,71 +86,7 @@ namespace WebApi.Controllers
         {
             return await Mediator.Send(new GetClientPaymentListQuery() { Filter = clientPaymentFilter });
         }
-
-        //public async Task<FileResult> GetExcel([FromQuery] CustomerDetailsFilter customerDetailsFilter)
-        //{
-        //    var result = await Mediator.Send(new GetCustomersQuery() { Filter = customerDetailsFilter });
-
-        //    var resultSet = result.customersView
-        //        .Where(cp => cp.StatusTypeID <= 2).ToList();
-
-        //    var settings = FluentSettings.For<ViewCustomerPropertyBasic>();
-        //    settings.HasAuthor("REpro Services");
-
-        //    settings.Property(_ => _.CustomerName)
-        //        .HasColumnTitle("Customer Name")
-        //        .HasColumnWidth(50)
-        //        .HasColumnIndex(0);
-
-        //    settings.Property(x => x.PAN)
-        //        .HasColumnWidth(16)
-        //        .HasColumnIndex(1);
-
-        //    settings.Property(x => x.PropertyPremises)
-        //        .HasColumnTitle("Property Premises")
-        //        .HasColumnWidth(30)
-        //        .HasColumnIndex(2);
-
-        //    settings.Property(x => x.UnitNo)
-        //        .HasColumnTitle("Unit No")
-        //        .HasColumnWidth(18)
-        //        .HasColumnIndex(3);
-
-        //    settings.Property(x => x.TotalUnitCost)
-        //        .HasColumnTitle("Unit Cost")
-        //        .HasColumnWidth(18)
-        //        .HasColumnIndex(4);
-
-        //    settings.Property(x => x.DateOfAgreement)
-        //        .HasColumnTitle("Date of Agreement")
-        //        .HasColumnFormatter("dd-MMM-yyy")
-        //        .HasColumnWidth(18)
-        //        .HasColumnIndex(5);
-
-        //    settings.Property(x => x.DateOfSubmission)
-        //        .HasColumnTitle("Date of Submission")
-        //        .HasColumnFormatter("dd-MMM-yyy")
-        //        .HasColumnWidth(18)
-        //        .HasColumnIndex(6);
-
-        //    settings.Property(x => x.Remarks)
-        //        .HasColumnTitle("Remarks")
-        //        .HasColumnWidth(60)
-        //        .HasColumnIndex(7);
-
-        //    settings.Property(_ => _.OwnershipID).Ignored();
-        //    settings.Property(_ => _.CustomerID).Ignored();
-        //    settings.Property(_ => _.PropertyID).Ignored();
-        //    settings.Property(_ => _.CustomerPropertyID).Ignored();
-        //    settings.Property(_ => _.OwnershipID).Ignored();
-        //    settings.Property(_ => _.PaymentMethodId).Ignored();
-        //    settings.Property(_ => _.StatusTypeID).Ignored();
-
-        //    var ms = resultSet.ToExcelBytes();
-
-        //    return File(ms, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "ClientPaymentRecords.xls");
-
-        //}
+        
         [Authorize(Roles = "ClientPayment_View")]
         [HttpGet("paymentList/getExcel")]
         public async Task<FileResult> GetReport([FromQuery] ClientPaymentFilter clientPaymentFilter)
@@ -170,124 +106,133 @@ namespace WebApi.Controllers
                 .HasColumnTitle("Lot No.")
                 .HasColumnIndex(1);
 
+            settings.Property(x => x.CustomerNo)
+                .HasColumnTitle("Customer ID")
+                .HasColumnIndex(2);
+
             settings.Property(x => x.CustomerName)
                 .HasColumnTitle("Client Name")
-                .HasColumnIndex(2);
+                .HasColumnIndex(3);
 
             settings.Property(x => x.SellerName)
                 .HasColumnTitle("Seller Name")
                 .HasColumnWidth(36)
-                .HasColumnIndex(3);
+                .HasColumnIndex(4);
+
+            settings.Property(x => x.PropertyCode)
+                .HasColumnTitle("Project Code")
+                .HasColumnWidth(36)
+                .HasColumnIndex(5);
 
             settings.Property(x => x.PropertyPremises)
                 .HasColumnTitle("Project Name")
                 .HasColumnWidth(36)
-                .HasColumnIndex(4);
+                .HasColumnIndex(6);
 
             settings.Property(x => x.UnitNo)
                 .HasColumnTitle("Unit No")
                 .HasColumnWidth(14)
-                .HasColumnIndex(5);
+                .HasColumnIndex(7);
 
             settings.Property(x => x.DateOfBooking)
                 .HasColumnTitle("Date of Booking")
                 .HasColumnFormatter("dd-MMM-yyy")
                 .HasColumnWidth(16)
-                .HasColumnIndex(6);
+                .HasColumnIndex(8);
 
             settings.Property(x => x.TotalUnitCost)
                 .HasColumnTitle("Total Unit Cost")
                 .HasColumnWidth(16)
-                .HasColumnIndex(7);
+                .HasColumnIndex(9);
 
             settings.Property(x => x.DateOfPayment)
                 .HasColumnTitle("Date of Payment")
                 .HasColumnFormatter("dd-MMM-yyy")
                 .HasColumnWidth(18)
-                .HasColumnIndex(8);
+                .HasColumnIndex(10);
 
             settings.Property(x => x.RevisedDateOfPayment)
                 .HasColumnTitle("Revised Date of Payment")
                 .HasColumnFormatter("dd-MMM-yyy")
                 .HasColumnWidth(21)
-                .HasColumnIndex(9);
+                .HasColumnIndex(11);
 
             settings.Property(x => x.DateOfDeduction)
                 .HasColumnTitle("Date of Deduction")
                 .HasColumnFormatter("dd-MMM-yyy")
                 .HasColumnWidth(18)
-                .HasColumnIndex(10);
+                .HasColumnIndex(12);
 
             settings.Property(x => x.ReceiptNo)
                 .HasColumnTitle("Receipt No.")
                 .HasColumnWidth(14)
-                .HasColumnIndex(11);
+                .HasColumnIndex(13);
 
             settings.Property(x => x.ShareAmountPaid)
                 .HasColumnTitle("Amount Paid")
                 .HasColumnWidth(14)
-                .HasColumnIndex(12);
+                .HasColumnIndex(14);
 
             settings.Property(x => x.GstRate)
                 .HasColumnTitle("GST Rate")
                 .HasColumnWidth(14)
-                .HasColumnIndex(13);
+                .HasColumnIndex(15);
 
             settings.Property(x => x.Gst)
                 .HasColumnTitle("GST Value")
                 .HasColumnWidth(14)
-                .HasColumnIndex(14);
+                .HasColumnIndex(16);
 
             settings.Property(x => x.GrossShareAmount)
                 .HasColumnTitle("Gross Value")
                 .HasColumnWidth(14)
-                .HasColumnIndex(15);
+                .HasColumnIndex(17);
 
             settings.Property(x => x.TdsRate)
                 .HasColumnTitle("TDS Rate")
                 .HasColumnWidth(14)
-                .HasColumnIndex(16);
+                .HasColumnIndex(18);
 
             settings.Property(x => x.Tds)
                 .HasColumnTitle("TDS Payable")
                 .HasColumnWidth(14)
-                .HasColumnIndex(17);
+                .HasColumnIndex(19);
 
             settings.Property(x => x.TdsInterest)
                 .HasColumnTitle("Interest")
                 .HasColumnWidth(14)
-                .HasColumnIndex(18);
+                .HasColumnIndex(20);
 
             settings.Property(x => x.LateFee)
                 .HasColumnTitle("Late Fee")
                 .HasColumnWidth(14)
-                .HasColumnIndex(19);
+                .HasColumnIndex(21);
 
             settings.Property(x => x.RemittanceStatus)
                 .HasColumnTitle("Remittance Status")
-                .HasColumnIndex(20);
+                .HasColumnIndex(22);
 
             settings.Property(x => x.NatureOfPaymentText)
                 .HasColumnTitle("Remarks")
                 .HasColumnWidth(60)
-                .HasColumnIndex(21);
+                .HasColumnIndex(23);
             settings.Property(x => x.ClientPaymentTransactionID)
                 .HasColumnTitle("Transaction ID")
                 .HasColumnWidth(60)
-                .HasColumnIndex(22);
+                .HasColumnIndex(24);
             settings.Property(x => x.ChallanDate)
             .HasColumnTitle("Challan Date")
             .HasColumnFormatter("dd-MMM-yyy")
             .HasColumnWidth(60)
-            .HasColumnIndex(23);
+            .HasColumnIndex(25);
             settings.Property(x => x.CustomerStatus)
            .HasColumnTitle("Customer status")
            .HasColumnWidth(100)
-           .HasColumnIndex(24);
+           .HasColumnIndex(26);
             settings.Property(x => x.Cinno)
                 .HasColumnTitle("Cin No")
                 .HasColumnWidth(100)
-                .HasColumnIndex(25);
+                .HasColumnIndex(27);
 
 
             settings.Property(_ => _.OwnershipID).Ignored();
@@ -402,13 +347,13 @@ namespace WebApi.Controllers
                                         UnitNo = ExtractUnitNo(row[4].ToString()),
                                         AmountPaid = Convert.ToDecimal(row[6]) * -1,
                                         LotNo = Convert.ToInt32(row[5]),
-                                        NatureOfPayment = Convert.ToString(row[8]),
-                                        NotToBeConsideredReason = Convert.ToString(row[9]),
-                                        Name = Convert.ToString(row[7]),
+                                        NatureOfPayment = Convert.ToString(row[9]),
+                                        NotToBeConsideredReason = Convert.ToString(row[10]),
+                                        Name = Convert.ToString(row[8]),
                                         ReceiptNo = Convert.ToString(row[1]),
                                         DateOfPayment = DateTime.Parse(row[2].ToString()),
                                         RevisedDateOfPayment = DateTime.Parse(row[3].ToString()),
-
+                                        CustomerNo = Convert.ToString(row[7])
                                     }).ToList();
 
                     await Mediator.Send(new ClientPaymentImportCommand { cpr = payments });

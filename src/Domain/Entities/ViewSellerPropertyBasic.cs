@@ -18,5 +18,6 @@ namespace ReProServices.Domain.Entities
         public string Seller26BState { get; set; }
         public string SellerPAN { get; set; }
         public string PropertyShortName { get; set; }
+        public string PropertyCode { get; set; }
     }
 }

@@ -226,7 +226,8 @@ namespace WebApi.Controllers
         public async Task<CustomerPropertyFileDto> GetFileInfoByBlobID(int blobID)
         {
            var file=  await Mediator.Send(new GetCustomerPropertyFileByBlobIdQuery { FileID = blobID });
-            if (file == null)
+           // Note :checking file info only uploaded 
+            if (file == null || file.IsFileUploaded==false)
                 return null;
 
             if (file.GDfileID == null)

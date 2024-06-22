@@ -39,7 +39,9 @@ namespace ReProServices.Application.SellerComplianceReport.Queries
                               TdsCertificateDate=rt.F16UpdateDate,
                               TdsCertificateNo=rt.F16BCertificateNo,
                               Amount=rt.F16CreditedAmount,
-                              Form16BFileName=f.FileName
+                              Form16BFileName=f.FileName,
+                              CustomerNo = pay.CustomerNo,
+                              PropertyCode = sl.PropertyCode
                           }
                           ).PreFilterReportBy(request.Filter)
                         .ToList()

@@ -8,7 +8,8 @@
     "build:ssr": "ng run ReProServices.WebUI:server:dev",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+	"build-prod":"ng build --configuration=production"
   },
   "private": true,
   "dependencies": {

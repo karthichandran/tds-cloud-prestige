@@ -33,40 +33,49 @@ namespace WebApi.Controllers
                .HasColumnTitle("Seller Name")
                .HasColumnIndex(0);
 
+            settings.Property(x => x.PropertyCode)
+                .HasColumnTitle("Project Code")
+                .HasColumnWidth(36)
+                .HasColumnIndex(1);
+
             settings.Property(x => x.Premises)
             .HasColumnTitle("Project Name")
             .HasColumnWidth(36)
-            .HasColumnIndex(1);
+            .HasColumnIndex(2);
+
+            settings.Property(x => x.CustomerNo)
+                .HasColumnTitle("Customer ID")
+                .HasColumnIndex(3);
 
             settings.Property(x => x.CustomerName)
                .HasColumnTitle("Client Name")
-               .HasColumnIndex(2);
+               .HasColumnIndex(4);
 
             settings.Property(x => x.UnitNo)
                 .HasColumnTitle("Unit No")
                 .HasColumnWidth(14)
-                .HasColumnIndex(3);
+                .HasColumnIndex(5);
 
             settings.Property(x => x.TdsCertificateDate)
                 .HasColumnTitle("TDS Certificate Date")
                 .HasColumnFormatter("dd-MMM-yyy")
                 .HasColumnWidth(21)
-                .HasColumnIndex(4);
+                .HasColumnIndex(6);
 
             settings.Property(x => x.TdsCertificateNo)
                .HasColumnTitle("TDS Certificate No")
                .HasColumnWidth(21)
-               .HasColumnIndex(5);
+               .HasColumnIndex(7);
 
             settings.Property(x => x.Amount)
               .HasColumnTitle("Amount")
               .HasColumnWidth(21)
-              .HasColumnIndex(6);
+              .HasColumnIndex(8);
 
             settings.Property(x => x.Form16BFileName)
              .HasColumnTitle("Form 16B File Name")
              .HasColumnWidth(150)
-             .HasColumnIndex(7);
+             .HasColumnIndex(9);
 
             settings.Property(_ => _.PropertyID).Ignored();
 

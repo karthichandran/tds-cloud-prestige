@@ -38,6 +38,8 @@ namespace ReProServices.Application.TdsRemittance.Queries.GetRemittanceList
                                    from ctrOut in clObj.DefaultIfEmpty()
                                    join rm in _context.RemittanceRemark on ctrOut.RemittanceRemarkId equals rm.RemarkId into rmObj
                                    from rmOut in rmObj.DefaultIfEmpty()
+                                   join tl in _context.TransactionLog on cpt.ClientPaymentTransactionID equals tl.ClientPaymentTransactionId into tlObj
+                                   from tlOut in tlObj.DefaultIfEmpty()
                                    where cpt.RemittanceStatusID == (int)ERemittanceStatus.Pending
                                          && pay.NatureOfPaymentID == (int)ENatureOfPayment.ToBeConsidered
                                          && cpt.SellerID == sp.SellerID && cp.StatusTypeID != 3 && cp.InvalidPAN != true && cp.LessThan50L != true && cp.CustomerOptedOut != true
@@ -74,7 +76,9 @@ namespace ReProServices.Application.TdsRemittance.Queries.GetRemittanceList
                                        RemittanceStatusID = cpt.RemittanceStatusID,
                                        IsDebitAdvice = dam != null ? true : false,
                                        RemarkId = rmOut.RemarkId,
-                                       RemarkDesc = rmOut.Description
+                                       RemarkDesc = rmOut.Description,
+                                       CinNo = dam.CinNo,
+                                       TransactionLog = tlOut.Comment
                                    }).Distinct()
 
                     .PreFilterRemittanceBy(request.Filter)

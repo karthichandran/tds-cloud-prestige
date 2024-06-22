@@ -42,5 +42,7 @@ namespace ReProServices.Domain.Entities
 		public DateTime? ChallanDate { get; set; }
 
         public string Cinno { get; set; }
-    }
+        public string CustomerNo { get; set; }
+        public string PropertyCode { get; set; }
+	}
 }

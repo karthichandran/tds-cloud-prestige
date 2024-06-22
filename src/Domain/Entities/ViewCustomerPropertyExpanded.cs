@@ -62,5 +62,6 @@ namespace ReProServices.Domain.Entities
         public bool? IncorrectDOB { get; set; }
         public bool? LessThan50L { get; set; }
         public bool? CustomerOptedOut { get; set; }
+        public string PropertyCode { get; set; }
     }
 }

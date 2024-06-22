@@ -19,5 +19,6 @@ namespace ReProServices.Domain.Entities
 		public string NotToBeConsideredReason { get; set; }
 		public decimal AmountPaid { get; set; }
 		public string Name { get; set; }
+        public string CustomerNo { get; set; }
 	}
 }

@@ -52,6 +52,39 @@ namespace WebApi.Controllers
             return await Mediator.Send(new GetTracesByTransactionIDQuery() { ClientPaymentTransactionID = transactionID });
         }
 
+        // Note : Just uploading file info and skiping file upload to drive
+        [HttpPost("Onlyfileinfo/{remittanceID}/{categoryId}"), DisableRequestSizeLimit]
+        public async Task<IActionResult> UploadRemittanceFileInfo(int remittanceID, int categoryId)
+        {
+            try
+            {
+                var file = Request.Form.Files.FirstOrDefault();
+                if (file.Length == 0)
+                {
+                    throw new DomainException("One of the files is empty or  corrupt");
+                }
+
+                CustomerPropertyFileDto custPropFile = new CustomerPropertyFileDto
+                {
+                    FileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"'),
+                };
+
+                var ms = new MemoryStream();
+                await file.OpenReadStream().CopyToAsync(ms);
+                custPropFile.FileBlob = new byte[1];
+                custPropFile.FileType = file.ContentType;
+                custPropFile.FileCategoryId = categoryId;
+                custPropFile.IsFileUploaded = false;
+
+                var result = await Mediator.Send(new UploadRemittanceFileCommand { CustomerPropertyFile = custPropFile, RemittanceID = remittanceID });
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+        }
+
         [HttpPost("{remittanceID}/{categoryId}"), DisableRequestSizeLimit]
         public async Task<IActionResult> UploadRemittanceFile(int remittanceID, int categoryId)
         {

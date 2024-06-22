@@ -67,7 +67,7 @@ namespace ReProServices.Application.ClientPayments.Queries
                                                                                       DateOfAgreement =  cp.DateOfAgreement,
                                                                                       LotNo = cp.LotNo,
                                                                                       NatureOfPaymentID = GetNatureOfPaymentID(cp.NatureOfPayment, cp.NotToBeConsideredReason),
-
+                                                                                      CustomerNo = cp.CustomerNo
 
                                                                                       // NatureOfPaymentID = 1 //todo remove hardcoded value
                                                                                   }).ToList()
@@ -105,6 +105,7 @@ namespace ReProServices.Application.ClientPayments.Queries
                             AmountPaid = vm1.AmountPaid,
                             ReceiptNo = vm1.ReceiptNo,
                             NatureOfPaymentID = vm1.NatureOfPaymentID,
+                            CustomerNo = vm1.CustomerNo
                         };
 
                         foreach (var rawObj in vm)

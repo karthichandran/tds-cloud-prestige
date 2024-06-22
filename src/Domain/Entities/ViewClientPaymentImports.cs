@@ -43,5 +43,6 @@ namespace ReProServices.Domain.Entities
 		public decimal? TotalUnitCost { get; set; }
 		public decimal LateFeePerDay { get; set; }
 		public bool CoOwner { get; set; }
+        public string CustomerNo { get; set; }
 	}
 }

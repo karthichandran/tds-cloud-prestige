@@ -89,5 +89,6 @@ namespace ReProServices.Application.Common.Interfaces
         DbSet<Domain.Entities.Message> Message { get; set; }
         DbSet<CustomerTaxLogin> CustomerTaxLogin { get; set; }
         DbSet<Domain.Entities.DebitAdvice> DebitAdvices { get; set; }
+        DbSet<Domain.Entities.TransactionLog> TransactionLog { get; set; }
     }
 }

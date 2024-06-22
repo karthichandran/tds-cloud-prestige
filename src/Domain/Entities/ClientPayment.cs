@@ -29,6 +29,7 @@ namespace ReProServices.Domain.Entities
 		public int NatureOfPaymentID { get; set; }
         public decimal GstRate { get; set; }
         public decimal TdsRate { get; set; }
+        public string CustomerNo { get; set; }
 		public List<ClientPaymentTransaction> ClientPaymentTransactions { get; set; }
 	}
 }

@@ -36,7 +36,8 @@ namespace ReProServices.Application.CustomerPropertyFiles.Commands.UploadCustome
                     FileLength = customerPropertyFile.FileBlob.Length,
                     FileType = customerPropertyFile.FileType,
                     FileCategoryId = customerPropertyFile.FileCategoryId,
-                    GDfileID=customerPropertyFile.GDfileID
+                    GDfileID=customerPropertyFile.GDfileID,
+                    IsFileUploaded = customerPropertyFile.IsFileUploaded
                 };
                 await _context.CustomerPropertyFile.AddAsync(fileEntity, cancellationToken);
                 await _context.SaveChangesAsync(cancellationToken);

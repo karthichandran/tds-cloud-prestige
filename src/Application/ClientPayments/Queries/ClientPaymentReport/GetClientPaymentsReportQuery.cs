@@ -72,7 +72,9 @@ namespace ReProServices.Application.ClientPayments.Queries.ClientPaymentReport
                                  ClientPaymentTransactionID = x.ClientPaymentTransactionID,
                                  ChallanDate = x.ChallanDate,
                                  CustomerStatus=x.CustomerStatus,
-                                 Cinno = x.Cinno
+                                 Cinno = x.Cinno,
+                                 CustomerNo = x.CustomerNo,
+                                 PropertyCode = x.PropertyCode
                              })
                         .OrderByDescending(x => x.LotNo)
                             .ThenBy(_ => _.OwnershipID)
