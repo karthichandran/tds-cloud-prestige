@@ -33,7 +33,7 @@ namespace ReProServices.Application.TaxPaymentReport.Queries
                               select new TaxPaymentDto
                               {
                                   LotNumber = pay.LotNo,
-                                  UnitNo = cp.UnitNo.Value,
+                                  UnitNo = cp.UnitNo,
                                   NameInChallan = rm.ChallanCustomerName,
                                   ChallanSerialNo = rm.ChallanID,
                                   ChallanPaymentDate=rm.ChallanDate,

@@ -12,7 +12,7 @@ namespace ReProServices.Application.Prospect.Queries
         {
             IQueryable<ProspectListVM> prospectList = prospectListVM;
            
-            if (filter.UnitNo > 0)
+            if (!string.IsNullOrEmpty(filter.UnitNo))
             {
                 prospectList = prospectList.Where(x => x.unitNo == filter.UnitNo);
             }

@@ -13,7 +13,7 @@ namespace ReProServices.Application.TdsRemittance
         public int ClientPaymentID { get; set; }
         public Guid OwnershipID { get; set; }
         public string PropertyPremises { get; set; }
-        public int UnitNo { get; set; }
+        public string UnitNo { get; set; }
         public bool TdsCollectedBySeller { get; set; }
         public Guid InstallmentID { get; set; }
         public DateTime RevisedDateOfPayment { get; set; }

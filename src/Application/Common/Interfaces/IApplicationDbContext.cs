@@ -3,12 +3,15 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Data;
+using ReProServices.Domain.Entities.ClientPortal;
 
 namespace ReProServices.Application.Common.Interfaces
 {
     public interface IApplicationDbContext
     {
-
+        DbSet<Domain.Entities.ClientPortal.InfoContent> InfoContent{ get; set; }
+        DbSet<ClientPortalSetup> ClientPortalSetup { get; set; }
         DbSet<Seller> Seller { get; set; }
 
         DbSet<Domain.Entities.States> StateList { get; set; }

@@ -7,7 +7,7 @@ namespace ReProServices.Application.TaxPaymentReport.Queries
     public class TaxPaymentReportFilter
     {
         public int PropertyId { get; set; }
-        public int UnitNo { get; set; }
+        public string UnitNo { get; set; }
         public int LotNo { get; set; }
     }
 }

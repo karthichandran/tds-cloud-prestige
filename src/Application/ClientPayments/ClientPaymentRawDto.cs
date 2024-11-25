@@ -11,7 +11,7 @@ namespace ReProServices.Application.ClientPayments
         public bool CoOwner { get; set; }
         public  int PropertyID { get; set; }
         public  string PropertyPremises { get; set; }
-        public  int UnitNo { get; set; }
+        public  string UnitNo { get; set; }
         public int CustomerPropertyId { get; set; }
         public string Remarks { get; set; }
         public int TdsTaxCode { get; set; }
@@ -57,5 +57,7 @@ namespace ReProServices.Application.ClientPayments
 
         public int RemittanceStatusID { get; set; }
         public string CustomerNo { get; set; }
+
+        public string Material { get; set; }
     }
 }

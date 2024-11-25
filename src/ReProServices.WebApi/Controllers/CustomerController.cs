@@ -24,7 +24,9 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Net.Mail;
 using Microsoft.Extensions.Configuration;
+using ReProServices.Application.Customers.Commands;
 using ReProServices.Application.Property.Queries;
+using ReProServices.Application.RegistrationStatus.Comments;
 
 namespace WebApi.Controllers
 {
@@ -56,7 +58,7 @@ namespace WebApi.Controllers
             var resultSet = await Mediator.Send(new GetCustomerReportQuery() { Filter = customerDetailsFilter });
             //var resultSet = result.customersView;
 
-            var settings = FluentSettings.For<ViewCustomerReport>();
+            var settings = FluentSettings.For<ViewCustomerReportModel>();
             settings.HasAuthor("REpro Services");
 
             settings.Property(_ => _.CustomerName)
@@ -129,6 +131,14 @@ namespace WebApi.Controllers
              .HasColumnTitle("IT Password")
              .HasColumnWidth(60)
              .HasColumnIndex(13);
+            settings.Property(x => x.ITpwdMailStatusText)
+                .HasColumnTitle("IT Pw e-Mail")
+                .HasColumnWidth(60)
+                .HasColumnIndex(14);
+            settings.Property(x => x.CoOwnerITpwdMailStatusText)
+                .HasColumnTitle("Co-Owner IT Pw e-Mail")
+                .HasColumnWidth(60)
+                .HasColumnIndex(15);
 
             settings.Property(_ => _.OwnershipID).Ignored();
             settings.Property(_ => _.CustomerID).Ignored();
@@ -141,6 +151,8 @@ namespace WebApi.Controllers
             settings.Property(_ => _.CustomerOptingOutRemarks).Ignored();
             settings.Property(_ => _.InvalidPanDate).Ignored();
             settings.Property(_ => _.InvalidPanRemarks).Ignored();
+            settings.Property(_ => _.ITpwdMailStatus).Ignored();
+            settings.Property(_ => _.CoOwnerITpwdMailStatus).Ignored();
 
             var ms = resultSet.ToExcelBytes();
 
@@ -164,6 +176,8 @@ namespace WebApi.Controllers
         public async Task<ActionResult<CustomerVM>> Create(CreateCustomerCommand command)
         {
             var result = await Mediator.Send(command);
+            var cus = result.customers.Select(s => (s.PAN, s.EmailID)).ToList();
+            await Mediator.Send(new CreateNewUserLoginCommand() { PanList = cus});
             return result;
         }
         [Authorize(Roles = "Client_Edit")]
@@ -391,17 +405,17 @@ namespace WebApi.Controllers
             if (!string.IsNullOrEmpty(toList))
                 toList = toList.Substring(0, toList.Length - 1);
 
-                var emilaModel = new EmailModel()
+            var emilaModel = new EmailModel()
             {
-                    //To="karthi@leansys.in",
-                     To = toList,
-                    From = "support@reproservices.in",
-                    Subject = subject,               
+                //To="karthi@leansys.in",
+                To = toList,
+                From = "support@reproservices.in",
+                Subject = subject,
                 IsBodyHtml = true
             };
 
-           
-                emilaModel.Message = @"<html><style> .cell-header{text-align: center;width: 33%;height: 35px;display: inline-block;background: #fff;border: solid 2px black;overflow: hidden;font-weight: bold;font-size: larger;} .cell{width: 33%;height: 35px;display: inline-block;background: #fff;border: solid 2px black;overflow: hidden;} </style> <body> <p>Dear Sir/Madam, </p><p>Greetings from REpro Services!!</p> <p>We wish to inform you that, the Income tax department has mandated all banks to migrate to their new portal and this has a bearing on the TDS payments which we were doing U/s. 194IA on your behalf. </p><br> " +
+
+            emilaModel.Message = @"<html><style> .cell-header{text-align: center;width: 33%;height: 35px;display: inline-block;background: #fff;border: solid 2px black;overflow: hidden;font-weight: bold;font-size: larger;} .cell{width: 33%;height: 35px;display: inline-block;background: #fff;border: solid 2px black;overflow: hidden;} </style> <body> <p>Dear Sir/Madam, </p><p>Greetings from REpro Services!!</p> <p>We wish to inform you that, the Income tax department has mandated all banks to migrate to their new portal and this has a bearing on the TDS payments which we were doing U/s. 194IA on your behalf. </p><br> " +
 
               " <p>The key change impacting us is that now the Form 26QB can be filled only after logging into the Income tax portal account of every buyer. To continue managing your TDS compliance by Repro services, we need your Income tax Login password of all owners. </p><br>" +
 
@@ -422,6 +436,72 @@ namespace WebApi.Controllers
           
             EmailHelper emailHelper = new EmailHelper(_configuration);
             var isSent = emailHelper.SendEmail(emilaModel, logoResource);
+            return isSent;
+        }
+
+        [HttpGet("itpwdmailstatus/{ownershipid}/{customerid}/{owner}/{date}")]
+        public async Task<bool> SendItPwdMail(Guid ownershipid, int customerid,int owner,string date)
+        {
+
+            var dto = await Mediator.Send(new GetCustomerByIDQuery { OwnershipId = ownershipid });
+            var projectId = dto.customers.First().CustomerProperty.First().PropertyId;
+            var unitNo = dto.customers.First().CustomerProperty.First().UnitNo;
+            var projObj = await Mediator.Send(new GetPropertyByIdQuery { PropertyID = projectId });
+            var project = projObj.propertyDto.AddressPremises;
+            var filePath = @Directory.GetCurrentDirectory() + "\\Resources\\logo.png";
+            var customer = dto.customers.First(x => x.CustomerID == customerid);
+
+            Bitmap b = new Bitmap(filePath);
+            MemoryStream ms = new MemoryStream();
+            b.Save(ms, ImageFormat.Png);
+            ms.Position = 0;
+            var logoResource = new LinkedResource(ms, "image/png") { ContentId = "added-image-id" };
+            var subject = "Urgent !! Income tax new portal 2.0 - Impact on TDS payments U/s. 194IA on your behalf –" + project + " - " + unitNo;
+
+            if (owner == 1)
+                subject = "Need your immediate attention - Income tax login credentials for TDS compliance - " + project + " - " + unitNo+" - " + customer.Name + " - "+ customer.PAN;
+            else
+                subject = "Need your immediate attention - Income tax login credentials for TDS compliance - " + project + " - " + unitNo + " - " + customer.Name + " - " +  customer.PAN; 
+
+            var emilaModel = new EmailModel()
+            {
+               // To="karthi@leansys.in",
+                To = customer.EmailID,
+                From = "support@reproservices.in",
+                Subject = subject,
+                IsBodyHtml = true
+            };
+
+            var note ="";
+            if (owner == 1)
+                note = " <p><b>Please note that we cannot make TDS payment without correct income tax password. Delay in TDS payment will attract huge interest and late fee for which Repro Services will not be responsible! </b>  </p>";
+            else
+                note = " <p><b>Please note that we cannot make TDS payment without correct income tax password. Delay in TDS payment will attract huge interest and late fee; hence we will proceed with the TDS compliance considering the owner details available with us </b>  </p>";
+
+            emilaModel.Message = @"<html><style> .cell-header{text-align: center;width: 33%;height: 35px;display: inline-block;background: #fff;border: solid 2px black;overflow: hidden;font-weight: bold;font-size: larger;} .cell{width: 33%;height: 35px;display: inline-block;background: #fff;border: solid 2px black;overflow: hidden;} </style> <body> <p>Dear Sir/Madam, </p><p>Greetings from REpro Services!!</p> <p>Please note that you have authorized us to manage TDS compliance for the subject unit. We are in the process of making TDS payments for your latest payments to Prestige. We notice that your <b>Income tax login password is changed</b>, and we are not updated.  </p> " +
+
+                                            " <p><b>Hence, we are unable to make the TDS payment!</b> </p>" +
+
+                                            " <p>We request you to please share the correct income tax login password by updating the password in the below link immediately. </p>" +
+
+                                            " <p> <a href='https://prestigetdsit.reproservices.in/'> https://prestigetdsit.reproservices.in/ </a> </p>" +
+
+                                            " <p>Alternatively, you may also choose to share the correct password for the below PAN in response to this email.  </p>" +
+                                            " <p><b>PAN : "+customer.PAN+"</b>  </p>" +
+                                            " <p><b>Name : "+customer.Name+" </b>  </p>" +
+                                            note +
+
+                                            "<br> <img height='90' width='170'  src=cid:added-image-id><p>Thanks and Regards,<br>REpro Team</p> </body></html> ";
+
+
+            EmailHelper emailHelper = new EmailHelper(_configuration);
+            var isSent = emailHelper.SendEmailViaZoho(emilaModel, logoResource);
+            if (isSent)
+            {
+                var dateFormated = Convert.ToDateTime(date);
+                await Mediator.Send(new UpdateMailStatusCommand() { OwnershipId = ownershipid,CustomerID = customer.CustomerID,IsOwner = owner==1,date = dateFormated});
+            }
+
             return isSent;
         }
     }

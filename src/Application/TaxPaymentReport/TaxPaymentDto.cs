@@ -7,7 +7,7 @@ namespace ReProServices.Application.TaxPaymentReport
    public class TaxPaymentDto
     {
         public int LotNumber { get; set; }
-        public int UnitNo { get; set; }
+        public string UnitNo { get; set; }
         public int CustomerId { get; set; }
         public string CustomerName { get; set; }
         public string NameInChallan { get; set; }

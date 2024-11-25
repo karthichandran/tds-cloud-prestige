@@ -40,7 +40,8 @@ namespace ReProServices.Infrastructure.Services
             return response;
         }
 
-        public async Task<AuthenticateResponse> CreateRefreshToken(IMediator mediator,  string token)
+        public async Task<AuthenticateResponse> 
+            CreateRefreshToken(IMediator mediator,  string token)
         {
             var userSession = await mediator.Send(new GetUserSessionQuery { Token = token });
             var user = await mediator.Send(new GetUserByIdQuery { UserID = userSession.UserID });

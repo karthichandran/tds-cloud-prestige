@@ -11,6 +11,6 @@ namespace ReProServices.Application.Prospect
         public DateTime DeclarationDate { get; set; }
         public int propertyID { get; set; }
         public string Premises { get; set; }
-        public int unitNo { get; set; }
+        public string unitNo { get; set; }
     }
 }

@@ -29,7 +29,7 @@ namespace ReProServices.Application.Receipts.Queries
                       {
                           OwnershipID = psf.OwnershipID,
                           CustomerName =psf.ClientName,
-                          UnitNo = psf.UnitNo.Value,
+                          UnitNo = psf.UnitNo,
                           CustomerBillingID = psf.CustomerBillID,
                           ServiceFee = psf.ServiceFee.Value,
                           GstPayable = psf.GstPayable.Value,                          

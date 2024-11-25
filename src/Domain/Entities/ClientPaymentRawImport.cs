@@ -10,7 +10,7 @@ namespace ReProServices.Domain.Entities
 		[Key]
 		public int ClientPaymentRawImportID { get; set; }
 		public string PropertyCode { get; set; }
-		public int UnitNo { get; set; }
+		public string UnitNo { get; set; }
 		public DateTime DateOfPayment { get; set; }
 		public DateTime RevisedDateOfPayment { get; set; }
 		public string ReceiptNo { get; set; }
@@ -20,5 +20,6 @@ namespace ReProServices.Domain.Entities
 		public decimal AmountPaid { get; set; }
 		public string Name { get; set; }
         public string CustomerNo { get; set; }
-	}
+        public string Material { get; set; }
+    }
 }

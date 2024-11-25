@@ -234,6 +234,11 @@ namespace WebApi.Controllers
                 .HasColumnWidth(100)
                 .HasColumnIndex(27);
 
+            settings.Property(x => x.Material)
+                .HasColumnTitle("Material")
+                .HasColumnWidth(100)
+                .HasColumnIndex(28);
+
 
             settings.Property(_ => _.OwnershipID).Ignored();
            // settings.Property(_ => _.ClientPaymentTransactionID).Ignored();
@@ -333,6 +338,10 @@ namespace WebApi.Controllers
                         var item = row[4].ToString();
                         if (string.IsNullOrEmpty(item)) { 
                         }
+                        var item1 = row[6].ToString();
+                        if (string.IsNullOrEmpty(item1))
+                        {
+                        }
                     }
 
                     decimal receiptSum = 0;
@@ -353,7 +362,8 @@ namespace WebApi.Controllers
                                         ReceiptNo = Convert.ToString(row[1]),
                                         DateOfPayment = DateTime.Parse(row[2].ToString()),
                                         RevisedDateOfPayment = DateTime.Parse(row[3].ToString()),
-                                        CustomerNo = Convert.ToString(row[7])
+                                        CustomerNo = Convert.ToString(row[7]),
+                                        Material = row[4].ToString()
                                     }).ToList();
 
                     await Mediator.Send(new ClientPaymentImportCommand { cpr = payments });
@@ -385,16 +395,22 @@ namespace WebApi.Controllers
             return await Mediator.Send(new GetLotNumbersQuery() { });
         }
 
-        private int ExtractUnitNo(string referenceCode) {
+        private string ExtractUnitNo(string referenceCode) {
             try
             {
                 var arr = referenceCode.Split('-');
-                int unitNo;
+                string unitNo="";
 
-                if (arr.Count() <= 2)
-                    unitNo = Convert.ToInt32(Regex.Match(arr[1], @"\d+").Value);
-                else
-                    unitNo = Convert.ToInt32(Regex.Match(arr[1] + arr[2], @"\d+").Value);
+                //if (arr.Count() <= 2)
+                //    unitNo = Regex.Match(arr[1], @"\d+").Value;
+                //else
+                //    unitNo = Regex.Match(arr[1] + arr[2], @"\d+").Value;
+
+                for (var i = 1; i < arr.Count(); i++)
+                {
+                    unitNo += arr[i];
+                }
+
                 return unitNo;
             }
             catch (Exception ex) {

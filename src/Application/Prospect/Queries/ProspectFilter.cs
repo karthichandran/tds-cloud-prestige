@@ -9,6 +9,6 @@ namespace ReProServices.Application.Prospect.Queries
         public string Customer { get; set; }
         public int propertyID { get; set; }
         public string PAN { get; set; }
-        public int UnitNo{get;set;}
+        public string UnitNo{get;set;}
     }
 }

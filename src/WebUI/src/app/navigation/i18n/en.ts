@@ -80,7 +80,12 @@ export const locale = {
         },
         'DETAILSSUMMARYREPORT': {
           'TITLE': 'Details Summary Report'
-        }
+        },
+        'PORTAL':'CLIENT PORTAL',
+        'REGISTRATION':{
+          'TITLE':'Registration Staus'
+        },
+        'INFO':{'TITLE':'INFORMATION CONTENT'}
       }
    
     

@@ -7,10 +7,9 @@ export const environment = {
   
   baseApiUrl: 'http://localhost:44301',  // For connecting to server running elsewhere update the base API URL
   serverUrl: 'https://localhost:44301',
-   // baseApiUrl: 'https://prestigetdsapi.reproservices.in',
+  // baseApiUrl: 'https://prestigetdsapi.reproservices.in',
   // serverUrl: 'https://prestigetdsapi.reproservices.in',
-  //baseApiUrl: 'http://megharaju-001-site1.atempurl.com',
-  //serverUrl:  'http://megharaju-001-site1.atempurl.com',
+
   oauth: {
     enabled: false,  // For connecting to Mifos X using OAuth2 Authentication change the value to true
     serverUrl: ''

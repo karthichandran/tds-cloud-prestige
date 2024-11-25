@@ -54,7 +54,8 @@ namespace ReProServices.Application.ClientPayments.Commands
                     RevisedDateOfPayment = payObj.RevisedDateOfPayment ?? throw new System.ApplicationException("Date of Revised Payment cannot be empty"),
                     TdsRate = GetTaxRate(payObj.TdsTaxCode, payObj.RevisedDateOfPayment.Value) ,
                     GstRate = GetTaxRate(payObj.GstTaxCode, payObj.RevisedDateOfPayment.Value),
-                    CustomerNo = payObj.CustomerNo
+                    CustomerNo = payObj.CustomerNo,
+                    Material = payObj.Material
                 };
 
                 

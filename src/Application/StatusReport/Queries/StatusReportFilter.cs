@@ -8,7 +8,7 @@ namespace ReProServices.Application.StatusReport.Queries
     {
         public string CustomerName { get; set; }
         public int PropertyID { get; set; } = 0;
-        public int UnitNo { get; set; }
+        public string UnitNo { get; set; }
         public int LotNo { get; set; }
     }
 }

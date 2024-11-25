@@ -4,7 +4,7 @@ export class CustomerPropertyDto {
   public customerID: number;
   public propertyID: number;
   public dateOfSubmission: Date;
-  public unitNo: number;
+  public unitNo: string;
   public remarks: string;
   public paymentMethod: number;
   public isShared: boolean;

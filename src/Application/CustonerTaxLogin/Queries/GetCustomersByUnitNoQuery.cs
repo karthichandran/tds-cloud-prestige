@@ -12,7 +12,7 @@ namespace ReProServices.Application.CustonerTaxLogin.Queries
 {
     public class GetCustomersByUnitNoQuery : IRequest<CustomerTaxLoginDetails>
     {
-        public int UnitNo { get; set; }
+        public string UnitNo { get; set; }
         public int PropertyId { get; set; }
         public class GetCustomersByUnitNoQueryHandler : IRequestHandler<GetCustomersByUnitNoQuery, CustomerTaxLoginDetails>
         {

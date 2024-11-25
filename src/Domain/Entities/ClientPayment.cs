@@ -30,6 +30,7 @@ namespace ReProServices.Domain.Entities
         public decimal GstRate { get; set; }
         public decimal TdsRate { get; set; }
         public string CustomerNo { get; set; }
+        public string Material { get; set; }
 		public List<ClientPaymentTransaction> ClientPaymentTransactions { get; set; }
 	}
 }

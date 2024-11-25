@@ -12,10 +12,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ReProServices.Application.Customers.Queries
 {
-   public class GetCustomerReportQuery : IRequest<ICollection<ViewCustomerReport>>
+   public class GetCustomerReportQuery : IRequest<ICollection<ViewCustomerReportModel>>
     {
         public CustomerDetailsFilter Filter { get; set; } = new CustomerDetailsFilter();
-        public class GetCustomerReportQuerytHandler : IRequestHandler<GetCustomerReportQuery, ICollection<ViewCustomerReport>>
+        public class GetCustomerReportQuerytHandler : IRequestHandler<GetCustomerReportQuery, ICollection<ViewCustomerReportModel>>
         {
             private readonly IApplicationDbContext _context;
             private readonly IMapper _mapper;
@@ -27,7 +27,7 @@ namespace ReProServices.Application.Customers.Queries
                 _logger = logger;
             }
 
-            public async Task<ICollection<ViewCustomerReport>> Handle(GetCustomerReportQuery request, CancellationToken cancellationToken)
+            public async Task<ICollection<ViewCustomerReportModel>> Handle(GetCustomerReportQuery request, CancellationToken cancellationToken)
             {
                 var filter = request.Filter;
 
@@ -36,7 +36,7 @@ namespace ReProServices.Application.Customers.Queries
                 qry += string.IsNullOrEmpty(filter.PAN) ? ",' '" : ",'" + filter.PAN.ToUpper() + "'";
                 qry += filter.PropertyId <= 0 ? ",0" : "," + filter.PropertyId;
                 qry += string.IsNullOrEmpty(filter.Premises) ? ",' '" : ",'" + filter.Premises + "'";
-                qry += filter.UnitNo <= 0 ? ",0" : "," + filter.UnitNo;
+                qry += string.IsNullOrEmpty(filter.UnitNo ) ? ",' '" : ",'" + filter.UnitNo + "'";
                 qry += filter.StatusTypeId <= 0 ? ",0" : "," + filter.StatusTypeId;
                 qry += string.IsNullOrEmpty(filter.Remarks) ? ",' '" : ",'" + filter.Remarks + "'";
 
@@ -44,7 +44,7 @@ namespace ReProServices.Application.Customers.Queries
 
                 var final= vm
                      .GroupBy(g => g.OwnershipID)
-                   .Select(x => new ViewCustomerReport
+                   .Select(x => new ViewCustomerReportModel
                    {
                        PropertyPremises = x.First().PropertyPremises,
                        CustomerName = string.Join(",", x.Select(g => g.CustomerName)),
@@ -69,12 +69,14 @@ namespace ReProServices.Application.Customers.Queries
                        StampDuty = x.First().StampDuty,
                        CustomerStatus= string.Join(",", x.Select(g => g.CustomerStatus)),
                        IncomeTaxPassword= string.Join(",", x.Select(g => g.IncomeTaxPassword)),
+                       ITpwdMailStatusText = string.Join(",", x.Select(g => g.ITpwdMailStatus==null?"": "Sent on " + g.ITpwdMailStatus?.ToString("dd-MM-yyyy"))),
+                       CoOwnerITpwdMailStatusText = string.Join(",", x.Select(g => g.CoOwnerITpwdMailStatus == null ? "" : "Sent on "+ g.CoOwnerITpwdMailStatus?.ToString("dd-MM-yyyy"))),
                    }).ToList();
 
               
                 try
                 {
-                    var withoutProp = _context.ViewCustomerWithoutProperty.ToList().Select(x => new ViewCustomerReport
+                    var withoutProp = _context.ViewCustomerWithoutProperty.ToList().Select(x => new ViewCustomerReportModel
                     {
                         CustomerName = x.CustomerName,
                         PAN = x.PAN,

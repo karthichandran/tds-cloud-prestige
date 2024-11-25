@@ -62,7 +62,7 @@
                       <mat-label>Property</mat-label>
                       <mat-select name="searchByPropertyID" formControlName="searchBypropertyID"   #PropertyFilterSelectForSearch>
                         <mat-option>
-                          <ngx-mat-select-search [formControl]="propertyFilterCtrlForSearch"  placeholderLabel="Search"></ngx-mat-select-search>
+                          <ngx-mat-select-search [formControl]="propertyFilterCtrlForSearch"  placeholderLabel="Search" ></ngx-mat-select-search>
                         </mat-option>
                         <mat-option *ngFor="let option of filteredPropertyForSearch| async" [value]="option.propertyID">
                           {{option.addressPremises}}
@@ -78,7 +78,7 @@
                   </div>
                   <mat-form-field appearance="outline" fxFlex class="search-textbox">
                     <mat-label>Unit No</mat-label>
-                    <input matInput name="unit" formControlName="searchByUnit" type="number">
+                    <input matInput name="unit" formControlName="searchByUnit" type="text">
                   </mat-form-field>
 
                 </div>
@@ -338,7 +338,7 @@
                   </div>
                   </div>
                   <div fxFlex="1 0 auto" fxLayout="row wrap" class="padding-top-5">
-                    <mat-form-field appearance="outline" fxFlex class="padding-left-right-3">
+                    <mat-form-field appearance="outline" fxFlex="10" class="padding-left-right-3">
                       <mat-label>Lot No</mat-label>
                       <input type="number" matInput formControlName="lotNo" required>
                       <mat-error>Lot No is required!</mat-error>
@@ -351,7 +351,7 @@
                         </mat-option>
                       </mat-select>
                     </mat-form-field>-->
-                    <mat-form-field appearance="outline" fxFlex class="padding-left-right-3 ">
+                    <mat-form-field appearance="outline" fxFlex="15" class="padding-left-right-3 ">
                       <mat-label>TDS collected By Seller</mat-label>
                       <input type="text" matInput formControlName="tdsCollectedText">
                     </mat-form-field>
@@ -377,6 +377,10 @@
                       <mat-label>Amount paid</mat-label>
                       <input type="number" matInput formControlName="amountPaid" required>
                       <mat-error>Amount Paid is required!</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex class="padding-left-right-3">
+                      <mat-label>Material</mat-label>
+                      <input type="text" matInput formControlName="material" >
                     </mat-form-field>
                   </div>
 

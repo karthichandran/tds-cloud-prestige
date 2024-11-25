@@ -7,7 +7,7 @@ namespace ReProServices.Application.CustomerProperty.Commands.CreateCustomerProp
         public CreateCustomerPropertyCommandValidator()
         {
             _ = RuleForEach(s => s.CustomerVM.customers).ChildRules(x => x.RuleFor(d => d.CustomerProperty)
-                   .ForEach(y => y.Must(z => z.UnitNo > 0).WithMessage("Unit No should not be empty or 0")));
+                   .ForEach(y => y.Must(z => !string.IsNullOrEmpty(z.UnitNo)&&  z.UnitNo!="0").WithMessage("Unit No should not be empty or 0")));
             _ = RuleForEach(s => s.CustomerVM.customers).ChildRules(x => x.RuleFor(d => d.CustomerProperty)
                    .ForEach(y => y.Must(z => z.GstRateID > 0).WithMessage("GST Rate must be selected")));
             _ = RuleForEach(s => s.CustomerVM.customers).ChildRules(x => x.RuleFor(d => d.CustomerProperty)

@@ -33,7 +33,7 @@ namespace ReProServices.Application.PasswordSettingReport.Queries
                               select new TracesPasswordDto
                               {
                                   LotNumber = pay.LotNo,
-                                  UnitNo = cp.UnitNo.Value,
+                                  UnitNo = cp.UnitNo,
                                   HasTracesPassword = cs.OnlyTDS.Value ? "Only TDS payment" : cs.IsTracesRegistered ? "Yes" : "No",
                                   Pan = cs.PAN,
                                   DateOfBirth = cs.DateOfBirth,

@@ -1,0 +1,124 @@
+<div id="user" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <!--<button mat-icon-button class="mr-16" [routerLink]="">
+            <mat-icon>arrow_back</mat-icon>
+          </button>-->
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2">
+                        Information Content
+                    </div>
+
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+        </div>
+        <!-- / HEADER -->
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <mat-tab-group fxLayout="column" fxFlex (selectedTabChange)="tabChanged($event)">
+                    <mat-tab label="Information Content">
+                        <div class="products tab-content p-24 " fusePerfectScrollbar>
+                           
+                                <div fxLayout="column ">
+                                    <div fxLayout="row wrap ">
+                                        <div fxFlex>
+                                            <div class="margin-tb-5">
+                                              <mat-radio-group aria-label="Select an option" [(ngModel)]="possessionUnit" (change)="onSelectionChange($event)" style="align-self:center;">
+                                                <mat-radio-button value="yes">Possession Units</mat-radio-button>
+                                                <mat-radio-button value="no">Ongoing Units</mat-radio-button>
+                                              </mat-radio-group>
+                                            </div>
+                                          </div>                                       
+                                        <div fxFlex>                                           
+                                        </div>
+
+                                    </div>
+                                    <div fxLayout="row wrap ">
+                                        <div fxFlex="25" fxLayoutAlign="center center">
+                                            <label> Profile</label>
+                                          </div>                                       
+                                        <div fxFlex="75">                                             
+                                            <textarea class="multiline-input" placeholder="Type your message here..." [(ngModel)]="profileTxt" ></textarea>                                        
+                                        </div>
+                                    </div>
+                                    <div fxLayout="row wrap ">
+                                        <div fxFlex="25" fxLayoutAlign="center center">
+                                            <label> Payment to seller</label>
+                                          </div>                                       
+                                        <div fxFlex="75">                                             
+                                            <textarea class="multiline-input" placeholder="Type your message here..." [(ngModel)]="paymentToSeller" ></textarea>                                        
+                                        </div>
+                                    </div>
+                                    <div fxLayout="row wrap ">
+                                        <div fxFlex="25" fxLayoutAlign="center center">
+                                            <label> TDS Compliance</label>
+                                          </div>                                       
+                                        <div fxFlex="75">                                             
+                                            <textarea class="multiline-input" placeholder="Type your message here..." [(ngModel)]="tdsCompliance" ></textarea>                                        
+                                        </div>
+                                    </div>
+                                    <div fxLayout="row wrap ">
+                                        <div fxFlex="25" fxLayoutAlign="center center">
+                                            <label> Form 16B</label>
+                                          </div>                                       
+                                        <div fxFlex="75">                                             
+                                            <textarea class="multiline-input" placeholder="Type your message here..." [(ngModel)]="form16B" ></textarea>                                        
+                                        </div>
+                                    </div>
+                                    <div fxLayout="row wrap ">
+                                        <div fxFlex="25" fxLayoutAlign="center center">
+                                            <label> Login pop-up Info</label>
+                                          </div>                                       
+                                        <div fxFlex="75">                                             
+                                            <textarea class="multiline-input" placeholder="Type your message here..." [(ngModel)]="loginPopUp" ></textarea>                                        
+                                        </div>
+                                    </div>
+                                    <div fxLayout="row wrap ">
+                                        <div fxFlex="25" fxLayoutAlign="center center">
+                                            <label> FAQs</label>
+                                          </div>                                       
+                                        <div fxFlex="75">                                             
+                                            <textarea class="multiline-input" placeholder="Type your message here..." [(ngModel)]="faq" ></textarea>                                        
+                                        </div>
+                                    </div>
+                                    <div fxLayout="row" fxLayoutAlign="center center">
+                                        <button class="mr-8" mat-raised-button matStepperPrevious type="button"
+                                        color="accent" (click)="save();">
+                                        Save
+                                    </button>
+                                    </div>
+                                  
+                                </div>
+                            
+                        </div>
+                    </mat-tab>                  
+                </mat-tab-group>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+</div>

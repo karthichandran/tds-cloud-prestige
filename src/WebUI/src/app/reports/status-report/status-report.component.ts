@@ -51,8 +51,7 @@ export class StatusReportComponent implements OnInit, OnDestroy {
       { 'header': 'Form 16B & Challan sent to Customer', 'field': 'emailDate', 'type': 'label', 'width': 300 }   
     ];    
 
-    this.getProperties();
-    this.getReportList();
+    this.getProperties();   
     this.getLotNo();
   }
 

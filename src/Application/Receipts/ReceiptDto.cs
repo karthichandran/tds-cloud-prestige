@@ -29,7 +29,7 @@ namespace ReProServices.Application.Receipts
 		public int CustomerID { get; set; }
 		public virtual string CustomerName { get;  set; }
 		public virtual int PropertyID { get; set; }
-		public virtual int UnitNo { get; set; }
+		public virtual string UnitNo { get; set; }
 		public virtual int SellerID { get; set; }
 
 		public string Premises { get; set; }

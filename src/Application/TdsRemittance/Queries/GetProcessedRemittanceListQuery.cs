@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,6 +27,15 @@ namespace ReProServices.Application.TdsRemittance.Queries
 
             public async Task<IList<TdsRemittanceDto>> Handle(GetProcessedRemittanceListQuery request, CancellationToken cancellationToken)
             {
+                var filter = request.Filter;
+
+                List<string> filteredUnitNo = new List<string>();
+                if (!string.IsNullOrEmpty(filter.FromUnitNo) && !string.IsNullOrEmpty(filter.ToUnitNo))
+                {
+                    int fromUnit = Convert.ToInt32(filter.FromUnitNo);
+                    int toUnit = Convert.ToInt32(filter.ToUnitNo);
+                    filteredUnitNo = _context.CustomerProperty.AsQueryable().Select(x => x.UnitNo).ToList().Where(cp => FilterUnitNo(cp, fromUnit, toUnit)).Distinct().ToList();
+                }
 
                 var remittances = (from pay in _context.ClientPayment
                         join cpt in _context.ClientPaymentTransaction on pay.ClientPaymentID equals cpt.ClientPaymentID
@@ -37,7 +47,7 @@ namespace ReProServices.Application.TdsRemittance.Queries
                                    from ctrOut in clObj.DefaultIfEmpty()
                                    join rm in _context.RemittanceRemark on ctrOut.TracesRemarkId equals rm.RemarkId into rmObj
                                    from rmOut in rmObj.DefaultIfEmpty()
-                                   where (request.Filter.RemittanceStatusID.HasValue)?true: cpt.RemittanceStatusID >= (int)ERemittanceStatus.TdsPaid
+                                   where (request.Filter.RemittanceStatusID.HasValue)?true: cpt.RemittanceStatusID >= (int)ERemittanceStatus.TdsPaid && (filteredUnitNo.Count == 0 || filteredUnitNo.Contains(cp.UnitNo))
                               && cpt.SellerID == sp.SellerID
                         select new TdsRemittanceDto
                         {
@@ -78,6 +88,18 @@ namespace ReProServices.Application.TdsRemittance.Queries
                                     .PostFilterRemittanceBy(request.Filter)
                                     .ToList();
                 return remittances;
+            }
+
+            private static bool FilterUnitNo(string unitNo, int from, int to)
+            {
+                if (!unitNo.All(char.IsDigit))
+                    return false;
+
+                var num = Convert.ToInt32(unitNo);
+                if (num >= from && num <= to)
+                    return true;
+
+                return false;
             }
 
         }

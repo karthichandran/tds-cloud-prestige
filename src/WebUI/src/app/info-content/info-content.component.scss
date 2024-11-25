@@ -1,0 +1,45 @@
+@import "@fuse/scss/fuse";
+:host {
+ 
+  .mat-radio-button {
+    margin: 15px 12px;
+  }
+
+  .margin-tb-5 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  .radio-label {
+    align-self: center;
+  }
+
+  mat-form-field {
+    margin: 0 5px;
+  }
+.input-field{
+    padding: 5px;
+    border-radius: 3;
+    border: 1px solid ;
+}
+        /* Basic styles for the textarea */
+        .multiline-input {
+            width: 100%;
+            height: 50px;
+            padding: 10px;
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical; /* Allows the user to resize vertically */
+        }
+
+        /* Focus styles for better accessibility */
+        .multiline-input:focus {
+            border-color: #66afe9;
+            outline: none;
+            box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
+        }
+
+}
+

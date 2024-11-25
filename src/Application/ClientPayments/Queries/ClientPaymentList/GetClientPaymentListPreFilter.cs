@@ -12,7 +12,7 @@ namespace ReProServices.Application.ClientPayments.Queries.ClientPaymentList
 
             
 
-            if (filter.UnitNo > 0)
+            if (!string.IsNullOrEmpty( filter.UnitNo))
             {
                 clientPayments = clientPayments.Where(cp => cp.UnitNo == filter.UnitNo);
             }

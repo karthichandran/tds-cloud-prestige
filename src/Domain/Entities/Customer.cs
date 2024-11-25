@@ -39,7 +39,6 @@ namespace ReProServices.Domain.Entities
         public DateTime? InvalidPanDate { get; set; }
         public string InvalidPanRemarks { get; set; }
         public string IncomeTaxPassword { get; set; }
-
         //public DateTime? Created { get; set; }
         //public string CreatedBy { get; set; }
         //public DateTime? Updated { get; set; }

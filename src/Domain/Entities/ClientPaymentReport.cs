@@ -13,7 +13,7 @@ namespace ReProServices.Domain.Entities
 		public Guid OwnershipID { get; set; }
 		public string CustomerName { get; set; }
 		public string PropertyPremises { get; set; }
-		public int UnitNo { get; set; }
+		public string UnitNo { get; set; }
 		public DateTime? DateOfBooking { get; set; }
 		public decimal? TotalUnitCost { get; set; }
 		public DateTime DateOfPayment { get; set; }
@@ -43,6 +43,7 @@ namespace ReProServices.Domain.Entities
         public string Cinno { get; set; }
         public string CustomerNo { get; set; }
         public string PropertyCode { get; set; }
+        public string Material { get; set; }
 
 	}
 }

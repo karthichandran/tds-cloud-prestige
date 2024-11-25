@@ -2,9 +2,9 @@
 {
     public class TdsRemittanceFilter
     {
-        public int UnitNo { get; set; }
-        public int FromUnitNo { get; set; }
-        public int ToUnitNo { get; set; }
+        public string UnitNo { get; set; }
+        public string FromUnitNo { get; set; }
+        public string ToUnitNo { get; set; }
         public string PropertyPremises { get; set; }
         public int LotNo { get; set; }
         public string CustomerName { get; set; }

@@ -30,7 +30,7 @@ namespace ReProServices.Domain.Entities
 		public DateTime? EmailSentDate { get; set; }
 		public Guid OwnershipID { get; set; }
 		public int CustomerID { get; set; }
-		public int UnitNo { get; set; }
+		public string UnitNo { get; set; }
 		public int PropertyID { get; set; }
 		public string CustomerName { get; set; }
 

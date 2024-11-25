@@ -18,7 +18,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("customersByUnit/{propertyId}/{unitNo}")]
-        public async Task<CustomerTaxLoginDetails> GetCustomers(int propertyId, int unitNo)
+        public async Task<CustomerTaxLoginDetails> GetCustomers(int propertyId, string unitNo)
         {
             return await Mediator.Send(new GetCustomersByUnitNoQuery() { PropertyId=propertyId, UnitNo = unitNo });
         }
@@ -30,7 +30,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("postedcustomers/{unitNo}")]
-        public async Task<List<CustomerTaxPasswordDto>> GetPostedCustomers(int unitNo)
+        public async Task<List<CustomerTaxPasswordDto>> GetPostedCustomers(string unitNo)
         {
             return await Mediator.Send(new GetCustomerTaxPasswordQuery() { unitNo = unitNo });
         }

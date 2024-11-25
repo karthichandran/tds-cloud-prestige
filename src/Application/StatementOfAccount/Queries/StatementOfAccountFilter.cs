@@ -8,6 +8,6 @@ namespace ReProServices.Application.StatementOfAccount.Queries
     {
         public string CustomerName { get; set; }
         public int? PropertyId { get; set; }
-        public int? UnitNo { get; set; }
+        public string UnitNo { get; set; }
     }
 }

@@ -22,6 +22,6 @@ namespace ReProServices.Domain.Entities
         public decimal? TdsInterest { get; set; }
         public decimal? LateFee { get; set; }
         public int PropertyID { get; set; }
-        public int? UnitNo { get; set; }
+        public string UnitNo { get; set; }
     }
 }

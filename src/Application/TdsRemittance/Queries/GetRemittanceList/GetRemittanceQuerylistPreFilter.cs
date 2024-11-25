@@ -11,13 +11,14 @@ namespace ReProServices.Application.TdsRemittance.Queries.GetRemittanceList
         {
             IQueryable<TdsRemittanceDto> remittanceList = remittances.AsQueryable();
 
-            if (filter.UnitNo > 0)
+            if (!string.IsNullOrEmpty( filter.UnitNo))
             {
                 remittanceList = remittanceList.Where(_ => _.UnitNo == filter.UnitNo);
             }
-            if (filter.FromUnitNo > 0 && filter.ToUnitNo > 0)
+            if (!string.IsNullOrEmpty( filter.FromUnitNo) && !string.IsNullOrEmpty(filter.ToUnitNo ))
             {
-                remittanceList = remittanceList.Where(_ => _.UnitNo >= filter.FromUnitNo && _.UnitNo <= filter.ToUnitNo);
+               // remittanceList = remittanceList.Where(_ =>  string.Compare( _.UnitNo.Trim(),filter.FromUnitNo) >=0  && string.Compare(_.UnitNo.Trim(), filter.ToUnitNo) <= 0).OrderBy(o=>o.UnitNo);
+              //  remittanceList = remittanceList.Where(_ =>  string.Compare( _.UnitNo.Trim(),filter.FromUnitNo) >=0  &&  _.UnitNo.Length>= filter.FromUnitNo.Length &&  string.Compare(_.UnitNo.Trim(), filter.ToUnitNo) <= 0 && _.UnitNo.Length <= filter.ToUnitNo.Length).OrderBy(o=>o.UnitNo);
             }
             if (filter.LotNo > 0)
             {

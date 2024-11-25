@@ -25,7 +25,7 @@ namespace ReProServices.Application.CustomerBillings
         public virtual string CustomerName { get; set; }
         public virtual int PropertyID { get; set; }
         public virtual string PropertyPremises { get; set; }
-        public virtual int UnitNo { get; set; }
+        public virtual string UnitNo { get; set; }
         public virtual string PayableByText { get; set; }
         public virtual string  PaymentMethodText { get; set; }
         public virtual string PAN { get; set; }

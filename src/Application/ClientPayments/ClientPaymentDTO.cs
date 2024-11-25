@@ -31,7 +31,7 @@ namespace ReProServices.Application.ClientPayments
 		public bool? TdsCollectedBySeller { get; set; }
 		
 		public int StatusTypeID { get; set; }
-		public int UnitNo { get; set; }
+		public string UnitNo { get; set; }
 		public string PropertyPremises { get; set; }
 		public bool CoOwner { get; set; }
 		public decimal? LateFeePerDay { get; set; }
@@ -52,6 +52,7 @@ namespace ReProServices.Application.ClientPayments
 		public decimal ShareAmount { get; set; }
 		public decimal RoundoffAdjustment { get; set; }
         public string CustomerNo { get; set; }
+        public string Material { get; set; }
 
 		public IList<ClientPaymentTransactionDto> InstallmentList { get; set; }
     }

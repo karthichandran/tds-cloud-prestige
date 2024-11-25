@@ -23,11 +23,16 @@ namespace ReProServices.Infrastructure
             //        configuration.GetConnectionString("DefaultConnection"), 
             //        b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName))); //todo migration assembly necessity?
 
+            services.AddDbContext<ClientPortalDbContext>(options =>
+                options.UseSqlServer(
+                    configuration.GetConnectionString("ClientPortalConnection"), providerOptions => { providerOptions.CommandTimeout(300); }));
+
             services.AddDbContext<ApplicationDbContext>(options =>
                options.UseSqlServer(
                    configuration.GetConnectionString("DefaultConnection"), providerOptions=> { providerOptions.CommandTimeout(300); })); 
 
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
+            services.AddScoped<IClientPortalDbContext>(provider => provider.GetService<ClientPortalDbContext>());
 
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();

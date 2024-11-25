@@ -15,7 +15,7 @@ namespace ReProServices.Domain.Entities
         public string PropertyPremises { get; set; }
         public int PropertyID { get; set; }
         public DateTime DateOfSubmission { get; set; }
-        public int UnitNo { get; set; }
+        public string UnitNo { get; set; }
         public string Remarks { get; set; }
         public int StatusTypeID { get; set; }
         public int PaymentMethodId { get; set; }
@@ -34,5 +34,8 @@ namespace ReProServices.Domain.Entities
         public DateTime? InvalidPanDate { get; set; }
         public string InvalidPanRemarks { get; set; }
         public string IncomeTaxPassword { get; set; }
+        public DateTime? ITpwdMailStatus { get; set; }
+        public DateTime? CoOwnerITpwdMailStatus { get; set; }
+
     }
 }

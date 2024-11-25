@@ -3,7 +3,7 @@
     public class ReceiptFilter
     {
         public int PropertyID { get; set; }
-        public int UnitNo { get; set; }
+        public string UnitNo { get; set; }
         public int SellerID { get; set; }
         public string CustomerName { get; set; }
         public bool IsTds { get; set; } = true;

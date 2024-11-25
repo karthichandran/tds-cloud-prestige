@@ -12,7 +12,7 @@ namespace ReProServices.Application.CustomerProperty
         public int CustomerId { get; set; }
         public int PropertyId { get; set; }
         public DateTime DateOfSubmission { get; set; }
-        public int? UnitNo { get; set; }
+        public string UnitNo { get; set; }
         public string Remarks { get; set; }
         public bool IsShared { get; set; }
         public int? StatusTypeId { get; set; }

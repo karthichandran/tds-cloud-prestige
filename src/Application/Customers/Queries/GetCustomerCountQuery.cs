@@ -25,14 +25,19 @@ namespace ReProServices.Application.Customers.Queries
             }
             public async Task<CustomerCountDto> Handle(GetCustomerCountQuery request, CancellationToken cancellationToken)
             {
-                var records = _context.CustomerProperty.ToList();
-                var archived = records.Where(x => x.IsArchived == true).ToList().GroupBy(x => x.OwnershipID).Count();
-                var unArchived = records.Where(x => x.IsArchived == null || x.IsArchived == false).ToList().GroupBy(x => x.OwnershipID).Count();
+                //var records = _context.CustomerProperty.ToList();
+                //var archived = records.Where(x => x.IsArchived == true).ToList().GroupBy(x => x.OwnershipID).Count();
+                //var unArchived = records.Where(x => x.IsArchived == null || x.IsArchived == false).ToList().GroupBy(x => x.OwnershipID).Count();
+
+                var archived = _context.CustomerProperty.Where(x => x.IsArchived == true).ToList().GroupBy(x => x.OwnershipID)
+                    .Count();
+                
 
                 var dto = new CustomerCountDto
                 {
                     Archived = Convert.ToInt32(archived),
-                    UnArchived = Convert.ToInt32(unArchived)
+                    //UnArchived = Convert.ToInt32(unArchived)
+                    UnArchived =0
                 };
                 return  dto;
             }

@@ -96,7 +96,8 @@ namespace ReProServices.Application.ClientPayments.Queries
                                             NatureofPaymentText = pay.NatureOfPaymentID == 1 ? "" : pay.NatureOfPaymentText,
                                             ShareAmount = cpt.ShareAmount,
                                             RemittanceStatusID = cpt.RemittanceStatusID,
-                                            CustomerNo = pay.CustomerNo
+                                            CustomerNo = pay.CustomerNo,
+                                            Material = pay.Material
                                         })
                                        .ToListAsync(cancellationToken);
 
@@ -136,7 +137,8 @@ namespace ReProServices.Application.ClientPayments.Queries
                             NatureOfPayment = vm1.NatureofPaymentText,
                             GstRate = vm1.GstRate,
                             TdsRate = vm1.TdsRate,
-                            CustomerNo = vm1.CustomerNo
+                            CustomerNo = vm1.CustomerNo,
+                            Material = vm1.Material
                         };
 
                         //TODO fixing GST Rate and TDS Rate values

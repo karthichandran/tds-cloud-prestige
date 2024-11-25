@@ -11,7 +11,7 @@ namespace ReProServices.Application.CustonerTaxLogin.Queries
 {
     public class GetCustomerTaxPasswordQuery :   IRequest<List<CustomerTaxPasswordDto>>
     {
-        public int unitNo { get; set; }
+        public string unitNo { get; set; }
 
         public class GetCustomerTaxPasswordQueryHandler : IRequestHandler<GetCustomerTaxPasswordQuery, List<CustomerTaxPasswordDto>>
         {
@@ -31,7 +31,7 @@ namespace ReProServices.Application.CustonerTaxLogin.Queries
                 {
 
                     var model = new List<CustomerTaxPasswordDto>();
-                    if (request.unitNo > 0)
+                    if (!string.IsNullOrEmpty( request.unitNo) && request.unitNo!="0")
                         model = (from tp in _context.CustomerTaxLogin
                                  join cs in _context.Customer on tp.CustomerId equals cs.CustomerID
                                  where tp.IsProcessed == false && tp.UnitNo==request.unitNo
@@ -40,7 +40,7 @@ namespace ReProServices.Application.CustonerTaxLogin.Queries
                                      CustomerTaxLoginId = tp.CustomerTaxLoginId,
                                      CustomerId = tp.CustomerId,
                                      Name = cs.Name,
-                                     UnitNo = tp.UnitNo.Value,
+                                     UnitNo = tp.UnitNo,
                                      TaxPassword = tp.TaxPassword,
                                      IsOptOut = tp.IsOptOut.Value,
                                      Pan=cs.PAN
@@ -55,7 +55,7 @@ namespace ReProServices.Application.CustonerTaxLogin.Queries
                                      CustomerTaxLoginId = tp.CustomerTaxLoginId,
                                      CustomerId = tp.CustomerId,
                                      Name = cs.Name,
-                                     UnitNo = tp.UnitNo.Value,
+                                     UnitNo = tp.UnitNo,
                                      TaxPassword = tp.TaxPassword,
                                      IsOptOut = tp.IsOptOut.Value,
                                      Pan = cs.PAN

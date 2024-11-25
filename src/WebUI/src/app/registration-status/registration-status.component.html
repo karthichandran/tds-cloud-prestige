@@ -1,0 +1,161 @@
+<div id="user" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <!--<button mat-icon-button class="mr-16" [routerLink]="">
+            <mat-icon>arrow_back</mat-icon>
+          </button>-->
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2">
+                        Registration Status
+                    </div>
+
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+        </div>
+        <!-- / HEADER -->
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <mat-tab-group fxLayout="column" fxFlex (selectedTabChange)="tabChanged($event)">
+                    <mat-tab label="User List">
+                        <div class="products tab-content p-24 " fusePerfectScrollbar>
+                            <form name="searchForm" [formGroup]="searchForm">
+                                <div fxLayout="column ">
+                                    <div fxLayout="row wrap ">
+
+                                        <div fxFlex>
+                                            <mat-form-field class="selection-fix" appearance="outline" fxFlex>
+                                                <mat-label>Select the project *</mat-label>
+                                                <mat-select name="searchByPropertyID"
+                                                    formControlName="searchByPropertyID"
+                                                    (selectionChange)="selectedProperty($event)"
+                                                    #PropertyFilterSelectForSearch>
+                                                    <mat-option>
+                                                        <ngx-mat-select-search
+                                                            [formControl]="propertyFilterCtrlForSearch"
+                                                            placeholderLabel="Project Name"></ngx-mat-select-search>
+                                                    </mat-option>
+                                                    <mat-option *ngFor="let option of filteredPropertyForSearch| async"
+                                                        [value]="option.propertyID" >
+                                                        {{option.addressPremises}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div fxFlex>
+                                            <mat-form-field class="selection-fix" appearance="outline" fxFlex>
+                                                <mat-label>Select the customer</mat-label>
+                                                <mat-select name="searchByCustomerID"
+                                                    formControlName="searchByCustomerID" #CustomerFilterSelectForSearch>
+                                                    <mat-option>
+                                                        <ngx-mat-select-search
+                                                            [formControl]="customerFilterCtrlForSearch"
+                                                            placeholderLabel="Customer Name"></ngx-mat-select-search>
+                                                    </mat-option>
+                                                    <mat-option *ngFor="let option of filteredCustomerForSearch| async"
+                                                        [value]="option.id">
+                                                        {{option.description}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div fxFlex>
+                                            <mat-form-field class="selection-fix" appearance="outline" fxFlex>
+                                                <mat-label>Select the unit no</mat-label>
+                                                <mat-select name="searchByUnitNo" formControlName="searchByUnitNo"
+                                                    #UnitNoFilterSelectForSearch>
+                                                    <mat-option>
+                                                        <ngx-mat-select-search [formControl]="unitNoFilterCtrlForSearch"
+                                                            placeholderLabel="Unit No"></ngx-mat-select-search>
+                                                    </mat-option>
+                                                    <mat-option *ngFor="let option of filteredUnitNoForSearch| async"
+                                                        [value]="option.description">
+                                                        {{option.description}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+
+                                    </div>
+                                    <div fxLayout="row" fxLayoutAlign="center center">
+                                        <button class="search_button" mat-raised-button type="submit" (click)="search()"
+                                            color="accent">
+                                            Search
+                                            <mat-icon class="s-22" style="margin-left:5px">search</mat-icon>
+                                        </button>
+                                        <button class="search_button" mat-raised-button type="button" color="basic"
+                                            (click)="reset()">
+                                            Clear
+                                            <mat-icon class="s-22" style="margin-left:5px">refresh</mat-icon>
+                                        </button>
+                                        <button class="search_button pink" mat-raised-button (click)="downloadExcel()">
+                                            <span>Download </span>
+                                            <mat-icon class="s-22" style="margin-left:5px">get_app</mat-icon>
+                                          </button>
+                                    </div>
+                                    <div fxLayout="row wrap">
+                                        <div fxFlex>
+                                            <grid [dataSet]="rowData" [gridColDef]="columnDef" [rowSelection]="'none'"
+                                                (editRow)="editRow($event)" [showFooter]="true"></grid>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="Update Password">
+
+                        <div class="order-details tab-content p-24" fusePerfectScrollbar>
+
+                            <div fxLayout="column">
+                                <div class="h2 mb-24 section-title">Update Password</div>
+
+                                <div fxFlex="1 0 auto" fxLayout="row wrap" class="margin-top-20">
+                                    <div fxFlex></div>
+                                    <mat-form-field appearance="outline" fxFlex>
+                                        <mat-label>Password</mat-label>
+                                        <input matInput type="text" [(ngModel)]="passwordElm">
+                                    </mat-form-field>
+                                    <div fxFlex></div>
+                                </div>
+
+                                <div fxLayout="row" fxLayoutAlign="center center">
+                                    <button class="mr-8" mat-raised-button matStepperPrevious type="button"
+                                        color="accent" (click)="save();">
+                                        Save
+                                    </button>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </mat-tab>
+                </mat-tab-group>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+</div>

@@ -168,11 +168,11 @@
                     </mat-form-field>
                   </div>
                   <div fxFlex="1 0 auto" fxLayout="row wrap" fxLayout.sm="column" fxLayout.xs="column">
-                    <div fxFlex>
+                    <div fxFlex="60">
                       <div fxLayout="row wrap">
                         <div class="margin-tb-5" fxLayout.sm="column" fxLayout.xs="column">
-                          <label class="radio-label">I/We have already registered in TRACES</label>
-                          <mat-radio-group aria-label="Select an option" formControlName="traces" style="align-self:end;">
+                          <label class="radio-label"  style="margin-top: -10;">I/We have already registered in TRACES</label>
+                          <mat-radio-group aria-label="Select an option" formControlName="traces">
                             <mat-radio-button value="yes"  (click)="UpdateOnlyTDS()">Yes</mat-radio-button>
                             <mat-radio-button value="no">No</mat-radio-button>
                           </mat-radio-group>
@@ -184,33 +184,52 @@
                         </div>
                       </div>
                     </div>
-                   
+                  <div fxFlex="40">
+                    <div style="float:right;">
+                      <button mat-raised-button class="add-product-button  mt-24 mt-md-0 accent  mb-10" style="margin-right:10px" (click)="sendItPwdMail(1)">
+                        <span>IT Pw e-Mail </span>
+                        <mat-icon class="s-22" style="margin-left:5px">mail</mat-icon>
+                      </button>
+                      <button mat-raised-button class="add-product-button  mt-24 mt-md-0 accent mb-10" [disabled]="clients.length <=1" (click)="sendItPwdMail(2)">
+                        <span>Co-Owner IT Pw e-Mail </span>
+                        <mat-icon class="s-22" style="margin-left:5px">mail</mat-icon>
+                      </button>
+                    </div>
+                  </div>
                   </div>
                   <div fxFlex="1 0 auto" fxLayout="row wrap" fxLayout.sm="column" fxLayout.xs="column">
                     <div fxFlex="75">
                       <div fxLayout="row wrap">
                         <!--<div class="margin-tb-5" fxLayout.sm="column" fxLayout.xs="column">
-    <label class="radio-label">Is PAN verified</label>
-    <mat-radio-group aria-label="Select an option" formControlName="isPanValid" style="align-self:end;" required>
-      <mat-radio-button value="yes">Yes</mat-radio-button>
-      <mat-radio-button value="no">No</mat-radio-button>
-    </mat-radio-group>
-  </div>-->
-                        <mat-checkbox formControlName="isPanVerified" (change)="ShowEmailConfirmation($event)">  Is PAN Verified</mat-checkbox>
-                        <div style="margin-left:20px;">
-                          <mat-checkbox formControlName="onlyTDS" name="onlyTDS" (change)="UpdateFlag($event)">  Only TDS Payment</mat-checkbox>
+                          <label class="radio-label">Is PAN verified</label>
+                          <mat-radio-group aria-label="Select an option" formControlName="isPanValid" style="align-self:end;" required>
+                            <mat-radio-button value="yes">Yes</mat-radio-button>
+                            <mat-radio-button value="no">No</mat-radio-button>
+                          </mat-radio-group>
+                        </div>-->
+                        <div style="margin-right:20px;">
+                          <mat-checkbox formControlName="isPanVerified" (change)="ShowEmailConfirmation($event)"> Is PAN
+                            Verified</mat-checkbox>
                         </div>
-                        <div style="margin-left:20px;">
-                          <mat-checkbox formControlName="invalidPAN"  name="invalidPAN" (change)="UpdateFlag($event)">  Invalid PAN</mat-checkbox>
+                        <div style="margin-right:20px;">
+                          <mat-checkbox formControlName="onlyTDS" name="onlyTDS" (change)="UpdateFlag($event)"> Only TDS
+                            Payment</mat-checkbox>
                         </div>
-                        <div style="margin-left:20px;">
-                          <mat-checkbox formControlName="incorrectDOB" name="incorrectDOB" (change)="UpdateFlag($event)">  Incorrect DOB</mat-checkbox>
+                        <div style="margin-right:20px;">
+                          <mat-checkbox formControlName="invalidPAN" name="invalidPAN" (change)="UpdateFlag($event)"> Invalid
+                            PAN</mat-checkbox>
                         </div>
-                        <div style="margin-left:20px;">
-                          <mat-checkbox formControlName="lessThan50L" name="lessThan50L" (change)="UpdateFlag($event)">  Less than 50 Lakhs</mat-checkbox>
+                        <div style="margin-right:20px;">
+                          <mat-checkbox formControlName="incorrectDOB" name="incorrectDOB" (change)="UpdateFlag($event)"> Incorrect
+                            DOB</mat-checkbox>
                         </div>
-                        <div style="margin-left:20px;">
-                          <mat-checkbox formControlName="customerOptedOut" name="customerOptedOut" (change)="UpdateFlag($event)">  Customer Opted Out</mat-checkbox>
+                        <div style="margin-right:20px;">
+                          <mat-checkbox formControlName="lessThan50L" name="lessThan50L" (change)="UpdateFlag($event)"> Less than 50
+                            Lakhs</mat-checkbox>
+                        </div>
+                        <div style="margin-right:20px;">
+                          <mat-checkbox formControlName="customerOptedOut" name="customerOptedOut" (change)="UpdateFlag($event)"> Customer
+                            Opted Out</mat-checkbox>
                         </div>
                       </div>
                     </div>
@@ -223,7 +242,7 @@
                     </div>
                   </div>
 
-                  <div fxLayout="row wrap">
+                  <div fxLayout="row wrap" style="margin-top: 10px;">
                   
                     <mat-form-field appearance="outline" fxFlex="30" *ngIf="customerform.value.onlyTDS">
                       <mat-label>Only TDS Date </mat-label>
@@ -369,7 +388,7 @@
 
                     <mat-form-field appearance="outline" fxFlex>
                       <mat-label>Unit No</mat-label>
-                      <input matInput formControlName="unitNo" type="number" required>
+                      <input matInput formControlName="unitNo" type="text" required>
                       <mat-error>Unit No is required!</mat-error>
                     </mat-form-field>
                     <mat-form-field appearance="outline" fxFlex>
@@ -422,14 +441,14 @@
                       <mat-datepicker #agreementDate></mat-datepicker>
                       <!--<mat-error>agreement Date is required!</mat-error>-->
                     </mat-form-field>
-                    <div fxFlex="25">
+                    <div fxFlex="50">
                       <label class="radio-label">TDS collected by seller</label>
                       <mat-radio-group aria-label="Select an option" style="align-self:center;" formControlName="tdsCollected">
                         <mat-radio-button value="yes">Yes</mat-radio-button>
                         <mat-radio-button value="no">No</mat-radio-button>
                       </mat-radio-group>
                     </div>
-                    <div fxFlex></div>
+                   
                     <div fxFlex>
                       <mat-form-field appearance="outline" fxFlex>
                         <mat-label>Stamp duty</mat-label>
@@ -438,7 +457,9 @@
                       </mat-form-field>
                     </div>
                   </div>
-
+                  <div fxFlex="1 0 auto" fxLayout="row wrap">
+                    <mat-checkbox class="margin-left-10" formControlName="possessionUnit" > Possession Unit</mat-checkbox>
+                  </div>
                   <!--Should be removed-->
                   <!--<div fxFlex="1 1 auto" fxLayout="row wrap" >
                     <div class="sellers" fxFlex>
@@ -659,7 +680,7 @@
 
                   <mat-form-field appearance="outline" fxFlex class="search-textbox">
                     <mat-label>Unit No</mat-label>
-                    <input matInput name="searchByUnit" [(ngModel)]="searchByUnit" type="number">
+                    <input matInput name="searchByUnit" [(ngModel)]="searchByUnit" type="text">
                   </mat-form-field>
 
                 </div>

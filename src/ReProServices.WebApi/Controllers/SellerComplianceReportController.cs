@@ -50,34 +50,61 @@ namespace WebApi.Controllers
             settings.Property(x => x.CustomerName)
                .HasColumnTitle("Client Name")
                .HasColumnIndex(4);
+            settings.Property(x => x.Material)
+                .HasColumnTitle("Material")
+                .HasColumnWidth(20)
+                .HasColumnIndex(5);
 
             settings.Property(x => x.UnitNo)
                 .HasColumnTitle("Unit No")
                 .HasColumnWidth(14)
-                .HasColumnIndex(5);
+                .HasColumnIndex(6);
+            settings.Property(x => x.TransactionId)
+                .HasColumnTitle("Transaction ID")
+                .HasColumnWidth(14)
+                .HasColumnIndex(7);
 
             settings.Property(x => x.TdsCertificateDate)
                 .HasColumnTitle("TDS Certificate Date")
                 .HasColumnFormatter("dd-MMM-yyy")
                 .HasColumnWidth(21)
-                .HasColumnIndex(6);
+                .HasColumnIndex(8);
 
             settings.Property(x => x.TdsCertificateNo)
                .HasColumnTitle("TDS Certificate No")
                .HasColumnWidth(21)
-               .HasColumnIndex(7);
+               .HasColumnIndex(9);
 
             settings.Property(x => x.Amount)
               .HasColumnTitle("Amount")
               .HasColumnWidth(21)
-              .HasColumnIndex(8);
+              .HasColumnIndex(10);
 
             settings.Property(x => x.Form16BFileName)
              .HasColumnTitle("Form 16B File Name")
              .HasColumnWidth(150)
-             .HasColumnIndex(9);
+             .HasColumnIndex(11);
+
+            settings.Property(x => x.LotNo)
+                .HasColumnTitle("Lot No")
+                .HasColumnWidth(15)
+                .HasColumnIndex(12);
+            settings.Property(x => x.SellerID)
+                .HasColumnTitle("Seller ID")
+                .HasColumnWidth(15)
+                .HasColumnIndex(13);
+            settings.Property(x => x.AssessmentYear)
+                .HasColumnTitle("Assessment Year")
+                .HasColumnWidth(15)
+                .HasColumnIndex(14);
+            settings.Property(x => x.TaxDepositDate)
+                .HasColumnTitle("Tax Deposit Date")
+                .HasColumnFormatter("dd-MMM-yyy")
+                .HasColumnWidth(21)
+                .HasColumnIndex(15);
 
             settings.Property(_ => _.PropertyID).Ignored();
+           
 
             var ms = result.ToExcelBytes();
 

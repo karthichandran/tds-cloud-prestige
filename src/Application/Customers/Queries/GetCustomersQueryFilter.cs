@@ -33,7 +33,7 @@ namespace ReProServices.Application.Customers.Queries
                                                         && !(String.IsNullOrEmpty(cp.Remarks)));
             }
 
-            if (filter.UnitNo > 0)
+            if (!string.IsNullOrEmpty( filter.UnitNo ))
             {
                 customerList = customerList.Where(cp => cp.UnitNo == filter.UnitNo);
 

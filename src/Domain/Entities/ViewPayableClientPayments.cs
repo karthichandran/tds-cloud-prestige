@@ -16,6 +16,6 @@ namespace ReProServices.Domain.Entities
         public decimal? PayableInterest { get; set; }        
         public decimal? PayableLateFee { get; set; }
 
-        public int UnitNo { get; set; }
+        public string UnitNo { get; set; }
     }
 }

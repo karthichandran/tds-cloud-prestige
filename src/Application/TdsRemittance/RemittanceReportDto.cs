@@ -28,7 +28,7 @@ namespace ReProServices.Application.TdsRemittance
         public decimal? ChallanIncomeTaxAmount { get; set; }
         public decimal? ChallanInterestAmount { get; set; }
         public decimal? ChallanFeeAmount { get; set; }
-        public virtual int UnitNo { get; set; }
+        public virtual string UnitNo { get; set; }
         public virtual string CustomerName { get; set; }
         public virtual string Premises { get; set; }
         public virtual int LotNo { get; set; }

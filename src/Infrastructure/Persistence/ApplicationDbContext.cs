@@ -1,4 +1,6 @@
-﻿using ReProServices.Application.Common.Interfaces;
+﻿using System.Collections.Generic;
+using System.Data;
+using ReProServices.Application.Common.Interfaces;
 using ReProServices.Domain.Entities;
 using ReProServices.Infrastructure.Identity;
 using IdentityServer4.EntityFramework.Options;
@@ -9,6 +11,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using ReProServices.Domain.Entities.ClientPortal;
 using ReProServices.Infrastructure.Configs;
 
 namespace ReProServices.Infrastructure.Persistence
@@ -27,6 +30,8 @@ namespace ReProServices.Infrastructure.Persistence
             _dateTime = dateTime;
         }
 
+       public DbSet<InfoContent> InfoContent { get; set; }
+        public DbSet<ClientPortalSetup> ClientPortalSetup { get; set; }
         public DbSet<Seller> Seller { get; set; }
 
         public DbSet<States> StateList { get; set; }
@@ -93,7 +98,6 @@ namespace ReProServices.Infrastructure.Persistence
         public DbSet<UserRoles> UserRoles { get; set; }
 
         public DbSet<Segment> Segment { get; set; }
-
         public DbSet<SegmentRolePermissions> SegmentRolePermissions { get; set; }
         public DbSet<UserSession> UserSession { get; set; }
         public DbSet<Prospect> Prospect { get; set; }
@@ -125,7 +129,6 @@ namespace ReProServices.Infrastructure.Persistence
 
             return base.SaveChangesAsync(cancellationToken);
         }
-
 
         public static readonly ILoggerFactory LoggerFactory
       = Microsoft.Extensions.Logging.LoggerFactory.Create(builder =>

@@ -18,9 +18,17 @@ namespace ReProServices.Infrastructure.Smtp
         private string _alias;
         private string _password;
         private int _port;
+
+        private string _zohoHost;
+        private string _zohoFrom;
+        private string _zohoAlias;
+        private string _zohoPassword;
+        private int _zohoPort;
         public EmailHelper(IConfiguration iConfiguration)
         {
             var smtpSection = iConfiguration.GetSection("SMTP");
+
+            var zohoSmtpSection = iConfiguration.GetSection("ZohoSMTP");
             if (smtpSection != null)
             {
                 _host = smtpSection.GetSection("Host").Value;
@@ -28,6 +36,12 @@ namespace ReProServices.Infrastructure.Smtp
                 _alias = smtpSection.GetSection("Alias").Value;
                 _password = smtpSection.GetSection("Password").Value;
                 _port = Convert.ToInt32(smtpSection.GetSection("port").Value);
+
+                _zohoHost = zohoSmtpSection.GetSection("Host").Value;
+                _zohoFrom = zohoSmtpSection.GetSection("From").Value;
+                _zohoAlias = zohoSmtpSection.GetSection("Alias").Value;
+                _zohoPassword = zohoSmtpSection.GetSection("Password").Value;
+                _zohoPort = Convert.ToInt32(zohoSmtpSection.GetSection("port").Value);
             }
         }
 
@@ -166,5 +180,66 @@ namespace ReProServices.Infrastructure.Smtp
             }
         }
 
+
+        public bool SendEmailViaZoho(EmailModel emailModel, LinkedResource res)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(emailModel.From))
+                {
+                    _from = emailModel.From;
+                }
+              
+                using (SmtpClient client = new SmtpClient(_zohoHost, _zohoPort))
+                {
+                    NetworkCredential NetCrd = new NetworkCredential(_zohoFrom, _zohoPassword);
+                    MailMessage mailMessage = new MailMessage();
+                   
+                    AlternateView htmlView = AlternateView.CreateAlternateViewFromString(emailModel.Message, null, "text/html");
+                    htmlView.LinkedResources.Add(res);
+                    mailMessage.AlternateViews.Add(htmlView);
+
+                    mailMessage.From = new MailAddress(_zohoFrom, _zohoAlias);
+                    mailMessage.BodyEncoding = Encoding.UTF8;
+                    mailMessage.To.Add(emailModel.To);
+
+                    if (!string.IsNullOrEmpty(emailModel.CC))
+                    {
+                        var cclist = emailModel.CC.Split(',');
+                        foreach (var cc in cclist)
+                        {
+                            if (!string.IsNullOrEmpty(cc))
+                            {
+                                MailAddress copy = new MailAddress(cc);
+                                mailMessage.CC.Add(copy);
+                            }
+                        }
+                    }
+                    mailMessage.Subject = emailModel.Subject;
+                    mailMessage.IsBodyHtml = emailModel.IsBodyHtml;
+
+                    if (emailModel.attachments != null)
+                    {
+                        foreach (var attachment in emailModel.attachments)
+                        {
+                            MemoryStream stream = new MemoryStream(attachment.MemoryStream);
+                            mailMessage.Attachments.Add(new Attachment(stream, attachment.FileName, attachment.FileType));
+                        }
+                    }
+                    client.UseDefaultCredentials = false;
+                    client.Credentials = NetCrd;
+                    client.EnableSsl = true; // Node :this should be enabled for live service
+
+                    client.Send(mailMessage);
+                    return true;
+
+                   
+                }
+            }
+            catch (Exception e)
+            {
+                throw new ApplicationException(e.Message);
+            }
+        }
     }
 }

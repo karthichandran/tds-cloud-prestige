@@ -19,7 +19,7 @@ namespace ReProServices.Application.ClientPayments.Queries.ClientPaymentReport
                 clientPayments = clientPayments.Where(cp => cp.RemittanceStatusID == filter.RemittanceStatusID.Value);
             }
 
-            if (filter.UnitNo > 0)
+            if (!string.IsNullOrEmpty( filter.UnitNo ))
             {
                 clientPayments = clientPayments.Where(cp => cp.UnitNo == filter.UnitNo);
             }

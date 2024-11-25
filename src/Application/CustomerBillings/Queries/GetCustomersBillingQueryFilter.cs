@@ -20,7 +20,7 @@ namespace ReProServices.Application.CustomerBillings.Queries
                 customerBills = customerBills.Where(x => x.PAN == filter.PAN);
             }
                     
-            if (filter.UnitNo > 0)
+            if (!String.IsNullOrEmpty(filter.UnitNo ))
             {
                 customerBills = customerBills.Where(cp => cp.UnitNo == filter.UnitNo);
             }

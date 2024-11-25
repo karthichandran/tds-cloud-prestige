@@ -7,7 +7,7 @@ namespace ReProServices.Application.PasswordSettingReport
    public class TracesPasswordDto
     {
         public int LotNumber { get; set; }
-        public int UnitNo { get; set; }
+        public string UnitNo { get; set; }
         public string HasTracesPassword { get; set; }
         public int CustomerId { get; set; }
         public string Pan { get; set; }

@@ -16,7 +16,7 @@ namespace ReProServices.Application.TaxPaymentReport.Queries
                 reportList = reportList.Where(x => x.LotNumber == filter.LotNo);
             }
 
-            if (filter.UnitNo > 0)
+            if ( !string.IsNullOrEmpty(filter.UnitNo))
             {
                 reportList = reportList.Where(x => x.UnitNo == filter.UnitNo);
             }

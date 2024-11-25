@@ -53,7 +53,8 @@ namespace ReProServices.Application.CustomerProperty.Commands.CreateCustomerProp
                                 OwnershipID = customerProperty.OwnershipID,
                                 CustomerAlias = customerProperty.CustomerAlias,
                                 IsArchived = false,
-                                StampDuty = customerProperty.StampDuty ?? 0                              
+                                StampDuty = customerProperty.StampDuty ?? 0,
+                                PossessionUnit = customerProperty.PossessionUnit??false
                                 //Updated = DateTime.Now,
                                 //UpdatedBy = userInfo.UserID.ToString()
                             };
@@ -84,7 +85,8 @@ namespace ReProServices.Application.CustomerProperty.Commands.CreateCustomerProp
                                 //this Null-Collation will allow adding of a co-owner to an existing ownership
                                 OwnershipID = customerProperty.OwnershipID ?? guid,
                                 IsArchived = false,
-                                StampDuty = customerProperty.StampDuty ?? 0                              
+                                StampDuty = customerProperty.StampDuty ?? 0      ,
+                                PossessionUnit = customerProperty.PossessionUnit ?? false
                                 //Created = DateTime.Now,
                                 //CreatedBy = userInfo.UserID.ToString()
                             };

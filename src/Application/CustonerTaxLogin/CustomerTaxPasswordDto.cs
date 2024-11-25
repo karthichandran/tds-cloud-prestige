@@ -8,7 +8,7 @@ namespace ReProServices.Application.CustonerTaxLogin
     public class CustomerTaxPasswordDto
     {
         public int CustomerTaxLoginId { get; set; }
-        public int UnitNo { get; set; }
+        public string UnitNo { get; set; }
         public int CustomerId { get; set; }
         public string Name { get; set; }
         public string TaxPassword { get; set; }

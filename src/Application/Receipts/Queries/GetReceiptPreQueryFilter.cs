@@ -15,7 +15,7 @@ namespace ReProServices.Application.Receipts.Queries
             {
                 receiptsList = receiptsList.Where(x => x.PropertyID == filter.PropertyID);
             }
-            if (filter.UnitNo > 0)
+            if (!string.IsNullOrEmpty( filter.UnitNo))
             {
                 receiptsList = receiptsList.Where(x => x.UnitNo == filter.UnitNo);
             }

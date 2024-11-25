@@ -36,7 +36,7 @@ namespace ReProServices.Application.Customers.Queries
                 qry += string.IsNullOrEmpty(filter.PAN) ? ",' '" : ",'" + filter.PAN.ToUpper() + "'";
                 qry += filter.PropertyId <= 0 ? ",0" : "," + filter.PropertyId;
                 qry += string.IsNullOrEmpty(filter.Premises) ? ",' '" : ",'" + filter.Premises + "'";
-                qry += filter.UnitNo <= 0 ? ",0" : "," + filter.UnitNo;
+                qry += string.IsNullOrEmpty(filter.UnitNo ) ? ",' '" : ",'" + filter.UnitNo + "'";
                 qry += filter.StatusTypeId <= 0 ? ",0" : "," + filter.StatusTypeId;
                 qry += string.IsNullOrEmpty(filter.Remarks) ? ",' '" : ",'" + filter.Remarks + "'";
 

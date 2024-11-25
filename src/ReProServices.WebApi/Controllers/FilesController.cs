@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -10,6 +11,7 @@ using ReProServices.Application.CustomerPropertyFiles;
 using ReProServices.Application.CustomerPropertyFiles.Commands.DeleteCustomerPropertyFile;
 using ReProServices.Application.CustomerPropertyFiles.Commands.UploadCustomerProeprtyFile;
 using ReProServices.Application.CustomerPropertyFiles.Queries;
+using ReProServices.Application.TdsRemittance.Queries.GetRemittanceList;
 using ReProServices.Domain;
 using ReProServices.Infrastructure.GoogleDrive;
 using ReProServices.Infrastructure.MegaDrive;
@@ -286,5 +288,48 @@ namespace WebApi.Controllers
             return Ok(result);
         }
 
+
+        [HttpGet("DownloadForm16b/{lotNo}/{propertyId}")]
+        public async Task DownloadForm16b(int lotNo,int propertyId)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                string saveDirectory = "DownloadedPDFs";
+
+                // Create the directory if it doesn't exist
+                if (!Directory.Exists(saveDirectory))
+                {
+                    Directory.CreateDirectory(saveDirectory);
+                }
+
+                var form16blist = await Mediator.Send(new GetFor16bblobQuery()
+                    {LotNo = lotNo, proeprtyID = propertyId});
+                foreach (var blobID in form16blist)
+                {
+                    var file = await Mediator.Send(new GetCustomerPropertyFileByBlobIdQuery {FileID = blobID});
+                    if (file == null || file.IsFileUploaded == false)
+                        continue;
+                    string filePath = Path.Combine(saveDirectory, file.FileName);
+                    if (file.GDfileID == null)
+                    {
+                        if (file.FileBlob.Length > 10)
+                        {
+                            await System.IO.File.WriteAllBytesAsync(filePath, file.FileBlob);
+                            continue;
+                        }
+
+                        var ms = await megaSrv.DownloadFile(file.FileName);
+                        await System.IO.File.WriteAllBytesAsync(filePath, ms.ToArray());
+                    }
+                    else
+                    {
+                        var ms = driverSrv.GetFile(file.GDfileID);
+                        await System.IO.File.WriteAllBytesAsync(filePath, ms.ToArray());
+                    }
+                }
+            }
+            // Note :checking file info only uploaded 
+            
+        }
     }
 }

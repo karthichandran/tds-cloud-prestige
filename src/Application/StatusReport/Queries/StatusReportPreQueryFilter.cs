@@ -15,7 +15,7 @@ namespace ReProServices.Application.StatusReport.Queries
             {
                 reportList = reportList.Where(x => x.PropertyID == filter.PropertyID);
             }
-            if (filter.UnitNo > 0)
+            if (!string.IsNullOrEmpty( filter.UnitNo ))
             {
                 reportList = reportList.Where(x => x.UnitNo == filter.UnitNo);
             }

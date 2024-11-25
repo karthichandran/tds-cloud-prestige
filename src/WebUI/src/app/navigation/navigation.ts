@@ -227,6 +227,29 @@ export const navigation: FuseNavigation[] = [
       }
 
     ]
+  },
+  {
+    id: 'portal',
+    title: 'CLIENT PORTAL',
+    translate: 'NAV.PORTAL',
+    type: 'collapsable',
+    children: [
+      {
+        id: 'registration',
+        title: 'Registration Status',
+        translate: 'NAV.REGISTRATION.TITLE',
+        type: 'item',
+        icon: 'assignment',
+        url: '/client-portal'
+      },
+      {
+        id: 'info',
+        title: 'Information Content',
+        translate: 'NAV.INFO.TITLE',
+        type: 'item',
+        icon: 'assignment',
+        url: '/info-content'
+      }]
   }
 
 ];

@@ -17,7 +17,7 @@ namespace ReProServices.Domain.Entities
 		public int CustomerPropertyID { get; set; }
 		public int CustomerID { get; set; }
 		public int LotNo { get; set; }
-		public int UnitNo { get; set; }
+		public string UnitNo { get; set; }
 		public int PaymentMethodID { get; set; }
 		public decimal AmountPaid { get; set; }
 		public decimal CustomerShare { get; set; }
@@ -44,5 +44,6 @@ namespace ReProServices.Domain.Entities
 		public decimal LateFeePerDay { get; set; }
 		public bool CoOwner { get; set; }
         public string CustomerNo { get; set; }
+        public string Material { get; set; }
 	}
 }

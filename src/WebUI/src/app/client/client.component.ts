@@ -176,7 +176,8 @@ welcomeMail:boolean;
       tdsCollected: ['yes', Validators.required],
       tdsCollectedBySeller: [''],
       sellers:[''],
-      stampDuty: ['']
+      stampDuty: [''],
+      possessionUnit:['']
     });
 
     this.customerColumnDef = [{ 'header': 'Name', 'field': 'name', 'type': 'label' },
@@ -489,7 +490,7 @@ welcomeMail:boolean;
         if (item.form16b == 'yes')
           item.allowform16b = true;
         else
-          item.allowform16b = false;;
+          item.allowform16b = false;
 
        // item.dateOfBirth = moment(item.dateOfBirth).local().format();
         item.dateOfBirth = moment(item.dateOfBirth).local().format("YYYY-MM-DD");
@@ -678,7 +679,9 @@ welcomeMail:boolean;
             item.customerProperty[0].dateOfSubmission = moment(propertyModel.dateOfSubmission).local().format("YYYY-MM-DD");
             item.customerProperty[0].customerAlias = custAlias;
             item.customerProperty[0].isShared = sharedCustomer;     
-            item.customerProperty[0].stampDuty = propertyModel.stampDuty;   
+            item.customerProperty[0].stampDuty = propertyModel.stampDuty; 
+            item.customerProperty[0].possessionUnit = propertyModel.possessionUnit; 
+
           });
         }
 
@@ -1589,5 +1592,21 @@ this.ShowClientPaymetnWarning(eve.checked);
   filterProFunForSearch(search) {
     var list = this.propertyDDl.filter(prop => prop.addressPremises.toLowerCase().indexOf(search) > -1);
     return list;
+  }
+  isUndefined(value){
+    return value!==null && value!=="" && value!==undefined;
+  }
+  sendItPwdMail(inx){
+    if(this.isUndefined(this.clients[0]) && this.isUndefined(this.clients[0].customerProperty[0]) && this.isUndefined(this.clients[0].customerProperty[0].ownershipID)){
+
+      var curCus=this.clients.find(x=>x.customerID==this.currentClientId);
+      var date= moment().local().format("YYYY-MM-DD");
+      this.clientService.sendItPwdMail(curCus.customerProperty[0].ownershipID,curCus.customerID,inx,date).subscribe(res => {
+        if(res)
+        this.toastr.success("Sent mail to customer");
+      });
+    }
+    else
+    this.toastr.error("Please save the customer with property details")
   }
 }

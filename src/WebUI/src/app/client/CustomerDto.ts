@@ -25,7 +25,7 @@ export interface ICustomerProperty {
   customerId: number;
   propertyId: number;
   dateOfSubmission: Date;
-  unitNo: number;
+  unitNo: string;
   remarks: string | undefined;
   isShared: boolean;
   statusTypeId: number;

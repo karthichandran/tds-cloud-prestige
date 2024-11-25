@@ -50,8 +50,9 @@ namespace ReProServices.Application.CustomerProperty.Commands.UpdateCustomerProp
                                 //this Null-Collation will allow adding of a co-owner to an existing ownership
                                 OwnershipID = customerProperty.OwnershipID ,
                                 IsArchived = false,
-                                StampDuty = customerProperty.StampDuty ?? 0
-                              
+                                StampDuty = customerProperty.StampDuty ?? 0,
+                                PossessionUnit = customerProperty.PossessionUnit ?? false
+
                                 //Created = DateTime.Now,
                                 //CreatedBy = userInfo.UserID.ToString()
                             };
@@ -86,7 +87,8 @@ namespace ReProServices.Application.CustomerProperty.Commands.UpdateCustomerProp
                         entity0.DateOfAgreement = customerProperty.DateOfAgreement?.Date;
                         entity0.CustomerAlias = customerProperty.CustomerAlias;
                         entity0.IsPrimaryOwner = customerProperty.IsPrimaryOwner;
-                        entity0.StampDuty = customerProperty.StampDuty ?? 0;                       
+                        entity0.StampDuty = customerProperty.StampDuty ?? 0;
+                        entity0.PossessionUnit = customerProperty.PossessionUnit ?? false;
                         //entity0.Updated = DateTime.Now;
                         //entity0.UpdatedBy = userInfo.UserID.ToString();
                         _context.CustomerProperty.Update(entity0);

@@ -67,11 +67,11 @@ namespace ReProServices.Application.ClientPayments.Queries
                                                                                       DateOfAgreement =  cp.DateOfAgreement,
                                                                                       LotNo = cp.LotNo,
                                                                                       NatureOfPaymentID = GetNatureOfPaymentID(cp.NatureOfPayment, cp.NotToBeConsideredReason),
-                                                                                      CustomerNo = cp.CustomerNo
-
+                                                                                      CustomerNo = cp.CustomerNo,
+                                                                                      Material = cp.Material
                                                                                       // NatureOfPaymentID = 1 //todo remove hardcoded value
                                                                                   }).ToList()
-                           .GroupBy(o => (o.PropertyID + '-' + o.ReceiptNo))
+                           .GroupBy(o => (o.PropertyID + '-' + o.ReceiptNo+'-'+o.DateOfPayment))
                            .ToDictionary(g => g.Key, g => g.ToList());
 
 
@@ -105,7 +105,8 @@ namespace ReProServices.Application.ClientPayments.Queries
                             AmountPaid = vm1.AmountPaid,
                             ReceiptNo = vm1.ReceiptNo,
                             NatureOfPaymentID = vm1.NatureOfPaymentID,
-                            CustomerNo = vm1.CustomerNo
+                            CustomerNo = vm1.CustomerNo,
+                            Material = vm1.Material
                         };
 
                         foreach (var rawObj in vm)

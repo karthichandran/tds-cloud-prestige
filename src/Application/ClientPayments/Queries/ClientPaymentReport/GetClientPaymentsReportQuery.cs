@@ -33,8 +33,8 @@ namespace ReProServices.Application.ClientPayments.Queries.ClientPaymentReport
                     var qry = "exec sp_ClientPaymentReport " + filter.NatureOfPaymentID;
                     qry += string.IsNullOrEmpty(filter.CustomerName) ? ",' '" : "'" + filter.CustomerName.ToLower() + "'";
                     qry += filter.PropertyID <= 0 ? ",0" : "," + filter.PropertyID;
-                    qry += string.IsNullOrEmpty(filter.Premises) ? ",' '" : "'" + filter.Premises + "'";
-                    qry += filter.UnitNo <= 0 ? ",0" : "," + filter.UnitNo;
+                    qry += string.IsNullOrEmpty(filter.Premises) ? ",' '" : ",'" + filter.Premises + "'";
+                    qry += string.IsNullOrEmpty(filter.UnitNo ) ? ",' '" : ",'" + filter.UnitNo + "'";
                     qry += filter.LotNo <= 0 ? ",0" : "," + filter.LotNo;
                     qry += string.IsNullOrEmpty(filter.SellerName) ? ",' '" : ",'" + filter.SellerName + "'";
                     qry += filter.SellerID <= 0 ? ",0" : "," + filter.SellerID;
@@ -74,7 +74,8 @@ namespace ReProServices.Application.ClientPayments.Queries.ClientPaymentReport
                                  CustomerStatus=x.CustomerStatus,
                                  Cinno = x.Cinno,
                                  CustomerNo = x.CustomerNo,
-                                 PropertyCode = x.PropertyCode
+                                 PropertyCode = x.PropertyCode,
+                                 Material = x.Material
                              })
                         .OrderByDescending(x => x.LotNo)
                             .ThenBy(_ => _.OwnershipID)

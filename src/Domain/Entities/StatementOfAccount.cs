@@ -5,7 +5,7 @@ namespace ReProServices.Domain.Entities
     public class StatementOfAccount
     {
         public Guid OwnershipID { get; set; }
-        public int? UnitNo { get; set; }
+        public string UnitNo { get; set; }
         public DateTime? PayableDateOfPayment { get; set; }
         public string PayableReceiptNo { get; set; }
         public decimal? PayableAmountPaid { get; set; }

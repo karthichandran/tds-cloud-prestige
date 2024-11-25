@@ -50,6 +50,8 @@ import { ReportsModule } from 'app/reports/reports.module';
 import { UserPermissionsModule } from 'app/user-permissions/user-permissions.module';
 import {ProspectModule } from 'app/prospect/prospect.module';
 import {RemarksModule} from 'app/remarks/remarks.module';
+import {RegistrationStatusModule} from 'app/registration-status/registration-status.module';
+import {InfoContentModule} from 'app/info-content/info-content.module';
 import { from } from 'rxjs';
 const appRoutes: Routes = [
   {
@@ -120,7 +122,9 @@ const appRoutes: Routes = [
     ProspectModule,
     BankAccountModule,
     TaxLoginModule,
-    RemarksModule
+    RemarksModule,
+    RegistrationStatusModule,
+    InfoContentModule
   ],
   providers: [
    // { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true },

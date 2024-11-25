@@ -10,7 +10,7 @@ namespace ReProServices.Application.StatusReport
         public string Premises { get; set; }
         public string CustomerName { get; set; }
 
-        public int? UnitNo { get; set; }
+        public string UnitNo { get; set; }
         public int? LotNo { get; set; }
         public DateTime? PaymentReceiptDate { get; set; }
         public decimal? RemittanceOfTdsAmount { get; set; }

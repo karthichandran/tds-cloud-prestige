@@ -13,7 +13,7 @@ namespace ReProServices.Domain.Entities
         public int CustomerId { get; set; }
         public int PropertyId { get; set; }
         public  DateTime DateOfSubmission { get; set; }
-        public int? UnitNo { get; set; }
+        public string UnitNo { get; set; }
         public string Remarks { get; set; }
         public bool IsShared { get; set; }
         public int? StatusTypeId { get; set; }
@@ -31,6 +31,9 @@ namespace ReProServices.Domain.Entities
         public virtual Property Property { get; set; }
 
         public decimal? StampDuty { get; set; }
+        public DateTime? ITpwdMailStatus { get; set; }
+        public DateTime? CoOwnerITpwdMailStatus { get; set; }
+        public bool? PossessionUnit { get; set; }
 
         //public bool? InvalidPAN { get; set; }
         //public bool? IncorrectDOB { get; set; }

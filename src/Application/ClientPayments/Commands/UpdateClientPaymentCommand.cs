@@ -49,6 +49,7 @@ namespace ReProServices.Application.ClientPayments.Commands
                 entity.Updated = DateTime.Now;
                 entity.UpdatedBy = userInfo.UserID.ToString();
                 entity.CustomerNo = payObj.CustomerNo;
+                entity.Material = payObj.Material;
                 _ = _context.ClientPayment.Update(entity);
                 await _context.SaveChangesAsync(cancellationToken);
                     

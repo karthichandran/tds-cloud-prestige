@@ -150,4 +150,8 @@ export class ClientService {
   groupMail(id:string): Observable<any> {
     return this.http.get(`/customer/groupMail/${id}`);
   }
+
+  sendItPwdMail(ownershipId:string,cusId:string,onwer:string,date:string): Observable<any> {
+    return this.http.get('/customer/itpwdmailstatus/'+ownershipId+'/'+cusId+'/'+onwer+'/'+date);
+  }
 }

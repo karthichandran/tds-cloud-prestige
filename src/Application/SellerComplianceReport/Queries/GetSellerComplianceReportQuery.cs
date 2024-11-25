@@ -21,7 +21,10 @@ namespace ReProServices.Application.SellerComplianceReport.Queries
                 _context = context;
             }
 
-            public async Task<IList<SellerComplianceDto>> Handle(GetSellerComplianceReportQuery request, CancellationToken cancellationToken) {
+            public async Task<IList<SellerComplianceDto>> Handle(GetSellerComplianceReportQuery request, CancellationToken cancellationToken)
+            {
+                
+
                 var vm = (from cp in _context.ViewCustomerPropertyBasic
                           join cpt in _context.ClientPaymentTransaction on new { cp.OwnershipID, cp.CustomerID } equals new { cpt.OwnershipID, cpt.CustomerID }
                           join rt in _context.Remittance on cpt.ClientPaymentTransactionID equals rt.ClientPaymentTransactionID
@@ -41,7 +44,11 @@ namespace ReProServices.Application.SellerComplianceReport.Queries
                               Amount=rt.F16CreditedAmount,
                               Form16BFileName=f.FileName,
                               CustomerNo = pay.CustomerNo,
-                              PropertyCode = sl.PropertyCode
+                              PropertyCode = sl.PropertyCode,
+                              TransactionId = cpt.ClientPaymentTransactionID,
+                              Material = pay.Material,
+                              TaxDepositDate = rt.ChallanDate,
+                              AssessmentYear = AssessYear(f.FileName)
                           }
                           ).PreFilterReportBy(request.Filter)
                         .ToList()
@@ -49,6 +56,12 @@ namespace ReProServices.Application.SellerComplianceReport.Queries
                         .PostFilterReportBy(request.Filter)
                         .ToList();
                 return vm;
+            }
+
+            private static string AssessYear(string fileName)
+            {
+                var splited = fileName.Split('_')[1];
+                return splited;
             }
         }
     }
