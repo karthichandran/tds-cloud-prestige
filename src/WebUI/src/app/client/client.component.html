@@ -168,7 +168,7 @@
                     </mat-form-field>
                   </div>
                   <div fxFlex="1 0 auto" fxLayout="row wrap" fxLayout.sm="column" fxLayout.xs="column">
-                    <div fxFlex="60">
+                    <div fxFlex="70">
                       <div fxLayout="row wrap">
                         <div class="margin-tb-5" fxLayout.sm="column" fxLayout.xs="column">
                           <label class="radio-label"  style="margin-top: -10;">I/We have already registered in TRACES</label>
@@ -181,10 +181,18 @@
                             <input matInput formControlName="tracesPassword">
                             <mat-error>Password is required!</mat-error>
                           </mat-form-field>
+                          <button mat-raised-button class="add-product-button accent" style="margin-right:10px;height: 35px;margin-top: 5px;" (click)="rquestTracesPw()" *ngIf="customerform.value.traces=='no'">
+                            <span>Request Traces Pw </span>
+                            <mat-icon class="s-22" style="margin-left:5px">mail</mat-icon>
+                          </button>
+                          <button mat-raised-button class="add-product-button accent" style="margin-right:10px;height: 35px;margin-top: 5px;" (click)="sendTracesPw()" *ngIf="customerform.value.traces=='yes'">
+                            <span>Send Traces Pw </span>
+                            <mat-icon class="s-22" style="margin-left:5px">mail</mat-icon>
+                          </button>
                         </div>
                       </div>
                     </div>
-                  <div fxFlex="40">
+                  <div fxFlex="30">
                     <div style="float:right;">
                       <button mat-raised-button class="add-product-button  mt-24 mt-md-0 accent  mb-10" style="margin-right:10px" (click)="sendItPwdMail(1)">
                         <span>IT Pw e-Mail </span>
@@ -215,21 +223,26 @@
                           <mat-checkbox formControlName="onlyTDS" name="onlyTDS" (change)="UpdateFlag($event)"> Only TDS
                             Payment</mat-checkbox>
                         </div>
-                        <div style="margin-right:20px;">
+                       
+                        <!-- <div style="margin-right:20px;">
                           <mat-checkbox formControlName="invalidPAN" name="invalidPAN" (change)="UpdateFlag($event)"> Invalid
                             PAN</mat-checkbox>
                         </div>
                         <div style="margin-right:20px;">
                           <mat-checkbox formControlName="incorrectDOB" name="incorrectDOB" (change)="UpdateFlag($event)"> Incorrect
                             DOB</mat-checkbox>
-                        </div>
+                        </div>ng serve
+                        
                         <div style="margin-right:20px;">
                           <mat-checkbox formControlName="lessThan50L" name="lessThan50L" (change)="UpdateFlag($event)"> Less than 50
                             Lakhs</mat-checkbox>
-                        </div>
+                        </div> -->
                         <div style="margin-right:20px;">
                           <mat-checkbox formControlName="customerOptedOut" name="customerOptedOut" (change)="UpdateFlag($event)"> Customer
                             Opted Out</mat-checkbox>
+                        </div>
+                        <div style="margin-right:20px;">
+                          <mat-checkbox formControlName="nonResident" name="nonresident" (change)="UpdateFlag($event)"> Non Resident</mat-checkbox>
                         </div>
                       </div>
                     </div>
@@ -458,7 +471,22 @@
                     </div>
                   </div>
                   <div fxFlex="1 0 auto" fxLayout="row wrap">
+                    <div fxFlex>
                     <mat-checkbox class="margin-left-10" formControlName="possessionUnit" > Possession Unit</mat-checkbox>
+                    </div>
+                    <div fxFlex>
+                      <mat-form-field appearance="outline" fxFlex>
+                        <mat-label>Customer No</mat-label>
+                        <input matInput type="text" formControlName="customerNo">
+                        <!--<mat-error>Total Unit Cost is required!</mat-error>-->
+                      </mat-form-field>
+                    </div> <div fxFlex>
+                    
+                    </div>
+                    <div fxFlex>
+                    
+                    </div>
+                    
                   </div>
                   <!--Should be removed-->
                   <!--<div fxFlex="1 1 auto" fxLayout="row wrap" >

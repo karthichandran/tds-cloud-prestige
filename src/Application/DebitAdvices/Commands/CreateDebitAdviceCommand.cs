@@ -31,7 +31,8 @@ namespace ReProServices.Application.DebitAdvices.Commands
                    ClientPaymentTransactionID=obj.ClientPaymentTransactionID,
                    CinNo=obj.CinNo,
                    PaymentDate=obj.PaymentDate,
-                   BlobId=obj.BlobId
+                   BlobId=obj.BlobId,
+                   Created = obj.Created
                 };
 
                 await _context.DebitAdvices.AddAsync(entity, cancellationToken);

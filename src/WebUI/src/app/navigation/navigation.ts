@@ -224,8 +224,22 @@ export const navigation: FuseNavigation[] = [
         type: 'item',
         icon: 'details',
         url: '/details-summary-report'
+      },{
+        id: 'tds_payment_summary_report',
+        title: 'TDS Payment Summary',
+        translate: 'NAV.TDSPAYMENTSUMMARTREPORT.TITLE',
+        type: 'item',
+        icon: 'list',
+        url: '/tds-payment-summary-report'
       }
-
+      ,{
+        id: 'form-16b_status_summary',
+        title: 'Form 16B Status Summary',
+        translate: 'NAV.FORM16BSTATUSSUMMARY.TITLE',
+        type: 'item',
+        icon: 'poll',
+        url: '/form16b-status-summary'
+      }
     ]
   },
   {

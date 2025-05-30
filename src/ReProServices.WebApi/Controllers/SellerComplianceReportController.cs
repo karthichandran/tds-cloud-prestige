@@ -102,6 +102,12 @@ namespace WebApi.Controllers
                 .HasColumnFormatter("dd-MMM-yyy")
                 .HasColumnWidth(21)
                 .HasColumnIndex(15);
+            settings.Property(x => x.ChallanAmount)
+                .HasColumnTitle("Challan Amount")
+                .HasColumnIndex(16);
+            settings.Property(x => x.AckNo)
+                .HasColumnTitle("TDS Ackowledgement No")
+                .HasColumnIndex(17);
 
             settings.Property(_ => _.PropertyID).Ignored();
            

@@ -34,6 +34,7 @@ namespace ReProServices.Domain.Entities
         public DateTime? ITpwdMailStatus { get; set; }
         public DateTime? CoOwnerITpwdMailStatus { get; set; }
         public bool? PossessionUnit { get; set; }
+        public string CustomerNo { get; set; }
 
         //public bool? InvalidPAN { get; set; }
         //public bool? IncorrectDOB { get; set; }

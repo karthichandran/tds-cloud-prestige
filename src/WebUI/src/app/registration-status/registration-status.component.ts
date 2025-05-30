@@ -132,10 +132,14 @@ export class RegistrationStatusComponent implements OnInit, OnDestroy {
 
         this.regSvc.getUserList(model.searchByPropertyID, model.searchByCustomerID, model.searchByUnitNo).subscribe(res => {
             _.forEach(res, o => {
+                // if (o.registered !== null)
+                //     o.registered = _moment.utc(o.registered).local().format('DD-MMM-YYYY');
+                // if (o.lastUpdated !== null)
+                //     o.lastUpdated = _moment.utc(o.lastUpdated).local().format('DD-MMM-YYYY hh:mm a');
                 if (o.registered !== null)
                     o.registered = _moment(o.registered).local().format('DD-MMM-YYYY');
                 if (o.lastUpdated !== null)
-                    o.lastUpdated = _moment(o.lastUpdated).local().format('DD-MMM-YYYY');
+                    o.lastUpdated = _moment(o.lastUpdated).local().format('DD-MMM-YYYY hh:mm a');
             });
             this.rowData = res;
         });

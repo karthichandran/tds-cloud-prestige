@@ -85,7 +85,13 @@ export const locale = {
         'REGISTRATION':{
           'TITLE':'Registration Staus'
         },
-        'INFO':{'TITLE':'INFORMATION CONTENT'}
+        'INFO':{'TITLE':'INFORMATION CONTENT'},
+        'TDSPAYMENTSUMMARTREPORT': {
+          'TITLE':'TDS Payment Summary Report'
+        },       
+        'FORM16BSTATUSSUMMARY': {
+          'TITLE':'Form 16B Status Summary'
+        }
       }
    
     

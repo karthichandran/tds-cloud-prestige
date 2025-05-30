@@ -68,7 +68,7 @@ namespace ReProServices.Infrastructure.Services
 
         private SigningCredentials GetSigningCredentials()
         {
-            var key = Encoding.UTF8.GetBytes("ReproServicesKey");
+            var key = Encoding.UTF8.GetBytes("ReproServicesKey_ReproServicesKey");
             var secret = new SymmetricSecurityKey(key);
             return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
         }

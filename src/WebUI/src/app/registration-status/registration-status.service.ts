@@ -39,6 +39,8 @@ export class RegistrationStatusService {
     if (this.isValid(unitno))
       params = params.set("unitNo", unitno);
 
+    params = params.set("localTimeZone", Intl.DateTimeFormat().resolvedOptions().timeZone);
+
     return this.http.get(`/portalregistration/user-list`, { params: params });
   }
   download(premises: any, customer: any,unitno: any): Observable<any> {
@@ -49,6 +51,8 @@ export class RegistrationStatusService {
       params = params.set("customerId", customer);
     if (this.isValid(unitno))
       params = params.set("unitNo", unitno);
+
+    params = params.set("localTimeZone", Intl.DateTimeFormat().resolvedOptions().timeZone);
 
     return this.http.get(`/portalregistration/getExcel`, { params: params , responseType: 'blob' }).pipe(timeout(300000));
   }

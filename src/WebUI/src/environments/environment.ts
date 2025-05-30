@@ -3,12 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
-  
-  baseApiUrl: 'http://localhost:44301',  // For connecting to server running elsewhere update the base API URL
-  serverUrl: 'https://localhost:44301',
-  // baseApiUrl: 'https://prestigetdsapi.reproservices.in',
-  // serverUrl: 'https://prestigetdsapi.reproservices.in',
+  production: false,  
+   baseApiUrl: 'http://localhost:44301',  // For connecting to server running elsewhere update the base API URL
+   serverUrl: 'https://localhost:44301',
+  //baseApiUrl: 'https://prestigetdsapi.reproservices.in',
+  //serverUrl: 'https://prestigetdsapi.reproservices.in', 
 
   oauth: {
     enabled: false,  // For connecting to Mifos X using OAuth2 Authentication change the value to true

@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Data;
 using ReProServices.Domain.Entities.ClientPortal;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace ReProServices.Application.Common.Interfaces
 {
     public interface IApplicationDbContext
     {
+        DatabaseFacade Database { get; }
         DbSet<Domain.Entities.ClientPortal.InfoContent> InfoContent{ get; set; }
         DbSet<ClientPortalSetup> ClientPortalSetup { get; set; }
         DbSet<Seller> Seller { get; set; }
@@ -93,5 +95,8 @@ namespace ReProServices.Application.Common.Interfaces
         DbSet<CustomerTaxLogin> CustomerTaxLogin { get; set; }
         DbSet<Domain.Entities.DebitAdvice> DebitAdvices { get; set; }
         DbSet<Domain.Entities.TransactionLog> TransactionLog { get; set; }
+
+        DbSet<Domain.Entities.TdsPaymentSummaryReport> TdsPaymentSummaryReport { get; set; }
+        DbSet<Form16BStatusSummaryReport> Form16BStatusSummaryReport { get; set; }
     }
 }

@@ -104,7 +104,8 @@ namespace WebApi
             //    .AddDefaultTokenProviders();
 
 
-            var secretKey = "ReproServicesKey";
+            //  var secretKey = "ReproServicesKey";
+            var secretKey = "ReproServicesKey_ReproServicesKey";
             services.AddAuthentication(opt =>
             {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

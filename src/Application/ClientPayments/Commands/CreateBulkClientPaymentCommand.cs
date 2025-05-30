@@ -24,6 +24,7 @@ namespace ReProServices.Application.ClientPayments.Commands
         {
             public List<TaxCodesDto> taxCodes = null;
             private readonly IApplicationDbContext _context;
+           
             public CreateBulkClientPaymentCommandHandler(IApplicationDbContext context)
             {
                 _context = context;
@@ -45,11 +46,10 @@ namespace ReProServices.Application.ClientPayments.Commands
 
 
                 //where cp.OwnershipID == request.OwnershipId TODO filter based on LotNo
-
+                
                 var payments = new List<ClientPayment>();
-
                 var vms = request.ClientPaymentVMs;
-                using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+               // using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
                 foreach (var vm in vms)
                 {
                     var payObj = vm;
@@ -105,18 +105,29 @@ namespace ReProServices.Application.ClientPayments.Commands
                     payments.Add(clientPay);
                 }
 
-
+                //using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+                await using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
                 try
                 {
-                    var toinsert = payments;
                     await _context.ClientPayment.AddRangeAsync(payments, cancellationToken);
+                    // await _context.SaveChangesAsync(cancellationToken);
+
+                    foreach (var pay in payments)
+                    {
+                        var cpList = _context.CustomerProperty.Where(x => x.OwnershipID == pay.OwnershipID).ToList();
+                        cpList.ForEach(x => x.CustomerNo = pay.CustomerNo);
+                        _context.CustomerProperty.UpdateRange(cpList);
+                    }
                     await _context.SaveChangesAsync(cancellationToken);
-                    scope.Complete();
+
+                    // scope.Complete();
+                    await transaction.CommitAsync(cancellationToken);
                     return Unit.Value;
                 }
-              
+
                 catch (DbUpdateException e)
                 {
+                    await transaction.RollbackAsync(cancellationToken);
                     var sb = new StringBuilder();
                     sb.AppendLine($"DbUpdateException error details - {e?.InnerException?.InnerException?.Message}");
 
@@ -125,10 +136,11 @@ namespace ReProServices.Application.ClientPayments.Commands
                         sb.AppendLine($"Entity of type {eve.Entity.GetType().Name} in state {eve.State} could not be updated");
                     }
 
-                    throw new Exception(sb.ToString()) ;
+                    throw new Exception(sb.ToString());
                 }
-
-
+                catch (Exception ex) {
+                    throw ex;
+                }
 
 
             }

@@ -37,5 +37,8 @@ namespace ReProServices.Domain.Entities
 
         public string ITpwdMailStatusText { get; set; }
         public string CoOwnerITpwdMailStatusText { get; set; }
+        public string TracesPwdSentDate { get; set; }
+        public string PossessionUnit { get; set; }
+        public string CustomerNo { get; set; }
     }
 }

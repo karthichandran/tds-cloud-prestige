@@ -16,7 +16,7 @@ using ReProServices.Application.InfoContent;
 namespace WebApi.Controllers
 {
 
-    [Authorize]
+    //[Authorize]
     public class PortalRegistrationController : ApiController
     {
 
@@ -110,7 +110,7 @@ namespace WebApi.Controllers
 
             settings.Property(x => x.LastUpdated)
                 .HasColumnTitle("Last Login Date & Time")
-                .HasColumnFormatter("dd-MMM-yyy")
+                .HasColumnFormatter("dd-MMM-yyy hh:mm tt")
                 .HasColumnWidth(18)
                 .HasColumnIndex(6);
 

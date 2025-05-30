@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ReProServices.Application.Common.Models;
 using ReProServices.Application.CustomerPropertyFiles;
 using ReProServices.Application.CustomerPropertyFiles.Commands.DeleteCustomerPropertyFile;
 using ReProServices.Application.CustomerPropertyFiles.Commands.UploadCustomerProeprtyFile;
@@ -15,6 +16,7 @@ using ReProServices.Application.TdsRemittance.Queries.GetRemittanceList;
 using ReProServices.Domain;
 using ReProServices.Infrastructure.GoogleDrive;
 using ReProServices.Infrastructure.MegaDrive;
+using ReProServices.Infrastructure.OneDrive;
 
 namespace WebApi.Controllers
 {
@@ -23,9 +25,57 @@ namespace WebApi.Controllers
     {
         private DriverService driverSrv;
         private MegaDriveService megaSrv;
-        public FilesController() {
+        private OneDriveService oneDriveSrv;
+        public FilesController( ) {
             driverSrv = new DriverService();
             megaSrv = new MegaDriveService();
+            oneDriveSrv = new OneDriveService(new HttpClient());
+        }
+
+        [HttpPost("onedrive/PanId/{panId}"), DisableRequestSizeLimit]
+        public async Task<IActionResult> UploadPanFileToOneDrive(string panId)
+        {
+            try
+            {
+                var files = Request.Form.Files;
+                if (files.Any(f => f.Length == 0))
+                {
+                    throw new DomainException("One of the files is empty or  corrupt");
+                }
+
+                CustomerPropertyFileDto custPropFile = new CustomerPropertyFileDto
+                {
+                    FileName = ContentDispositionHeaderValue.Parse(files[0].ContentDisposition).FileName.Trim('"'),
+                    PanID = panId
+                };
+
+                var ms = new MemoryStream();
+                await files[0].OpenReadStream().CopyToAsync(ms);
+                //custPropFile.FileBlob = ms.ToArray();
+                custPropFile.FileBlob = new byte[1];
+                custPropFile.FileType = files[0].ContentType;
+                custPropFile.FileCategoryId = 5;
+
+              
+                var status = await oneDriveSrv.UploadFileAsync(ms, custPropFile.FileName);
+
+
+                //int result = await Mediator.Send(new UploadPanFileCommand { CustomerPropertyFile = custPropFile });
+                //return Ok(result);
+                return Ok(1);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+        }
+        [HttpGet("onedrive/filename/{name}")]
+        public async Task<FileResult> GetFileByBlobID(string name)
+        {
+
+            var ms = await oneDriveSrv.DownloadFileAsync(name); 
+                return File(ms.ToArray(), "text","test");
+            
         }
 
         [HttpPost("Guid/{guid}/{categoryId}"), DisableRequestSizeLimit]

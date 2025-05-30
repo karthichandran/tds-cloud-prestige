@@ -40,5 +40,7 @@ namespace ReProServices.Domain.Entities
         public decimal? ChallanInterestAmount { get; set; }
         public decimal? ChallanFeeAmount { get; set; }
         public string ChallanCustomerName { get; set; }
+
+        public DateTime? Form16BReqDatetime { get; set; }
     }
 }

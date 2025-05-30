@@ -9,5 +9,7 @@ namespace ReProServices.Application.RegistrationStatus.Queries
         public int ProjectId { get; set; }
         public int CustomerId { get; set; }
         public string UnitNo { get; set; }
+        public string LocalTimeZone { get; set; }
+
     }
 }

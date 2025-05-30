@@ -27,10 +27,12 @@ namespace ReProServices.Application.SellerComplianceReport.Queries
 
                 var vm = (from cp in _context.ViewCustomerPropertyBasic
                           join cpt in _context.ClientPaymentTransaction on new { cp.OwnershipID, cp.CustomerID } equals new { cpt.OwnershipID, cpt.CustomerID }
-                          join rt in _context.Remittance on cpt.ClientPaymentTransactionID equals rt.ClientPaymentTransactionID
                           join pay in _context.ClientPayment on cpt.ClientPaymentID equals pay.ClientPaymentID
                           join sl in _context.ViewSellerPropertyBasic on cp.PropertyID equals sl.PropertyID
-                          join f in _context.ViewCustomerPropertyFile on rt.Form16BlobID equals f.BlobID 
+                          join rt in _context.Remittance on cpt.ClientPaymentTransactionID equals rt.ClientPaymentTransactionID into rmGrp
+                         from rt in rmGrp.DefaultIfEmpty()
+                          join f in _context.ViewCustomerPropertyFile on rt.Form16BlobID equals f.BlobID  into fGrp
+                          from f in fGrp.DefaultIfEmpty()
                           select new SellerComplianceDto {
                               SellerID=sl.SellerID,
                               SellerName=sl.SellerName,
@@ -43,12 +45,15 @@ namespace ReProServices.Application.SellerComplianceReport.Queries
                               TdsCertificateNo=rt.F16BCertificateNo,
                               Amount=rt.F16CreditedAmount,
                               Form16BFileName=f.FileName,
-                              CustomerNo = pay.CustomerNo,
+                              // CustomerNo = pay.CustomerNo,
+                              CustomerNo =cp.CustomerNo,
                               PropertyCode = sl.PropertyCode,
                               TransactionId = cpt.ClientPaymentTransactionID,
                               Material = pay.Material,
                               TaxDepositDate = rt.ChallanDate,
-                              AssessmentYear = AssessYear(f.FileName)
+                              AssessmentYear = AssessYear(f.FileName),
+                              ChallanAmount = rt.ChallanAmount,
+                              AckNo = rt.ChallanAckNo
                           }
                           ).PreFilterReportBy(request.Filter)
                         .ToList()
@@ -60,6 +65,9 @@ namespace ReProServices.Application.SellerComplianceReport.Queries
 
             private static string AssessYear(string fileName)
             {
+                if( string.IsNullOrEmpty(fileName))
+                    return string.Empty;
+
                 var splited = fileName.Split('_')[1];
                 return splited;
             }

@@ -30,19 +30,18 @@ namespace ReProServices.Domain.Entities
         public string ISD { get; set; }
         public string AlternateNumber { get; set; }
         public bool? OnlyTDS { get; set; }
-        public bool? InvalidPAN { get; set; }
-        public bool? IncorrectDOB { get; set; }
-        public bool? LessThan50L { get; set; }
+        //public bool? InvalidPAN { get; set; }
+        //public bool? IncorrectDOB { get; set; }
+        //public bool? LessThan50L { get; set; }
         public bool? CustomerOptedOut { get; set; }
         public DateTime? CustomerOptingOutDate { get; set; }
         public string CustomerOptingOutRemarks { get; set; }
         public DateTime? InvalidPanDate { get; set; }
         public string InvalidPanRemarks { get; set; }
         public string IncomeTaxPassword { get; set; }
-        //public DateTime? Created { get; set; }
-        //public string CreatedBy { get; set; }
-        //public DateTime? Updated { get; set; }
-        //public string UpdatedBy { get; set; }
+        public bool? NonResident { get; set; }
+        public DateTime? TracesPwdSentDate { get; set; }
+
         public virtual ICollection<CustomerModLog> CustomerModLog { get; set; } = new HashSet<CustomerModLog>();
         public virtual ICollection<CustomerProperty> CustomerProperty { get; set; } = new HashSet<CustomerProperty>();
     }

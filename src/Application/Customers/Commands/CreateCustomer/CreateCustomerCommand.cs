@@ -33,33 +33,22 @@ namespace ReProServices.Application.Customers.Commands.CreateCustomer
                         Customer entityUpd = new Customer
                         {
                             CustomerID = customer.CustomerID,
-                            //AdressLine1 = customer.AdressLine1,
-                            //AddressLine2 = customer.AddressLine2,
-                            //AddressPremises = customer.AddressPremises,
-                            //City = customer.City,
+                            
                             DateOfBirth = customer.DateOfBirth.Date,
                             EmailID = customer.EmailID,
                             IsTracesRegistered = customer.IsTracesRegistered,
-                            //MobileNo = customer.MobileNo,
                             Name = customer.Name,
                             PAN = customer.PAN,
-                            //PinCode = customer.PinCode,
-                            //StateId = customer.StateId,
                             TracesPassword = customer.TracesPassword,
-                            //AllowForm16B = customer.AllowForm16B,
-                            //AlternateNumber=customer.AlternateNumber,
-                            //ISD=customer.ISD,
                             IsPanVerified= customer.IsPanVerified.Value,
                             OnlyTDS=customer.OnlyTDS,
-                            InvalidPAN = customer.InvalidPAN,
-                            IncorrectDOB = customer.IncorrectDOB,
-                            LessThan50L = customer.LessThan50L,
                             CustomerOptedOut = customer.CustomerOptedOut,
                             CustomerOptingOutDate = customer.CustomerOptingOutDate,
                             CustomerOptingOutRemarks = customer.CustomerOptingOutRemarks,
                             InvalidPanDate = customer.InvalidPanDate,
                             InvalidPanRemarks = customer.InvalidPanRemarks,
-                            IncomeTaxPassword=customer.IncomeTaxPassword
+                            IncomeTaxPassword=customer.IncomeTaxPassword,
+                            NonResident = customer.NonResident
                             //Updated = DateTime.Now,
                             //UpdatedBy = userInfo.UserID.ToString()
                         };
@@ -81,33 +70,21 @@ namespace ReProServices.Application.Customers.Commands.CreateCustomer
                     {
                         Customer entity = new Customer
                         {
-                            //AdressLine1 = customer.AdressLine1,
-                            //AddressLine2 = customer.AddressLine2,
-                            //AddressPremises = customer.AddressPremises,
-                            //City = customer.City,
                             DateOfBirth = customer.DateOfBirth.Date,
                             EmailID = customer.EmailID,
                             IsTracesRegistered = customer.IsTracesRegistered,
-                            //MobileNo = customer.MobileNo,
                             Name = customer.Name,
                             PAN = customer.PAN,
-                            //PinCode = customer.PinCode,
-                            //StateId = customer.StateId,
                             TracesPassword = customer.TracesPassword,
-                            //AllowForm16B = customer.AllowForm16B,
-                            //AlternateNumber = customer.AlternateNumber,
-                            //ISD = customer.ISD,
                             IsPanVerified = customer.IsPanVerified.Value,
                             OnlyTDS = customer.OnlyTDS,
-                            InvalidPAN = customer.InvalidPAN,
-                            IncorrectDOB = customer.IncorrectDOB,
-                            LessThan50L = customer.LessThan50L,
                             CustomerOptedOut = customer.CustomerOptedOut,
                             CustomerOptingOutDate = customer.CustomerOptingOutDate,
                             CustomerOptingOutRemarks = customer.CustomerOptingOutRemarks,
                             InvalidPanDate = customer.InvalidPanDate,
                             InvalidPanRemarks = customer.InvalidPanRemarks,
-                            IncomeTaxPassword = customer.IncomeTaxPassword
+                            IncomeTaxPassword = customer.IncomeTaxPassword,
+                            NonResident = customer.NonResident
                             //Created = DateTime.Now,
                             //CreatedBy = userInfo.UserID.ToString()
                         };

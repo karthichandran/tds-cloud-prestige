@@ -31,25 +31,6 @@ namespace ReProServices.Application.Customers.Commands.ImportCustomers
             {
                 foreach (DataRow row in request.dataTable.Rows)
                 {
-                    //if (row[4].ToString() != "")
-                    //{
-                    //    var panExist = _context.Customer.FirstOrDefault(x => x.PAN == row[4].ToString());
-                    //    if (panExist != null)
-                    //        throw new ApplicationException(" PAN is already exist " + panExist.PAN);
-                    //}
-                    //if (row[9].ToString() != "")
-                    //{
-                    //   var panExist = _context.Customer.FirstOrDefault(x => x.PAN == row[9].ToString());
-                    //    if (panExist != null)
-                    //        throw new ApplicationException(" PAN is already exist " + panExist.PAN);
-                    //}
-                    //if (row[14].ToString() != "")
-                    //{
-                    //  var  panExist = _context.Customer.FirstOrDefault(x => x.PAN == row[14].ToString());
-                    //    if (panExist != null)
-                    //        throw new ApplicationException(" PAN is already exist " + panExist.PAN);
-                    //}
-
                     if(string.IsNullOrEmpty( row[22].ToString()))
                         throw new ApplicationException(" State should not be empty " );
 
@@ -62,10 +43,7 @@ namespace ReProServices.Application.Customers.Commands.ImportCustomers
                     if (porperty == null)
                         throw new ApplicationException("Property does not exist " + porperty);
                 }
-
-
-
-                //using (TransactionScope transactionscope = new TransactionScope( TransactionScopeOption.RequiresNew, TimeSpan.FromMinutes(10),TransactionScopeAsyncFlowOption.Enabled))
+                
                 using (TransactionScope transactionscope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
                     
@@ -73,12 +51,10 @@ namespace ReProServices.Application.Customers.Commands.ImportCustomers
                     {
                         foreach (DataRow row in request.dataTable.Rows)
                         {
-                           // var existCusPan = _context.Customer.ToList();
-                            //var stateObj = _context.StateList.FirstOrDefault(x => x.State.Contains(row[22].ToString()));
+                         
                             var stateObj = _context.StateList.FirstOrDefault(x => x.State.Contains(row[25].ToString()));
                             var porperty = _context.Property.FirstOrDefault(x => x.AddressPremises == row[1].ToString());
 
-                            //var custinerInx = new int[] { 3, 8, 13 };
                             var custinerInx = new int[] { 3, 9, 15 };
                             var statusInx = new int[] { 8, 14, 20 };
                             List<Customer> custList = new List<Customer>();
@@ -89,16 +65,14 @@ namespace ReProServices.Application.Customers.Commands.ImportCustomers
                                     continue;
 
                                 var status = row[statusInx[j]].ToString().ToLower();
-                                bool onlyTds=false, invalidpan=false,incorrectDob=false, less50L=false, custOptOut=false;
+                                bool onlyTds=false,nonResident=false, custOptOut=false;
 
                                 if (status.Contains("onlytds")|| status.Contains("only tds"))
                                     onlyTds = true;
-                                if (status.Contains("invalidpan") || status.Contains("invalid pan"))
-                                    invalidpan = true;
-                                if (status.Contains("incorrectdob") || status.Contains("incorrect dob"))
-                                    incorrectDob = true;
-                                if (status.Contains("less than 50 lakhs") || status.Contains("50"))
-                                    less50L = true;
+                                
+                                if (status.Contains("nonResident") || status.Contains("non resident"))
+                                    nonResident = true;
+
                                 if (status.Contains("customer opted out") || status.Contains("customer"))
                                     custOptOut = true;
 
@@ -124,9 +98,7 @@ namespace ReProServices.Application.Customers.Commands.ImportCustomers
                                     IsPanVerified = false,
                                     IsTracesRegistered = false,
                                     OnlyTDS=onlyTds,
-                                    InvalidPAN = invalidpan,
-                                    IncorrectDOB = incorrectDob,
-                                    LessThan50L = less50L,
+                                    NonResident = nonResident,
                                     CustomerOptedOut = custOptOut
                                 };
 
@@ -177,9 +149,7 @@ namespace ReProServices.Application.Customers.Commands.ImportCustomers
                                         IsPanVerified = false,
                                         IsTracesRegistered = false,
                                         OnlyTDS = cus.OnlyTDS,
-                                        InvalidPAN = cus.InvalidPAN,
-                                        IncorrectDOB = cus.IncorrectDOB,
-                                        LessThan50L = cus.LessThan50L,
+                                        NonResident = cus.NonResident,
                                         CustomerOptedOut = cus.CustomerOptedOut,
                                     };
 

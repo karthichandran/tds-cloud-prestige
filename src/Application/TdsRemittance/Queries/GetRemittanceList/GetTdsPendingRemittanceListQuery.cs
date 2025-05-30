@@ -26,7 +26,7 @@ namespace ReProServices.Application.TdsRemittance.Queries.GetRemittanceList
             public async Task<IList<TdsRemittanceDto>> Handle(GetTdsPendingRemittanceListQuery request, CancellationToken cancellationToken)
             {
                 var filter = request.Filter;
-                List<string> unitNos = (from cus in _context.Customer join cp in _context.CustomerProperty on cus.CustomerID equals cp.CustomerId where cus.InvalidPAN == true select  cp.UnitNo).ToList();
+               // List<string> unitNos = (from cus in _context.Customer join cp in _context.CustomerProperty on cus.CustomerID equals cp.CustomerId where cus.InvalidPAN == true select  cp.UnitNo).ToList();
 
                 List<string> filteredUnitNo = new List<string>();
                 if (!string.IsNullOrEmpty(filter.FromUnitNo) && !string.IsNullOrEmpty(filter.ToUnitNo)){
@@ -53,10 +53,9 @@ namespace ReProServices.Application.TdsRemittance.Queries.GetRemittanceList
                    from tlOut in tlObj.DefaultIfEmpty()
                    where cpt.RemittanceStatusID == (int) ERemittanceStatus.Pending
                          && pay.NatureOfPaymentID == (int) ENatureOfPayment.ToBeConsidered
-                         && cpt.SellerID == sp.SellerID && cp.StatusTypeID != 3 && cp.InvalidPAN != true &&
-                         cp.LessThan50L != true && cp.CustomerOptedOut != true
-                         // && !ownershipIds.Contains(cp.OwnershipID)
-                         && !unitNos.Contains(cp.UnitNo) &&(filteredUnitNo.Count==0|| filteredUnitNo.Contains(cp.UnitNo)) &&
+                         && cpt.SellerID == sp.SellerID && cp.StatusTypeID != 3  && cp.CustomerOptedOut != true
+                       //  && !unitNos.Contains(cp.UnitNo)
+                         &&(filteredUnitNo.Count==0|| filteredUnitNo.Contains(cp.UnitNo)) &&
                          (ctrOut.TracesRemarkId == 0 || ctrOut.TracesRemarkId == null)
                    //for presstige only
                    select new TdsRemittanceDto

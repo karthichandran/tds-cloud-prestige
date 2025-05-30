@@ -35,7 +35,7 @@ namespace ReProServices.Application.Traces
                                          join sp in _context.ViewSellerPropertyExpanded on cp.PropertyID equals sp.PropertyID
                                          join rem in _context.Remittance on cpt.ClientPaymentTransactionID equals rem.ClientPaymentTransactionID
                                          where cpt.RemittanceStatusID >= (int)ERemittanceStatus.TdsPaid
-                                               && cpt.SellerID == sp.SellerID
+                                               && cpt.SellerID == sp.SellerID 
                                          select new TdsRemittanceDto
                                          {
                                              ClientPaymentTransactionID = cpt.ClientPaymentTransactionID,

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MediatR;
 using ReProServices.Application.Common.Interfaces;
 using ReProServices.Application.Customers;
+using ReProServices.Domain.Entities;
 
 namespace ReProServices.Application.CustomerProperty.Commands.UpdateCustomerProperty
 {
@@ -51,7 +52,8 @@ namespace ReProServices.Application.CustomerProperty.Commands.UpdateCustomerProp
                                 OwnershipID = customerProperty.OwnershipID ,
                                 IsArchived = false,
                                 StampDuty = customerProperty.StampDuty ?? 0,
-                                PossessionUnit = customerProperty.PossessionUnit ?? false
+                                PossessionUnit = customerProperty.PossessionUnit ?? false,
+                                CustomerNo = customerProperty.CustomerNo
 
                                 //Created = DateTime.Now,
                                 //CreatedBy = userInfo.UserID.ToString()
@@ -89,6 +91,7 @@ namespace ReProServices.Application.CustomerProperty.Commands.UpdateCustomerProp
                         entity0.IsPrimaryOwner = customerProperty.IsPrimaryOwner;
                         entity0.StampDuty = customerProperty.StampDuty ?? 0;
                         entity0.PossessionUnit = customerProperty.PossessionUnit ?? false;
+                        entity0.CustomerNo = customerProperty.CustomerNo;
                         //entity0.Updated = DateTime.Now;
                         //entity0.UpdatedBy = userInfo.UserID.ToString();
                         _context.CustomerProperty.Update(entity0);

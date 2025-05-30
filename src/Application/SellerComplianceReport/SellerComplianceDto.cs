@@ -24,6 +24,8 @@ namespace ReProServices.Application.SellerComplianceReport
 
         public string AssessmentYear { get; set; }
         public DateTime? TaxDepositDate { get; set; }
+        public decimal? ChallanAmount { get; set; }
+        public string AckNo { get; set; }
 
     }
 }

@@ -36,6 +36,8 @@ namespace ReProServices.Domain.Entities
         public string IncomeTaxPassword { get; set; }
         public DateTime? ITpwdMailStatus { get; set; }
         public DateTime? CoOwnerITpwdMailStatus { get; set; }
-
+        public DateTime? TracesPwdSentDate { get; set; }
+        public bool? PossessionUnit { get; set; }
+        public string CustomerNo { get; set; }
     }
 }

@@ -27,6 +27,9 @@ using Microsoft.Extensions.Configuration;
 using ReProServices.Application.Customers.Commands;
 using ReProServices.Application.Property.Queries;
 using ReProServices.Application.RegistrationStatus.Comments;
+using ReProServices.Application.RegistrationStatus.Queries;
+using NPOI.SS.Formula.Functions;
+using Microsoft.Kiota.Abstractions;
 
 namespace WebApi.Controllers
 {
@@ -117,28 +120,43 @@ namespace WebApi.Controllers
                 .HasColumnWidth(60)
                 .HasColumnIndex(10);
 
-            settings.Property(x => x.StatusTypeID)
-               .HasColumnTitle("Stamp Duty")
+            settings.Property(x => x.TracesPwdSentDate)
+               .HasColumnTitle("Traces Pw e-Mail")
                .HasColumnWidth(60)
                .HasColumnIndex(11);
+
+            settings.Property(x => x.StampDuty)
+               .HasColumnTitle("Stamp Duty")
+               .HasColumnWidth(60)
+               .HasColumnIndex(12);
 
             settings.Property(x => x.CustomerStatus)
               .HasColumnTitle("Customer Status")
               .HasColumnWidth(60)
-              .HasColumnIndex(12);
+              .HasColumnIndex(13);
 
             settings.Property(x => x.IncomeTaxPassword)
              .HasColumnTitle("IT Password")
              .HasColumnWidth(60)
-             .HasColumnIndex(13);
+             .HasColumnIndex(14);
+
             settings.Property(x => x.ITpwdMailStatusText)
                 .HasColumnTitle("IT Pw e-Mail")
                 .HasColumnWidth(60)
-                .HasColumnIndex(14);
+                .HasColumnIndex(15);
+
             settings.Property(x => x.CoOwnerITpwdMailStatusText)
                 .HasColumnTitle("Co-Owner IT Pw e-Mail")
                 .HasColumnWidth(60)
-                .HasColumnIndex(15);
+                .HasColumnIndex(16);
+            settings.Property(x => x.PossessionUnit)
+                .HasColumnTitle("Possession Unit")
+                .HasColumnWidth(60)
+                .HasColumnIndex(17);
+            settings.Property(x => x.CustomerNo)
+                .HasColumnTitle("Customer ID")
+                .HasColumnWidth(60)
+                .HasColumnIndex(18);
 
             settings.Property(_ => _.OwnershipID).Ignored();
             settings.Property(_ => _.CustomerID).Ignored();
@@ -178,8 +196,21 @@ namespace WebApi.Controllers
             var result = await Mediator.Send(command);
             var cus = result.customers.Select(s => (s.PAN, s.EmailID)).ToList();
             await Mediator.Send(new CreateNewUserLoginCommand() { PanList = cus});
-            return result;
+           return result;
         }
+
+        [HttpGet("clintportalmail/{ownershipid}")]
+        public async Task Create(Guid ownershipId)
+        {
+            var result = await Mediator.Send(new GetCustomersByOwnershipQuery(){OwnershipId = ownershipId });
+            var cus = result.Select(s => (s.PAN, s.EmailID)).ToList();
+            foreach (var tuple in cus)
+            {
+                await SendClientPortalLogin(tuple.PAN, tuple.EmailID);
+            }
+        }
+
+
         [Authorize(Roles = "Client_Edit")]
         [HttpPut()]
         public async Task<ActionResult<CustomerVM>> Update(UpdateCustomerCommand command)
@@ -502,6 +533,184 @@ namespace WebApi.Controllers
                 await Mediator.Send(new UpdateMailStatusCommand() { OwnershipId = ownershipid,CustomerID = customer.CustomerID,IsOwner = owner==1,date = dateFormated});
             }
 
+            return isSent;
+        }
+
+        private async Task SendClientPortalLogin(string pan,string email)
+        {
+            var userLogin = await Mediator.Send(new GetUserLoginQuery { PanNumber = pan });
+
+            var filePath = @Directory.GetCurrentDirectory() + "\\Resources\\logo.png";
+
+            Bitmap b = new Bitmap(filePath);
+            MemoryStream ms = new MemoryStream();
+            b.Save(ms, ImageFormat.Png);
+            ms.Position = 0;
+            var logoResource = new LinkedResource(ms, "image/png") { ContentId = "added-image-id" };
+            var subject = "Welcome to Repro Services Customer Portal!";
+
+            var emilaModel = new EmailModel()
+            {
+               //  To="karthi@leansys.in",
+                To = email,
+                From = "support@reproservices.in",
+                Subject = subject,
+                IsBodyHtml = true
+            };
+
+            emilaModel.Message = @"<html><body> <p>Dear Sir/Madam, </p><p>Greetings from REpro Services!!</p> <p>We thank you for authorizing us to manage TDS compliance for your Prestige property. </p> " +
+
+              " <p>We are excited to introduce our customer portal designed to provide you all the necessary information and documents in relation to TDS compliance. </p><br>" +
+
+            " <p>With this platform you will have access to the following :  </p>" +
+
+              " <p>&nbsp;&nbsp; &#x2022; Status on TDS payment for all your payments to Prestige </p>" +
+               " <p>&nbsp;&nbsp; &#x2022; View TDS paid challan details  </p>" +
+               " <p>&nbsp;&nbsp; &#x2022; View Form 16B certificate details </p>" +
+              " <p>&nbsp;&nbsp; &#x2022; View income Tax website login password (as per our records) </p>" +
+              " <p>&nbsp;&nbsp; &#x2022; View traces website login password (as per our records) </p><br>" +
+
+                      "<p>Please use the below link to access our customer portal and make a note of your login credentials. </b></p>" +
+                      " <p> <a href='http://clientportal.reproservices.in/'> http://clientportal.reproservices.in/ </a> </p>" +
+                      " <p> User name : "+ userLogin.Pan + "</p>" +
+                      " <p> Password  : " + userLogin.Pwd + "</p><br>" +
+
+                      " <p><b>Note : If you have any further queries please write an email to <a>support@reproservices.in</a> </b></p><br>" +
+
+                      "<br> <img height='90' width='170'  src=cid:added-image-id><p>Thanks and Regards,<br><b> Repro Support Team</b> </p> </body></html> ";
+
+            EmailHelper emailHelper = new EmailHelper(_configuration);
+            var isSent = emailHelper.SendEmailViaZoho(emilaModel, logoResource);
+        }
+
+
+
+        [HttpGet("requestTracesPwd/{ownershipid}/{customerid}")]
+        public async Task<bool> RequestTracesPwdMail(Guid ownershipid, int customerid)
+        {
+
+            var dto = await Mediator.Send(new GetCustomerByIDQuery { OwnershipId = ownershipid });
+            var projectId = dto.customers.First().CustomerProperty.First().PropertyId;
+            var unitNo = dto.customers.First().CustomerProperty.First().UnitNo;
+            var projObj = await Mediator.Send(new GetPropertyByIdQuery { PropertyID = projectId });
+            var project = projObj.propertyDto.AddressPremises;
+            var filePath = @Directory.GetCurrentDirectory() + "\\Resources\\logo.png";
+            var customer = dto.customers.First(x => x.CustomerID == customerid);
+
+            Bitmap b = new Bitmap(filePath);
+            MemoryStream ms = new MemoryStream();
+            b.Save(ms, ImageFormat.Png);
+            ms.Position = 0;
+            var logoResource = new LinkedResource(ms, "image/png") { ContentId = "added-image-id" };
+            var subject = "Need your immediate attention - Traces Password for PAN – "+ customer.PAN+" - "+ project + " - " + unitNo;                      
+
+            var emilaModel = new EmailModel()
+            {
+                // To="karthi@leansys.in",
+                To = customer.EmailID,
+                From = "support@reproservices.in",
+                Subject = subject,
+                IsBodyHtml = true
+            };
+
+            if (dto.customers.Count > 1)
+            {
+                dto.customers.Where(x => x.CustomerID != customerid).ToList().ForEach(x =>
+                {
+                    if (string.IsNullOrEmpty(emilaModel.CC))
+                        emilaModel.CC = x.EmailID;
+                    else
+                        emilaModel.CC += "," + x.EmailID;
+                });
+            }
+
+            emilaModel.Message = @"<html><style> .cell-header{text-align: center;width: 33%;height: 35px;display: inline-block;background: #fff;border: solid 2px black;overflow: hidden;font-weight: bold;font-size: larger;} .cell{width: 33%;height: 35px;display: inline-block;background: #fff;border: solid 2px black;overflow: hidden;} </style> <body> <p>Dear Sir/Madam, </p><p>Greetings from REpro Services!!</p>  " +
+
+                                            " <p>As you are aware, we are managing TDS compliance for your Prestige property, in this regard we will need to download Form 16B certificates for the TDS payments made on your behalf from Traces website. We have noticed that your Traces account password has been reset and hence we are not able to login and generate Form 16B certificate.  </p>" +
+
+                                            " <p><b> Please note that, unless we submit the Form 16B certificate to Prestige, the TDS credit will not be updated in your statement of account, and this will result in due amount of TDS value though you would have paid the full demand note value to Prestige. </b> </p>" +
+
+                                            " <p>We kindly request you to share the new password with us to generate Form 16B and submit to Prestige at the earliest or generate the TDS certificate on your own and upload in your Prestige Customer Portal.   </p>" +
+
+                                            "<br> <img height='90' width='170'  src=cid:added-image-id><p>Thanks and Regards,<br>REpro Team</p> </body></html> ";
+
+
+            EmailHelper emailHelper = new EmailHelper(_configuration);
+            var isSent = emailHelper.SendEmailViaZoho(emilaModel, logoResource);          
+
+            return isSent;
+        }
+
+        [HttpGet("sendTracesPwd/{ownershipid}")]
+        public async Task<bool> SendTracesPwdMail(Guid ownershipid)
+        {
+
+            var dto = await Mediator.Send(new GetCustomerByIDQuery { OwnershipId = ownershipid });
+            var projectId = dto.customers.First().CustomerProperty.First().PropertyId;
+            var unitNo = dto.customers.First().CustomerProperty.First().UnitNo;
+            var projObj = await Mediator.Send(new GetPropertyByIdQuery { PropertyID = projectId });
+            var project = projObj.propertyDto.AddressPremises;
+            var filePath = @Directory.GetCurrentDirectory() + "\\Resources\\logo.png";
+           
+
+            Bitmap b = new Bitmap(filePath);
+            MemoryStream ms = new MemoryStream();
+            b.Save(ms, ImageFormat.Png);
+            ms.Position = 0;
+            var logoResource = new LinkedResource(ms, "image/png") { ContentId = "added-image-id" };
+            var subject = "Traces Password for  " + project + " - " + unitNo;
+
+            var emilaModel = new EmailModel()
+            {
+                // To="karthi@leansys.in",
+               // To = customer.EmailID,
+                From = "support@reproservices.in",
+                Subject = subject,
+                IsBodyHtml = true
+            };
+
+            var note = "";
+
+            foreach (var cus in dto.customers) {
+                if (string.IsNullOrEmpty(emilaModel.To))
+                    emilaModel.To = cus.EmailID;
+                else
+                    emilaModel.To += "," +cus.EmailID;
+
+                if (cus.CustomerProperty.First().IsPrimaryOwner)
+                    note = "<p><b> Primary Owner</b> </p> <p> User ID - " + cus.PAN + " </p><p> Password - " + cus.TracesPassword + "</p>";
+                else
+                    note += "<p><b> Co-Owner</b> </p> <p> User ID - " + cus.PAN + " </p><p> Password - " + cus.TracesPassword + "</p>";
+            }
+          
+            emilaModel.Message = @"<html><style> .cell-header{text-align: center;width: 33%;height: 35px;display: inline-block;background: #fff;border: solid 2px black;overflow: hidden;font-weight: bold;font-size: larger;} .cell{width: 33%;height: 35px;display: inline-block;background: #fff;border: solid 2px black;overflow: hidden;} </style> <body> <p>Dear Sir/Madam, </p><p>Greetings from REpro Services!!</p>  " +
+
+                                            " <p>We thank you for authorizing us to manage TDS compliance of your property, we would like to inform you that we have completed the compliance in all respects and all the Form 16B certificates are shared with Prestige and updated in your Prestige statement of accounts. Please find below your Traces website login credentials,   </p>" +
+
+                                            " <p> <a href='https://www.tdscpc.gov.in/app/login.xhtml'> https://www.tdscpc.gov.in/app/login.xhtml </a> </p>" +
+                                             note +
+                                            "<br> <p><b> Since REpro Services may have registered your PAN in traces website, we request you to check and update your mobile number and email address by following the below steps. </b>  </p>" +
+                                            
+                                              " <p>&nbsp;&nbsp;  1.\tClick on the traces website link </p>" +
+                                              " <p>&nbsp;&nbsp;  2.\tSelect the option login as ‘Tax Payer’  </p>" +
+                                              " <p>&nbsp;&nbsp;  3.\tEnter the login credentials shared above </p>" +
+                                              " <p>&nbsp;&nbsp;  4.\tTap on ‘Profile’ in the right top of the screen </p>" +
+                                              " <p>&nbsp;&nbsp;  5.\tSelect ‘Communication Details’ tab </p>" +
+                                              " <p>&nbsp;&nbsp;  6.\tUpdate your mobile number and e-mail ID  </p>" +
+                                              " <p>&nbsp;&nbsp;  7.\tTap on ‘Save’ button to save the details </p>" +
+
+                                            "<br> <img height='90' width='170'  src=cid:added-image-id><p>Thanks and Regards,<br>REpro Team</p> </body></html> ";
+
+
+            EmailHelper emailHelper = new EmailHelper(_configuration);
+            var isSent = emailHelper.SendEmailViaZoho(emilaModel, logoResource);
+            if (isSent)
+            {
+                foreach (var cus in dto.customers)
+                {
+                    await Mediator.Send(new TracesPasswordSentDateCommand() { CustomerId = cus.CustomerID});
+                }
+            }
             return isSent;
         }
     }

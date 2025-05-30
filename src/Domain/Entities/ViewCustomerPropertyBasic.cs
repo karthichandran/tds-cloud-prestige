@@ -28,5 +28,6 @@ namespace ReProServices.Domain.Entities
         public string CustomerAlias { get; set; }
         public string IsPanVerified { get; set; }     
         public string IncomeTaxPassword { get; set; }
+        public string CustomerNo { get; set; }
     }
 }

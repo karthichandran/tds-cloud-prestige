@@ -32,32 +32,65 @@ namespace ReProServices.Application.ClientPaymentImport.Commands
             {
                 try
                 {
+
+
+                    //var propCodes = request.cpr.Select(x => x.PropertyCode).ToList();
+                    //var propertyList = _context.Property.Where(x=> propCodes.Contains( x.PropertyCode)).ToList();
+                    //request.cpr.ForEach(x =>
+                    //{
+                    //    var prop = propertyList.FirstOrDefault(p => p.PropertyCode == x.PropertyCode);
+                    //    if (prop == null)
+                    //        throw new ApplicationException(x.PropertyCode + " : Property Code does not exist");
+
+                    //    var propId = prop.PropertyID;
+                    //    int index = x.Material.IndexOf('-');
+                    //    var unitNo = x.Material.Substring(index + 1);
+                    //    var cp = _context.CustomerProperty
+                    //        .FirstOrDefault(u => u.PropertyId== propId &&( u.UnitNo == x.UnitNo || u.UnitNo == x.UnitNo.TrimStart('0') || u.UnitNo == unitNo));
+                    //    x.UnitNo = cp?.UnitNo;
+                    //});
+
+
+                    //var filtered = (from cr in request.cpr
+                    //                join cp in _context.CustomerProperty on cr.UnitNo equals cp.UnitNo
+                    //                join p in _context.Property on cr.PropertyCode equals p.PropertyCode
+                    //                where cp.StatusTypeId != 3 && cp.PropertyId == p.PropertyID 
+                    //               select cr).Distinct().ToList<ClientPaymentRawImport>();
+
+                    var propMaster= _context.Property.ToList();
+                    var cusPropMaster = _context.CustomerProperty.ToList();
                     var propCodes = request.cpr.Select(x => x.PropertyCode).ToList();
-                    var propertyList = _context.Property.Where(x=> propCodes.Contains( x.PropertyCode)).ToList();
+                    var propertyList = propMaster.Where(x => propCodes.Contains(x.PropertyCode)).ToList();
                     request.cpr.ForEach(x =>
                     {
-                        var propId = propertyList.First(p => p.PropertyCode == x.PropertyCode).PropertyID;
+                        var prop = propertyList.FirstOrDefault(p => p.PropertyCode == x.PropertyCode);
+                        if (prop == null)
+                            throw new ApplicationException(x.PropertyCode + " : Property Code does not exist");
+
+                        var propId = prop.PropertyID;
                         int index = x.Material.IndexOf('-');
                         var unitNo = x.Material.Substring(index + 1);
-                        var cp = _context.CustomerProperty
-                            .FirstOrDefault(u => u.PropertyId== propId &&( u.UnitNo == x.UnitNo || u.UnitNo == x.UnitNo.TrimStart('0') || u.UnitNo == unitNo));
+                        var cp = cusPropMaster
+                            .FirstOrDefault(u => u.PropertyId == propId && (u.UnitNo == x.UnitNo || u.UnitNo == x.UnitNo.TrimStart('0') || u.UnitNo == unitNo));
                         x.UnitNo = cp?.UnitNo;
                     });
 
 
                     var filtered = (from cr in request.cpr
-                                    join cp in _context.CustomerProperty on cr.UnitNo equals cp.UnitNo
-                                    join p in _context.Property on cr.PropertyCode equals p.PropertyCode
-                                    where cp.StatusTypeId != 3 && cp.PropertyId == p.PropertyID 
-                                   select cr).Distinct().ToList<ClientPaymentRawImport>();
+                                    join cp in cusPropMaster on cr.UnitNo equals cp.UnitNo
+                                    join p in propMaster on cr.PropertyCode equals p.PropertyCode
+                                    where cp.StatusTypeId != 3 && cp.PropertyId == p.PropertyID
+                                    select cr).Distinct().ToList<ClientPaymentRawImport>();
+
 
 
                     _context.ClientPaymentRawImport.AddRange(filtered);
                     await _context.SaveChangesAsync(cancellationToken);
+
                     return Unit.Value;
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
 
                     throw;

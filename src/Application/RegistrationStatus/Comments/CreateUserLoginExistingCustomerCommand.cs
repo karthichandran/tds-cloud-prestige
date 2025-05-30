@@ -29,18 +29,43 @@ namespace ReProServices.Application.RegistrationStatus.Comments
             {
                 List<string> existPan = _portContext.LoginUser.Select(x => x.UserName).ToList();
 
-               // var newPans = _context.Customer.Where(x => !existPan.Contains(x.PAN)).Select(s=>s.PAN).ToList();
-                var newPans = _context.Customer.Where(x => !existPan.Contains(x.PAN)).Select(s => new{ s.PAN,s.EmailID}).ToList();
+
+                var customers = _context.Customer.Select(s => new { s.PAN, s.EmailID }).ToList();
+
+                var newCus=new List<( string ,string ) > ();
+                customers.ForEach(x =>
+                {
+                    var cus = existPan.Where(u => u == x.PAN).FirstOrDefault();
+                    if (cus == null) {
+                        newCus.Add(( x.PAN, x.EmailID ));
+                    }
+                        
+                });
+               
+               // var newPans = _context.Customer.Where(x => !existPan.Contains(x.PAN)).Select(s => new{ s.PAN,s.EmailID}).ToList();
 
                 var chars = "#@$*0";
                 List<LoginUser> userList = new List<LoginUser>();
-                newPans.ForEach(pan =>
+                //newPans.ForEach(pan =>
+                //{
+                //    var pwd = ShuffleString(pan.PAN + chars);
+                //    userList.Add(new LoginUser
+                //    {
+                //        UserName = pan.PAN,
+                //        Email = pan.EmailID,
+                //        UserPwd = pwd,
+                //        IsActive = true
+                //    });
+
+                //});
+
+                newCus.ForEach(pan =>
                 {
-                    var pwd = ShuffleString(pan.PAN + chars);
+                    var pwd = ShuffleString(pan.Item1 + chars);
                     userList.Add(new LoginUser
                     {
-                        UserName = pan.PAN,
-                        Email = pan.EmailID,
+                        UserName = pan.Item1,
+                        Email = pan.Item2,
                         UserPwd = pwd,
                         IsActive = true
                     });

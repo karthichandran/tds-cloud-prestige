@@ -13,6 +13,8 @@ using Microsoft.Extensions.Configuration;
 using ReProServices.Application.CustomerPropertyFiles;
 using ReProServices.Application.CustomerPropertyFiles.Commands.UploadCustomerProeprtyFile;
 using ReProServices.Application.CustomerPropertyFiles.Queries;
+using ReProServices.Application.Customers;
+using ReProServices.Application.Customers.Commands;
 using ReProServices.Application.Customers.Queries;
 using ReProServices.Application.Remittances.Commands.UpdateRemittance;
 using ReProServices.Application.Remittances.Queries;
@@ -44,7 +46,11 @@ namespace WebApi.Controllers
         {
             return await Mediator.Send(new GetTracesListQuery() { Filter = tdsRemittanceFilter });
         }
-
+        [HttpGet("TracesPasswordList")]
+        public async Task<IList<TracesPasswordSettingDto>> GetTracesPasswordList([FromQuery] TdsPaymentFilter tdsFilter)
+        {
+            return await Mediator.Send(new GetTracesPasswordSettingListQuery() { Filter = tdsFilter });
+        }
 
         [HttpGet("{transactionID}")]
         public async Task<TdsRemittanceDto> GetById(int transactionID)
@@ -129,7 +135,13 @@ namespace WebApi.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
-
+       
+        [HttpPut("UpdateTracesPassword")]
+        public async Task<ActionResult<bool>> Update(CustomerDto customer)
+        {
+            var result = await Mediator.Send(new UpdateTracesPasswordCommand(){CustomerDto = customer});
+            return result;
+        }
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {

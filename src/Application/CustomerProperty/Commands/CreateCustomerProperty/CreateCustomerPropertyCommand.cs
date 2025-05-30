@@ -54,7 +54,8 @@ namespace ReProServices.Application.CustomerProperty.Commands.CreateCustomerProp
                                 CustomerAlias = customerProperty.CustomerAlias,
                                 IsArchived = false,
                                 StampDuty = customerProperty.StampDuty ?? 0,
-                                PossessionUnit = customerProperty.PossessionUnit??false
+                                PossessionUnit = customerProperty.PossessionUnit??false,
+                                CustomerNo = customerProperty.CustomerNo
                                 //Updated = DateTime.Now,
                                 //UpdatedBy = userInfo.UserID.ToString()
                             };
@@ -86,7 +87,8 @@ namespace ReProServices.Application.CustomerProperty.Commands.CreateCustomerProp
                                 OwnershipID = customerProperty.OwnershipID ?? guid,
                                 IsArchived = false,
                                 StampDuty = customerProperty.StampDuty ?? 0      ,
-                                PossessionUnit = customerProperty.PossessionUnit ?? false
+                                PossessionUnit = customerProperty.PossessionUnit ?? false,
+                                CustomerNo = customerProperty.CustomerNo
                                 //Created = DateTime.Now,
                                 //CreatedBy = userInfo.UserID.ToString()
                             };

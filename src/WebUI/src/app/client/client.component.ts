@@ -141,9 +141,10 @@ welcomeMail:boolean;
       isd: ['+91'],
       isPanVerified: [''],
       onlyTDS: [''],
-      invalidPAN: [''],
-      incorrectDOB: [''],
-      lessThan50L: [''],
+      // invalidPAN: [''],
+      // incorrectDOB: [''],
+      // lessThan50L: [''],
+      nonResident: [''],
       customerOptedOut:[''],
       invalidPanDate:[''],
       invalidPanRemarks:[''],
@@ -177,7 +178,8 @@ welcomeMail:boolean;
       tdsCollectedBySeller: [''],
       sellers:[''],
       stampDuty: [''],
-      possessionUnit:['']
+      possessionUnit:[''],
+      customerNo:['']
     });
 
     this.customerColumnDef = [{ 'header': 'Name', 'field': 'name', 'type': 'label' },
@@ -325,17 +327,13 @@ welcomeMail:boolean;
       client.customerOptingOutDate="";
       client.customerOptingOutRemarks="";
       client.invalidPanDate="";
-      client.invalidPanRemarks="";
-      client.invalidPAN=false;
-      client.incorrectDOB=false;
-      client.lessThan50L=false;
+      client.invalidPanRemarks="";     
+      client.nonResident=false;
       client.customerOptedOut=false;
 
-      this.customerform.get("onlyTDS").enable();
-      this.customerform.get("invalidPAN").enable();
-      this.customerform.get("incorrectDOB").enable();
+      this.customerform.get("onlyTDS").enable();      
       this.customerform.get("customerOptedOut").enable();
-      this.customerform.get("lessThan50L").enable();
+      this.customerform.get("nonResident").enable();
 
       this.customerform.reset();
       this.customerform.patchValue(client);
@@ -681,6 +679,7 @@ welcomeMail:boolean;
             item.customerProperty[0].isShared = sharedCustomer;     
             item.customerProperty[0].stampDuty = propertyModel.stampDuty; 
             item.customerProperty[0].possessionUnit = propertyModel.possessionUnit; 
+            item.customerProperty[0].customerNo = propertyModel.customerNo; 
 
           });
         }
@@ -1003,9 +1002,14 @@ welcomeMail:boolean;
       var ele = document.getElementsByClassName('mat-tab-label') as HTMLCollectionOf<HTMLElement>;
       ele[0].click();
     } else if (eve.action == 'email') {
-      this.clientService.groupMail(eve.id).subscribe((res) => {
+
+      // this.clientService.groupMail(eve.id).subscribe((res) => {
+      //   this.toastr.success("Sent mail successfully");
+      // });
+ this.clientService.sendCLientPortalLoginMail(eve.id).subscribe((res) => {
         this.toastr.success("Sent mail successfully");
       });
+      
     } else {
       let row = eve.row;
       let model: any = {};
@@ -1083,6 +1087,12 @@ welcomeMail:boolean;
   loadCustomerAndProperty(response: any) {
     this.customerform.reset();
     this.clients = response.customers;
+    _.forEach(this.clients,o=>{
+      if(o.isTracesRegistered)
+        o.traces="yes";
+      else
+      o.traces="no";
+    });
     this.propertyForm.patchValue(response.customers[0].customerProperty[0]);
     this.selectedProperty(response.customers[0].customerProperty[0].propertyId);
     this.propertyForm.patchValue(response.customers[0].customerProperty[0]);
@@ -1399,19 +1409,9 @@ this.welcomeMail=true;
       eve.source.name="onlyTDS";
       eve.checked=true;
       this.UpdateFlag(eve);
-    }
-    if(cusVal.invalidPAN){
-      eve.source.name="invalidPAN";
-      eve.checked=true;
-      this.UpdateFlag(eve);
-    }
-    if(cusVal.incorrectDOB){
-      eve.source.name="incorrectDOB";
-      eve.checked=true;
-      this.UpdateFlag(eve);
-    }
-    if(cusVal.lessThan50L){
-      eve.source.name="lessThan50L";
+    }   
+    if(cusVal.nonResident){
+      eve.source.name="nonResident";
       eve.checked=true;
       this.UpdateFlag(eve);
     }
@@ -1423,10 +1423,8 @@ this.welcomeMail=true;
   }
 
   ResetFlags(){
-    this.customerform.get("onlyTDS").enable();
-    this.customerform.get("invalidPAN").enable();
-    this.customerform.get("incorrectDOB").enable();
-    this.customerform.get("lessThan50L").enable();
+    this.customerform.get("onlyTDS").enable();    
+    this.customerform.get("nonResident").enable();
     this.customerform.get("customerOptedOut").enable();
   }
   UpdateFlag(eve) {
@@ -1441,101 +1439,88 @@ this.welcomeMail=true;
       if (eve.checked) {
 
         this.customerform.get("onlyTDS").enable();
-        this.customerform.get('incorrectDOB').setValue(false);
-        this.customerform.get('lessThan50L').setValue(false);
         this.customerform.get('customerOptedOut').setValue(false);
-
-        this.customerform.get("incorrectDOB").disable();
-        this.customerform.get("lessThan50L").disable();
+       
         this.customerform.get("customerOptedOut").disable();
       } else {
-        this.customerform.get("incorrectDOB").enable();
-        this.customerform.get("lessThan50L").enable();
+       
         this.customerform.get("customerOptedOut").enable();
       }
 
     }
-    if (eve.source.name == "invalidPAN") {
+    // if (eve.source.name == "invalidPAN") {
 
-      if (eve.checked) {
-        this.customerform.get("invalidPAN").enable();
-        this.customerform.get('incorrectDOB').setValue(false);
-        this.customerform.get('lessThan50L').setValue(false);
-        this.customerform.get('customerOptedOut').setValue(false);
+    //   if (eve.checked) {
+    //     this.customerform.get("invalidPAN").enable();
+    //     this.customerform.get('incorrectDOB').setValue(false);
+    //     this.customerform.get('lessThan50L').setValue(false);
+    //     this.customerform.get('customerOptedOut').setValue(false);
 
-        this.customerform.get("incorrectDOB").disable();
-        this.customerform.get("lessThan50L").disable();
-        this.customerform.get("customerOptedOut").disable();
-      } else {
-        this.customerform.get("incorrectDOB").enable();
-        this.customerform.get("lessThan50L").enable();
-        this.customerform.get("customerOptedOut").enable();
-      }
+    //     this.customerform.get("incorrectDOB").disable();
+    //     this.customerform.get("lessThan50L").disable();
+    //     this.customerform.get("customerOptedOut").disable();
+    //   } else {
+    //     this.customerform.get("incorrectDOB").enable();
+    //     this.customerform.get("lessThan50L").enable();
+    //     this.customerform.get("customerOptedOut").enable();
+    //   }
 
-    }
+    // }
 
-    if (eve.source.name == "incorrectDOB") {
+    // if (eve.source.name == "incorrectDOB") {
 
-      if (eve.checked) {
-        this.customerform.get("incorrectDOB").enable();
-        this.customerform.get('onlyTDS').setValue(false);
-        this.customerform.get('invalidPAN').setValue(false);
-        this.customerform.get('lessThan50L').setValue(false);
-        this.customerform.get('customerOptedOut').setValue(false);
+    //   if (eve.checked) {
+    //     this.customerform.get("incorrectDOB").enable();
+    //     this.customerform.get('onlyTDS').setValue(false);
+    //     this.customerform.get('invalidPAN').setValue(false);
+    //     this.customerform.get('lessThan50L').setValue(false);
+    //     this.customerform.get('customerOptedOut').setValue(false);
 
-        this.customerform.get("onlyTDS").disable();
-        this.customerform.get("invalidPAN").disable();
-        this.customerform.get("lessThan50L").disable();
-        this.customerform.get("customerOptedOut").disable();
-      } else {
-        this.customerform.get("onlyTDS").enable();
-        this.customerform.get("invalidPAN").enable();
-        this.customerform.get("lessThan50L").enable();
-        this.customerform.get("customerOptedOut").enable();
-      }
+    //     this.customerform.get("onlyTDS").disable();
+    //     this.customerform.get("invalidPAN").disable();
+    //     this.customerform.get("lessThan50L").disable();
+    //     this.customerform.get("customerOptedOut").disable();
+    //   } else {
+    //     this.customerform.get("onlyTDS").enable();
+    //     this.customerform.get("invalidPAN").enable();
+    //     this.customerform.get("lessThan50L").enable();
+    //     this.customerform.get("customerOptedOut").enable();
+    //   }
 
-    }
+    // }
    
-    if (eve.source.name == "lessThan50L") {
+    // if (eve.source.name == "lessThan50L") {
 
-      if (eve.checked) {
-        this.customerform.get("lessThan50L").enable();
-        this.customerform.get('onlyTDS').setValue(false);
-        this.customerform.get('invalidPAN').setValue(false);
-        this.customerform.get('incorrectDOB').setValue(false);
-        this.customerform.get('customerOptedOut').setValue(false);
+    //   if (eve.checked) {
+    //     this.customerform.get("lessThan50L").enable();
+    //     this.customerform.get('onlyTDS').setValue(false);
+    //     this.customerform.get('invalidPAN').setValue(false);
+    //     this.customerform.get('incorrectDOB').setValue(false);
+    //     this.customerform.get('customerOptedOut').setValue(false);
 
-        this.customerform.get("onlyTDS").disable();
-        this.customerform.get("invalidPAN").disable();
-        this.customerform.get("incorrectDOB").disable();
-        this.customerform.get("customerOptedOut").disable();
-      } else {
-        this.customerform.get("onlyTDS").enable();
-        this.customerform.get("invalidPAN").enable();
-        this.customerform.get("incorrectDOB").enable();
-        this.customerform.get("customerOptedOut").enable();
-      }
+    //     this.customerform.get("onlyTDS").disable();
+    //     this.customerform.get("invalidPAN").disable();
+    //     this.customerform.get("incorrectDOB").disable();
+    //     this.customerform.get("customerOptedOut").disable();
+    //   } else {
+    //     this.customerform.get("onlyTDS").enable();
+    //     this.customerform.get("invalidPAN").enable();
+    //     this.customerform.get("incorrectDOB").enable();
+    //     this.customerform.get("customerOptedOut").enable();
+    //   }
 
-    }
+    // }
 
     if (eve.source.name == "customerOptedOut") {
 this.ShowClientPaymetnWarning(eve.checked);
       if (eve.checked) {
         this.customerform.get("customerOptedOut").enable();
-        this.customerform.get('onlyTDS').setValue(false);
-        this.customerform.get('invalidPAN').setValue(false);
-        this.customerform.get('incorrectDOB').setValue(false);
-        this.customerform.get('lessThan50L').setValue(false);
+        this.customerform.get('onlyTDS').setValue(false);       
 
         this.customerform.get("onlyTDS").disable();
-        this.customerform.get("invalidPAN").disable();
-        this.customerform.get("incorrectDOB").disable();
-        this.customerform.get("lessThan50L").disable();
+       
       } else {
-        this.customerform.get("onlyTDS").enable();
-        this.customerform.get("invalidPAN").enable();
-        this.customerform.get("incorrectDOB").enable();
-        this.customerform.get("lessThan50L").enable();
+        this.customerform.get("onlyTDS").enable();       
       }
 
     }
@@ -1602,6 +1587,31 @@ this.ShowClientPaymetnWarning(eve.checked);
       var curCus=this.clients.find(x=>x.customerID==this.currentClientId);
       var date= moment().local().format("YYYY-MM-DD");
       this.clientService.sendItPwdMail(curCus.customerProperty[0].ownershipID,curCus.customerID,inx,date).subscribe(res => {
+        if(res)
+        this.toastr.success("Sent mail to customer");
+      });
+    }
+    else
+    this.toastr.error("Please save the customer with property details")
+  }
+
+  rquestTracesPw(){
+    if(this.isUndefined(this.clients[0]) && this.isUndefined(this.clients[0].customerProperty[0]) && this.isUndefined(this.clients[0].customerProperty[0].ownershipID)){
+
+      var curCus=this.clients.find(x=>x.customerID==this.currentClientId);
+          this.clientService.requestTracesPwdMail(curCus.customerProperty[0].ownershipID,curCus.customerID).subscribe(res => {
+        if(res)
+        this.toastr.success("Sent mail to customer");
+      });
+    }
+    else
+    this.toastr.error("Please save the customer with property details")
+  }
+  sendTracesPw(){
+    if(this.isUndefined(this.clients[0]) && this.isUndefined(this.clients[0].customerProperty[0]) && this.isUndefined(this.clients[0].customerProperty[0].ownershipID)){
+
+      var curCus=this.clients.find(x=>x.customerID==this.currentClientId);
+      this.clientService.sendTracesPwdMail(curCus.customerProperty[0].ownershipID).subscribe(res => {
         if(res)
         this.toastr.success("Sent mail to customer");
       });

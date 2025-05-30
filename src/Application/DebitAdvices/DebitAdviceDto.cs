@@ -11,5 +11,6 @@ namespace ReProServices.Application.DebitAdvices
         public string CinNo { get; set; }
         public DateTime? PaymentDate { get; set; }
         public int? BlobId { get; set; }
+        public DateTime? Created { get; set; }
     }
 }

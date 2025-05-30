@@ -27,9 +27,7 @@ namespace ReProServices.Application.Customers
         public string Sellers { get; set; }
         public bool? IsPanVerified { get; set; }
         public bool? OnlyTDS { get; set; }
-        public bool? InvalidPAN { get; set; }
-        public bool? IncorrectDOB { get; set; }
-        public bool? LessThan50L { get; set; }
+        public bool? NonResident { get; set; }
         public bool? CustomerOptedOut { get; set; }
 
         public DateTime? CustomerOptingOutDate { get; set; }

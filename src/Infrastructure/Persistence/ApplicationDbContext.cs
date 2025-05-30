@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using ReProServices.Domain.Entities.ClientPortal;
 using ReProServices.Infrastructure.Configs;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace ReProServices.Infrastructure.Persistence
 {
@@ -29,8 +30,8 @@ namespace ReProServices.Infrastructure.Persistence
             _currentUserService = currentUserService;
             _dateTime = dateTime;
         }
-
-       public DbSet<InfoContent> InfoContent { get; set; }
+        public DatabaseFacade Database => base.Database;
+        public DbSet<InfoContent> InfoContent { get; set; }
         public DbSet<ClientPortalSetup> ClientPortalSetup { get; set; }
         public DbSet<Seller> Seller { get; set; }
 
@@ -110,6 +111,9 @@ namespace ReProServices.Infrastructure.Persistence
         public DbSet<CustomerTaxLogin> CustomerTaxLogin { get; set; }
         public DbSet<DebitAdvice> DebitAdvices { get; set; }
         public DbSet<TransactionLog> TransactionLog { get; set; }
+
+        public DbSet<TdsPaymentSummaryReport> TdsPaymentSummaryReport { get; set; }
+       public DbSet<Form16BStatusSummaryReport> Form16BStatusSummaryReport { get; set; }
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             //foreach (var entry in ChangeTracker.Entries<AuditableEntity>())

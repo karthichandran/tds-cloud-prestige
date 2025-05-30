@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NPOI.SS.Formula.Functions;
 using ReProServices.Application.Customers.Commands.CreateCustomer;
 using ReProServices.Application.Prospect;
 using ReProServices.Application.Prospect.Command;
 using ReProServices.Application.Prospect.Commands;
 using ReProServices.Application.Prospect.Queries;
+using ReProServices.Application.RegistrationStatus.Comments;
 
 namespace WebApi.Controllers
 {
@@ -32,7 +34,8 @@ namespace WebApi.Controllers
         public async Task<ActionResult<int>> Process(CreateProspectProcessCommand command)
         {
             var result = await Mediator.Send(command);
-            return result;
+            await Mediator.Send(new CreateNewUserLoginCommand() { PanList = result });
+            return 0;
         }
 
         [HttpPut]

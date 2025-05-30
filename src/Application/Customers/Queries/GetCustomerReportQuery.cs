@@ -71,6 +71,9 @@ namespace ReProServices.Application.Customers.Queries
                        IncomeTaxPassword= string.Join(",", x.Select(g => g.IncomeTaxPassword)),
                        ITpwdMailStatusText = string.Join(",", x.Select(g => g.ITpwdMailStatus==null?"": "Sent on " + g.ITpwdMailStatus?.ToString("dd-MM-yyyy"))),
                        CoOwnerITpwdMailStatusText = string.Join(",", x.Select(g => g.CoOwnerITpwdMailStatus == null ? "" : "Sent on "+ g.CoOwnerITpwdMailStatus?.ToString("dd-MM-yyyy"))),
+                       TracesPwdSentDate = string.Join(",", x.Select(g => g.TracesPwdSentDate == null ? "" : "Sent on " + g.TracesPwdSentDate?.ToLocalTime().ToString("dd-MM-yyyy"))),
+                       PossessionUnit=x.First().PossessionUnit==true?"True":"False",
+                       CustomerNo=x.First().CustomerNo
                    }).ToList();
 
               

@@ -154,4 +154,18 @@ export class ClientService {
   sendItPwdMail(ownershipId:string,cusId:string,onwer:string,date:string): Observable<any> {
     return this.http.get('/customer/itpwdmailstatus/'+ownershipId+'/'+cusId+'/'+onwer+'/'+date);
   }
+
+  sendCLientPortalLoginMail(ownershipId:string): Observable<any> {
+    return this.http.get('/customer/clintportalmail/'+ownershipId);
+  }
+
+  requestTracesPwdMail(ownershipId:string,cusId:string): Observable<any> {
+    return this.http.get('/customer/requestTracesPwd/'+ownershipId+'/'+cusId);
+  }
+  sendTracesPwdMail(ownershipId:string): Observable<any> {
+    return this.http.get('/customer/sendTracesPwd/'+ownershipId);
+  }
+
 }
+
+

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -10,6 +11,7 @@ using ReProServices.Application.Remittances.Commands.CreateRemittance;
 using ReProServices.Application.Remittances.Commands.UpdateRemittance;
 using ReProServices.Application.Remittances.Queries;
 using ReProServices.Application.TdsRemittance;
+using ReProServices.Application.TdsRemittance.Commands;
 using ReProServices.Application.TdsRemittance.Queries;
 using ReProServices.Application.TdsRemittance.Queries.GetRemittanceList;
 using ReProServices.Domain.Enums;
@@ -34,6 +36,7 @@ namespace WebApi.Controllers
             return await Mediator.Send(new GetTdsPendingRemittanceListQuery() { Filter = tdsRemittanceFilter });
         }
 
+
         //End point used for traces grid in desktop app
         [HttpGet("processedList")]
         public async Task<IList<TdsRemittanceDto>> GetProcessed([FromQuery]TdsRemittanceFilter tdsRemittanceFilter)
@@ -45,6 +48,57 @@ namespace WebApi.Controllers
         public async Task<IList<TdsRemittanceDto>> GetProcessedExportList([FromQuery] TdsRemittanceFilter tdsRemittanceFilter)
         {
             return await Mediator.Send(new GetProcessedremittanceListExportQuery() { Filter = tdsRemittanceFilter });
+        }
+        [HttpGet("pendingTdsPayment")]
+        public async Task<IList<TdsPaymentDto>> GetTdsPaypment([FromQuery] TdsPaymentFilter tdsFilter)
+        {
+            return await Mediator.Send(new GetTdsPaymentListQuery() { Filter = tdsFilter });
+        }
+        [HttpPut("UpdateTdsPaymentBankDetails")]
+        public async Task<IActionResult> UpdateTdsPaymentBankDetails(List<TdsPaymentDto> list)
+        {
+            var result = await Mediator.Send(new UpdateBankAndUserDetailsCommand{TdsPayList = list });
+            return Ok(result);
+        }
+        [HttpPut("UpdateAttempts/{clientPayTransId}/{acctId}")]
+        public async Task<IActionResult> UpdateAttempts(int clientPayTransId,int acctId)
+        {
+            var result = await Mediator.Send(new UpdateAttemptsCommand() { clientPayId = clientPayTransId,bankAcctId = acctId });
+            return Ok(result);
+        }
+        [HttpGet("UserList")]
+        public async Task<List<DropDownDto>> GetUserList()
+        {
+            return await Mediator.Send(new GetUserListQuery());
+        }
+        [HttpGet("TdsChallanDownload")]
+        public async Task<IList<ChallanDownloadDto>> GetChallanDownload([FromQuery] TdsPaymentFilter tdsFilter)
+        {
+            return await Mediator.Send(new GetChallanDownloadListQuery() { Filter = tdsFilter });
+        }
+
+        [HttpGet("form16bRequest")]
+        public async Task<IList<Form16BReqDto>> GetForm16bReq([FromQuery] TdsPaymentFilter tdsFilter)
+        {
+            return await Mediator.Send(new GetForm16BReqListQuery() { Filter = tdsFilter });
+        }
+        [HttpPut("UpdateForm16bReqTime")]
+        public async Task<IActionResult> UpdateAttempts(Form16bReqTimeDto model)
+        {
+            var result = await Mediator.Send(new UpdateForm16bReqDatetimeCommand() { clientTransId = model.ClientTransactionId, ReqDateTime = model.TimeOfReq });
+            return Ok(result);
+        }
+
+        [HttpGet("form16bDownload")]
+        public async Task<IList<Form16BReqDto>> GetForm16bDownload([FromQuery] TdsPaymentFilter tdsFilter)
+        {
+            return await Mediator.Send(new GetForm16BDownloadList() { Filter = tdsFilter });
+        }
+
+        [HttpGet("form16bCompleted")]
+        public async Task<IList<Form16BReqDto>> GetForm16bDownloadCompleted([FromQuery] TdsPaymentFilter tdsFilter)
+        {
+            return await Mediator.Send(new GetForm16BCompletedListQuery() { Filter = tdsFilter });
         }
 
         //End point to fill and download traces doc

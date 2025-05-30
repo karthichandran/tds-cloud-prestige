@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using ReProServices.Application.Common.Interfaces;
 using ReProServices.Application.Remarks;
 using ReProServices.Application.Remarks.Queries;
+using TimeZoneConverter;
 
 namespace ReProServices.Application.RegistrationStatus.Queries
 {
@@ -36,6 +37,7 @@ namespace ReProServices.Application.RegistrationStatus.Queries
             public async Task<List<ClientPortalDto>> Handle(GetClientPortalListQuery request, CancellationToken cancellationToken)
             {
                 var f = request.Filter;
+                var userTimeZone = TZConvert.GetTimeZoneInfo(f.LocalTimeZone);
                 var portalUser = _portContext.LoginUser.ToList();
 
                 var vm = await (from cs in _context.Customer
@@ -64,8 +66,11 @@ namespace ReProServices.Application.RegistrationStatus.Queries
                         Pan = v.Pan,
                         CustomerId = v.CustomerId,
                         UnitNo = v.UnitNo,
-                        Registered = p.Created,
-                        LastUpdated = p.Updated,
+                        // Registered = p.Created?.ToLocalTime(),
+                       // Registered = p.Created==null? null: TimeZoneInfo.ConvertTimeFromUtc(p.Created.Value, userTimeZone),
+                       Registered=FormatDate(p.Created, userTimeZone),
+                        // LastUpdated = TimeZoneInfo.ConvertTimeFromUtc(p.Updated.Value, userTimeZone),
+                        LastUpdated = FormatDate(p.Updated, userTimeZone),
                         UserId = p.UserId,
                         Pwd = p.UserPwd
                     }).ToList();
@@ -95,8 +100,17 @@ namespace ReProServices.Application.RegistrationStatus.Queries
 
                 return final;
             }
+            private DateTime? FormatDate(DateTime? date, TimeZoneInfo info)
+            {
+                if (date == null)
+                    return null;
 
+                return TimeZoneInfo.ConvertTimeFromUtc(date.Value, info);
+
+            }
         }
+
+       
     }
    
 }

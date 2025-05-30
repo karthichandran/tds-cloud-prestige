@@ -14,11 +14,11 @@ using System.Threading.Tasks;
 
 namespace ReProServices.Application.Prospect.Command
 {
-   public class CreateProspectProcessCommand : IRequest<int>
+   public class CreateProspectProcessCommand : IRequest<List<(string, string)>>
     {
         public ProspectProcessDto ProspectProcessDto { get; set; }
 
-        public class CreateProspectProcessCommandhandler : IRequestHandler<CreateProspectProcessCommand, int>
+        public class CreateProspectProcessCommandhandler : IRequestHandler<CreateProspectProcessCommand, List<(string, string)>>
         {
             private readonly IApplicationDbContext _context;
             private readonly IMapper _mapper;
@@ -30,7 +30,7 @@ namespace ReProServices.Application.Prospect.Command
                 _currentUserService = currentUserService;
             }
 
-            public async Task<int> Handle(CreateProspectProcessCommand request, CancellationToken cancellationToken)
+            public async Task<List<(string, string)>> Handle(CreateProspectProcessCommand request, CancellationToken cancellationToken)
             {
                 var userInfo = _context.Users.FirstOrDefault(x => x.UserName == _currentUserService.UserName && x.IsActive);
                 var prospectProcessDto = request.ProspectProcessDto;
@@ -41,7 +41,7 @@ namespace ReProServices.Application.Prospect.Command
                     .ToListAsync(cancellationToken);
 
                 Guid guid = Guid.NewGuid();
-
+                List<(string, string)> panList = new List<(string, string)>();
                 foreach (var prospectDto in prospectListdto)
                 {
                     var existingCust = _context.Customer.Where(x => x.PAN.ToLower() == prospectDto.PAN.ToLower()).FirstOrDefault();
@@ -49,47 +49,28 @@ namespace ReProServices.Application.Prospect.Command
                     {
                         Customer entity = new Customer
                         {
-                            //AdressLine1 = prospectDto.AdressLine1,
-                            //AddressLine2 = prospectDto.AddressLine2,
-                            //AddressPremises = prospectDto.AddressPremises,
-                            //City = prospectDto.City,
                             DateOfBirth = prospectDto.DateOfBirth.Date,
                             EmailID = prospectDto.EmailID,
                             IsTracesRegistered = prospectDto.IsTracesRegistered,
-                           // MobileNo = prospectDto.MobileNo,
                             Name = prospectDto.Name,
                             PAN = prospectDto.PAN,
-                           // PinCode = prospectDto.PinCode,
-                           // StateId = prospectDto.StateId,
                             TracesPassword = prospectDto.TracesPassword,
-                           // AllowForm16B = prospectDto.AllowForm16B,
-                            //AlternateNumber = prospectDto.AlternateNumber,
-                           // ISD = prospectDto.ISD,
                             IncomeTaxPassword=prospectDto.IncomeTaxPassword
-                           
                         };
+                        panList.Add((prospectDto.PAN, prospectDto.EmailID));
                         await _context.Customer.AddAsync(entity, cancellationToken);
                         await _context.SaveChangesAsync(cancellationToken);
                         existingCust = entity;
                     }
                     else
                     {
-                        //existingCust.AdressLine1 = prospectDto.AdressLine1;
-                        //existingCust.AddressLine2 = prospectDto.AddressLine2;
-                        //existingCust.AddressPremises = prospectDto.AddressPremises;
-                        //existingCust.City = prospectDto.City;
+                       
                         existingCust.DateOfBirth = prospectDto.DateOfBirth.Date;
                         existingCust.EmailID = prospectDto.EmailID;
                         existingCust.IsTracesRegistered = prospectDto.IsTracesRegistered;
-                        //existingCust.MobileNo = prospectDto.MobileNo;
                         existingCust.Name = prospectDto.Name;
                         existingCust.PAN = prospectDto.PAN;
-                        //existingCust.PinCode = prospectDto.PinCode;
-                       // existingCust.StateId = prospectDto.StateId;
                         existingCust.TracesPassword = prospectDto.TracesPassword;
-                        //existingCust.AllowForm16B = prospectDto.AllowForm16B;
-                       // existingCust.AlternateNumber = prospectDto.AlternateNumber;
-                       // existingCust.ISD = prospectDto.ISD;
                         existingCust.IncomeTaxPassword = prospectDto.IncomeTaxPassword;
 
                         _context.Customer.Update(existingCust);
@@ -112,9 +93,7 @@ namespace ReProServices.Application.Prospect.Command
                         UnitNo = propertyDto.UnitNo,
                         DateOfAgreement = prospectProcessDto.DateOfAgreement?.Date,
                         OwnershipID =  guid,
-                        IsArchived=false,
-                        //Created = DateTime.Now,
-                        //CreatedBy = userInfo.UserID.ToString()
+                        IsArchived=false                       
                     };
 
                     await _context.CustomerProperty.AddAsync(cpEntity, cancellationToken);
@@ -125,7 +104,7 @@ namespace ReProServices.Application.Prospect.Command
                 _context.ProspectProperty.Update(propertyDto);
                 await _context.SaveChangesAsync(cancellationToken);
 
-                return 0;
+                return panList;
             }
         }
     }

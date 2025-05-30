@@ -47,8 +47,8 @@ namespace ReProServices.Application.TdsRemittance.Queries
                                    from ctrOut in clObj.DefaultIfEmpty()
                                    join rm in _context.RemittanceRemark on ctrOut.TracesRemarkId equals rm.RemarkId into rmObj
                                    from rmOut in rmObj.DefaultIfEmpty()
-                                   where (request.Filter.RemittanceStatusID.HasValue)?true: cpt.RemittanceStatusID >= (int)ERemittanceStatus.TdsPaid && (filteredUnitNo.Count == 0 || filteredUnitNo.Contains(cp.UnitNo))
-                              && cpt.SellerID == sp.SellerID
+                                   where request.Filter.RemittanceStatusID.HasValue || cpt.RemittanceStatusID >= (int)ERemittanceStatus.TdsPaid && (filteredUnitNo.Count == 0 || filteredUnitNo.Contains(cp.UnitNo))
+                                       && cpt.SellerID == sp.SellerID
                         select new TdsRemittanceDto
                         {
                             ClientPaymentTransactionID = cpt.ClientPaymentTransactionID,
@@ -78,7 +78,7 @@ namespace ReProServices.Application.TdsRemittance.Queries
                             RemittanceStatusID = cpt.RemittanceStatusID,
                             CustomerPAN = cp.CustomerPAN,
                             OnlyTDS = cp.OnlyTDS ?? false,
-                            IncorrectDOB=cp.IncorrectDOB??false,
+                           // IncorrectDOB=cp.IncorrectDOB??false,
                             RemarkId = rmOut.RemarkId,
                             RemarkDesc = rmOut.Description,
                             TracesPassword = cp.TracesPassword

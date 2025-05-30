@@ -29,7 +29,7 @@ namespace ReProServices.Infrastructure
 
             services.AddDbContext<ApplicationDbContext>(options =>
                options.UseSqlServer(
-                   configuration.GetConnectionString("DefaultConnection"), providerOptions=> { providerOptions.CommandTimeout(300); })); 
+                   configuration.GetConnectionString("DefaultConnection"), providerOptions=> { providerOptions.CommandTimeout(300); }));
 
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
             services.AddScoped<IClientPortalDbContext>(provider => provider.GetService<ClientPortalDbContext>());

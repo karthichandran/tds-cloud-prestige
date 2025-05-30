@@ -25,5 +25,12 @@ namespace ReProServices.Domain.Entities
 		public Guid OwnershipID { get; set; }
 		public decimal ShareAmount { get; set; }
         public int RemittanceStatusID { get; set; }
+        public string PaymentBy { get; set; }
+        public DateTime? ExpectedPaymentDate { get; set; }
+        public string BankAccount { get; set; }
+        public int? BankAcctId { get; set; }
+		public int? NoOfAttempst { get; set; }
+        public DateTime? PaymentCompleted { get; set; }
+        public DateTime? Form16BRequestdate { get; set; }
 	}
 }

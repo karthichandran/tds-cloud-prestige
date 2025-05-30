@@ -21,8 +21,10 @@ import { AuthenticationGuard } from 'app/core/authentication/authentication.guar
 import { StatementOfAccountComponent } from './statement-of-account/statement-of-account.component';
 import { PasswordSettingReportComponent } from './password-setting-report/password-setting-report.component';
 import { TaxPaymentReportComponent } from './tax-payment-report/tax-payment-report.component';
+import { TdsPaymentSummaryReportComponent } from './tds-payment-summary-report/tds-payment-summary-report.component';
 import {DetailsSummaryComponent} from './details-summary/details-summary.component';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { Form16BStatusSummaryComponent } from './form16b-status-summary/form16b-status-summary.component';
 const routes = [
   {
     path: 'status-report',
@@ -64,6 +66,16 @@ const routes = [
     path: 'details-summary-report',
     component: DetailsSummaryComponent,
     canActivate: [AuthenticationGuard]
+  },
+  {
+    path: 'tds-payment-summary-report',
+    component: TdsPaymentSummaryReportComponent,
+    canActivate: [AuthenticationGuard]
+  },
+  {
+    path: 'form16b-status-summary',
+    component: Form16BStatusSummaryComponent,
+    canActivate: [AuthenticationGuard]
   }
 
 ];
@@ -77,7 +89,9 @@ const routes = [
     StatementOfAccountComponent,
     PasswordSettingReportComponent,
     TaxPaymentReportComponent,
-    DetailsSummaryComponent
+    DetailsSummaryComponent,
+    TdsPaymentSummaryReportComponent,
+    Form16BStatusSummaryComponent
   ],
   imports: [
     RouterModule.forChild(routes),

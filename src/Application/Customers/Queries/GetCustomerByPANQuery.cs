@@ -32,9 +32,8 @@ namespace ReProServices.Application.Customers.Queries
                 if (custDto == null)
                     return custDto;
 
-                custDto.InvalidPAN = null;
-                custDto.IncorrectDOB = null;
-                custDto.LessThan50L = null;
+               
+                custDto.NonResident = null;
                 custDto.CustomerOptedOut = null;
                 custDto.CustomerOptingOutDate = null;
                 custDto.CustomerOptingOutRemarks = null;

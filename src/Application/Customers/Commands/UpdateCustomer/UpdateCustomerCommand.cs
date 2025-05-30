@@ -37,27 +37,15 @@ namespace ReProServices.Application.Customers.Commands.UpdateCustomer
                             Customer entityUpd = new Customer
                             {
                                 CustomerID = customer.CustomerID,
-                                //AdressLine1 = customer.AdressLine1,
-                                //AddressLine2 = customer.AddressLine2,
-                                //AddressPremises = customer.AddressPremises,
-                                //City = customer.City,
                                 DateOfBirth = customer.DateOfBirth.Date,
                                 EmailID = customer.EmailID,
                                 IsTracesRegistered = customer.IsTracesRegistered,
-                                //MobileNo = customer.MobileNo,
                                 Name = customer.Name,
                                 PAN = customer.PAN,
-                                //PinCode = customer.PinCode,
-                                //StateId = customer.StateId,
                                 TracesPassword = customer.TracesPassword,
-                                //AllowForm16B = customer.AllowForm16B,
-                                //AlternateNumber = customer.AlternateNumber,
-                                //ISD = customer.ISD,
                                 IsPanVerified = customer.IsPanVerified.Value,
                                 OnlyTDS = customer.OnlyTDS,
-                                InvalidPAN = customer.InvalidPAN,
-                                IncorrectDOB = customer.IncorrectDOB,
-                                LessThan50L = customer.LessThan50L,
+                                NonResident = customer.NonResident,
                                 CustomerOptedOut = customer.CustomerOptedOut,
                                 CustomerOptingOutDate = customer.CustomerOptingOutDate,
                                 CustomerOptingOutRemarks = customer.CustomerOptingOutRemarks,
@@ -80,49 +68,22 @@ namespace ReProServices.Application.Customers.Commands.UpdateCustomer
 
                             _context.Customer.Update(entityUpd);
                             await _context.SaveChangesAsync(cancellationToken);
-                            //if (customer.CustomerProperty.Count() > 0)
-                            //{
-                            //    var cusProp = _context.CustomerProperty.Where(x => x.CustomerPropertyId == customer.CustomerProperty.First().CustomerPropertyId).First();
-                            //    if (cusProp != null) {
-                            //        cusProp.InvalidPAN = customer.InvalidPAN;
-                            //        cusProp.IncorrectDOB = customer.IncorrectDOB;
-                            //        cusProp.LessThan50L = customer.LessThan50L;
-                            //        cusProp.CustomerOptedOut = customer.CustomerOptedOut;
-                            //        cusProp.CustomerOptingOutDate = customer.CustomerOptingOutDate;
-                            //        cusProp.CustomerOptingOutRemarks = customer.CustomerOptingOutRemarks;
-                            //        cusProp.OnlyTdsDate = customer.InvalidPanDate;
-                            //        cusProp.OnlyTdsRemarks = customer.InvalidPanRemarks;
-                            //        _context.CustomerProperty.Update(cusProp);
-                            //        await _context.SaveChangesAsync(cancellationToken);
-                            //    }
-                            //}
-                           
+
                         }
                         else
                         {
                             Customer entity = new Customer
                             {
-                                //AdressLine1 = customer.AdressLine1,
-                                //AddressLine2 = customer.AddressLine2,
-                                //AddressPremises = customer.AddressPremises,
-                                //City = customer.City,
+                                
                                 DateOfBirth = customer.DateOfBirth.Date,
                                 EmailID = customer.EmailID,
                                 IsTracesRegistered = customer.IsTracesRegistered,
-                                //MobileNo = customer.MobileNo,
                                 Name = customer.Name,
                                 PAN = customer.PAN,
-                                //PinCode = customer.PinCode,
-                                //StateId = customer.StateId,
                                 TracesPassword = customer.TracesPassword,
-                                //AllowForm16B = customer.AllowForm16B,
-                                //AlternateNumber = customer.AlternateNumber,
-                                //ISD = customer.ISD,
                                 IsPanVerified = customer.IsPanVerified.Value,
                                 OnlyTDS = customer.OnlyTDS,
-                                InvalidPAN = customer.InvalidPAN,
-                                IncorrectDOB = customer.IncorrectDOB,
-                                LessThan50L = customer.LessThan50L,
+                                NonResident = customer.NonResident,
                                 CustomerOptedOut = customer.CustomerOptedOut,
                                 CustomerOptingOutDate = customer.CustomerOptingOutDate,
                                 CustomerOptingOutRemarks = customer.CustomerOptingOutRemarks,
