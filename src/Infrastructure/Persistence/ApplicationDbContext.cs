@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using ReProServices.Domain.Entities.ClientPortal;
 using ReProServices.Infrastructure.Configs;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using ReProServices.Application.Traces;
 
 namespace ReProServices.Infrastructure.Persistence
 {
@@ -114,6 +115,7 @@ namespace ReProServices.Infrastructure.Persistence
 
         public DbSet<TdsPaymentSummaryReport> TdsPaymentSummaryReport { get; set; }
        public DbSet<Form16BStatusSummaryReport> Form16BStatusSummaryReport { get; set; }
+        public DbSet<TracesPasswordSetting> TracesPasswordSettings { get; set; }
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             //foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
@@ -166,6 +168,7 @@ namespace ReProServices.Infrastructure.Persistence
             builder.ApplyConfiguration(new ViewRemittanceConfig());
             builder.ApplyConfiguration(new ViewLotSummaryConfig());
             builder.ApplyConfiguration(new ViewPayableClientPaymentsConfig());
+            builder.Entity<TracesPasswordSetting>().HasNoKey();
             base.OnModelCreating(builder);
         }
 

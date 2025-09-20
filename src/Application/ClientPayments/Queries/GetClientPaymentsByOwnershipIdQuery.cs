@@ -29,6 +29,7 @@ namespace ReProServices.Application.ClientPayments.Queries
                 try
                 {
                     var payments = new List<ClientPaymentDto>();
+
                     var installmentListraw = _context.ClientPayment
                                        .Where(x => x.OwnershipID == request.OwnershipId).ToList();
 

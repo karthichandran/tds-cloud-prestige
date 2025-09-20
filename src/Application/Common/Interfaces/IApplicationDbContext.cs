@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using ReProServices.Domain.Entities.ClientPortal;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using ReProServices.Application.Traces;
 
 namespace ReProServices.Application.Common.Interfaces
 {
@@ -98,5 +99,6 @@ namespace ReProServices.Application.Common.Interfaces
 
         DbSet<Domain.Entities.TdsPaymentSummaryReport> TdsPaymentSummaryReport { get; set; }
         DbSet<Form16BStatusSummaryReport> Form16BStatusSummaryReport { get; set; }
+         DbSet<TracesPasswordSetting> TracesPasswordSettings { get; set; }
     }
 }

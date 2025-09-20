@@ -285,6 +285,7 @@ namespace WebApi.Controllers
         [HttpPost("uploadFile"), DisableRequestSizeLimit]
         public async Task<IActionResult> UploadPayment()
         {
+            int OnError = 0;
             try
             {
                 await Mediator.Send(new DeleteClientPaymentImportCOmmand());
@@ -342,6 +343,8 @@ namespace WebApi.Controllers
                         if (string.IsNullOrEmpty(item1))
                         {
                         }
+                        var amt = Convert.ToDecimal(row[6]) * -1;
+                        OnError++;
                     }
 
                     decimal receiptSum = 0;

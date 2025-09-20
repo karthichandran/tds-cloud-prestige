@@ -49,7 +49,9 @@ namespace ReProServices.Application.ClientPayments.Commands
                 
                 var payments = new List<ClientPayment>();
                 var vms = request.ClientPaymentVMs;
-               // using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+                var importId=Guid.NewGuid(); 
+
+                                             // using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
                 foreach (var vm in vms)
                 {
                     var payObj = vm;
@@ -70,7 +72,8 @@ namespace ReProServices.Application.ClientPayments.Commands
                         TdsRate = GetTaxRate(payObj.TdsTaxCode, payObj.RevisedDateOfPayment.Value),
                         GstRate = GetTaxRate(payObj.GstTaxCode, payObj.RevisedDateOfPayment.Value),
                         CustomerNo = payObj.CustomerNo,
-                        Material = payObj.Material
+                        Material = payObj.Material,
+                        ImportID = importId
                     };
 
                     foreach (var trans in payObj.InstallmentList)
@@ -110,16 +113,20 @@ namespace ReProServices.Application.ClientPayments.Commands
                 try
                 {
                     await _context.ClientPayment.AddRangeAsync(payments, cancellationToken);
-                    // await _context.SaveChangesAsync(cancellationToken);
+                     await _context.SaveChangesAsync(cancellationToken);
 
-                    foreach (var pay in payments)
-                    {
-                        var cpList = _context.CustomerProperty.Where(x => x.OwnershipID == pay.OwnershipID).ToList();
-                        cpList.ForEach(x => x.CustomerNo = pay.CustomerNo);
-                        _context.CustomerProperty.UpdateRange(cpList);
-                    }
+                    var sqlQry = $"UPDATE cp SET cp.customerNo = clp.customerNo FROM customerproperty cp JOIN clientpayment clp ON cp.ownershipid = clp.ownershipid where clp.ImportID='{importId}';";
+                   var rows= await _context.Database.ExecuteSqlRawAsync(sqlQry, cancellationToken: cancellationToken);
+
+                    //foreach (var pay in payments)
+                    //{
+                    //    var cpList = _context.CustomerProperty.Where(x => x.OwnershipID == pay.OwnershipID).ToList();
+                    //    cpList.ForEach(x => x.CustomerNo = pay.CustomerNo);
+                    //    _context.CustomerProperty.UpdateRange(cpList);
+                    //}
                     await _context.SaveChangesAsync(cancellationToken);
 
+                    
                     // scope.Complete();
                     await transaction.CommitAsync(cancellationToken);
                     return Unit.Value;

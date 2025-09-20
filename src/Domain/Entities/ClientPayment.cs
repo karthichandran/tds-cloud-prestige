@@ -31,6 +31,7 @@ namespace ReProServices.Domain.Entities
         public decimal TdsRate { get; set; }
         public string CustomerNo { get; set; }
         public string Material { get; set; }
-		public List<ClientPaymentTransaction> ClientPaymentTransactions { get; set; }
+        public Guid? ImportID { get; set; }
+        public List<ClientPaymentTransaction> ClientPaymentTransactions { get; set; }
 	}
 }
